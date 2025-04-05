@@ -1,8 +1,0 @@
-LICENSE
-pyproject.toml
-matx/__init__.py
-matx/matrix.py
-matx_matrix.egg-info/PKG-INFO
-matx_matrix.egg-info/SOURCES.txt
-matx_matrix.egg-info/dependency_links.txt
-matx_matrix.egg-info/top_level.txt

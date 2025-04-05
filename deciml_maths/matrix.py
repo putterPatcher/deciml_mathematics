@@ -1,13 +1,6 @@
-import os, sys
-
-
-sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-
-from utils.deciml import algbra as alg, galgbra as galg, trig, htrig, Decimal
-from utils.cmpr import tmatx, eqval, tdeciml, eqllen, tint
-from utils.terminate import retrn
-
+from deciml.deciml import algbra as alg, galgbra as galg, trig, htrig, Decimal
+from compare.cmpr import tmatx, eqval, tdeciml, eqllen, tint
+from terminate import retrn
 
 class matx:
     
@@ -1013,3 +1006,4 @@ class matstat:
 # print(matstat.qmean(a), matstat.qmean(a, 'col'), matstat.qmean(a, 'all'))
 # print(matstat.sd(a, samp=False), matstat.sd(a, 'col', False), matstat.sd(a, 'all'))
 # a.cofacm().pmatx
+
