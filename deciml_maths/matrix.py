@@ -5,6 +5,12 @@ from terminate import retrn
 class matx:
     
     def __init__(self,li:list|tuple,chk=True,ret='a')->None:
+        '''
+#### 2-D Matrix object.
+- **li**: list or tuple of lists or tuples of numbers
+- **chk**: boolean to check for valid 2-D matrix
+- **ret**: exit type
+        '''
         try:
             if (tli:=li.__class__.__name__)=='matx':self.__matx=li.matx;self.__collen=li.collen;self.__rowlen=li.rowlen;self.__sqmatx=li.sqmatx;self.__dnant=None;self.__invse=None;self.__invsednant=None;self.__cofacm=None;self.__adjnt=None;self.__tpose=None;
             else:
@@ -35,7 +41,11 @@ class matx:
         except Exception as e:print("Invalid command: matx()");retrn(ret,e);
 
     @property
-    def matx(self)->tuple:return self.__matx;
+    def matx(self)->tuple:
+        '''
+#### Get and set the 2-D matrix.
+        '''
+        return self.__matx;
     
     @matx.setter
     def matx(self,li:list|tuple)->None:
@@ -54,49 +64,93 @@ class matx:
         except Exception as e:print("Invalid command: matx()");retrn('a',e);
     
     @property
-    def collen(self)->int:return self.__collen;
+    def collen(self)->int:
+        '''
+#### Get the column length.
+        '''
+        return self.__collen;
     
     @property
-    def rowlen(self)->int:return self.__rowlen;
+    def rowlen(self)->int:
+        '''
+#### Get the row length.
+        '''
+        return self.__rowlen;
     
     @property
-    def sqmatx(self)->bool:return self.__sqmatx;
+    def sqmatx(self)->bool:
+        '''
+#### Get True if square matrix, otherwise False.
+        '''
+        return self.__sqmatx;
     
     # prints the value of matx object
     @matx.getter
     def pmatx(self)->None:
+        '''
+#### Print the matrix.
+        '''
         print("matx(")
         for k in [[str(j) for j in i] for i in self.__matx]:print('|'+str(k)[1:-1]+'|');
         print(')\n')
     
     def dnant(self)->Decimal:
+        '''
+#### Get the determinant of matrix.
+        '''
         if self.__dnant is None and self.__sqmatx is True:self.__dnant=matutils.dnant(matx(self.__matx,False,'c'),False,'w');return self.__dnant;
         else:return self.__dnant;
 
     def invsednant(self)->Decimal:
+        '''
+#### Get the determinant of the inverse matrix.
+        '''
         if self.__invsednant is None and self.__sqmatx is True:self.__invsednant=matutils.invsednant(matx(self.__matx,False,'c'),False,'w');return self.__invsednant;
         else:return self.__invsednant;
     
     def invse(self):
+        '''
+#### Get the inverse matrix of the matrix.
+        '''
         if self.__invse is None and self.sqmatx is True and self.dnant()!=0:self.__invse=matutils.invse(matx(self.__matx,False,'c'),False,'w');return self.__invse;
         else:return self.__invse;
     
     def adjnt(self):
+        '''
+#### Get the adjoint matrix of the matrix.
+        '''
         if self.__adjnt is None and self.__sqmatx is True:self.__adjnt=matutils.adjnt(matx(self.__matx,False,'c'),False,'w');return self.__adjnt;
         else:return self.__adjnt;
 
     def tpose(self):
+        '''
+#### Get the transpose of the matrix.
+        '''
         if self.__tpose is None:self.__tpose=matutils.tpose(matx(self.__matx,False,'c'),False,'w');return self.__tpose;
         else:return self.__tpose;
     
     def cofacm(self):
+        '''
+#### Get the cofactor matrix of the matrix.
+        '''
         if self.__cofacm is None:self.__cofacm=matx(tuple([tuple([matutils.cofac(matx(self.__matx,False,'c'),i,j,False,'c') for j in range(self.__rowlen)]) for i in range(self.__collen)]),False,'w');return self.__cofacm;
         else:return self.__cofacm;
 
     # returns matx as a list
-    def matxl(self)->list:return [list(i) for i in self.__matx];
+    def matxl(self)->list:
+        '''
+#### Get the matrix as a list of lists.
+        '''
+        return [list(i) for i in self.__matx];
     
     def pop(self,i:int,r=True,chk=True,ret='a')->tuple[Decimal,...]:
+        '''
+#### Pop a row or column of the matrix.
+- **i**: Row or column index
+- **r**: True for row and False for column
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:pass;
@@ -118,6 +172,13 @@ class matx:
 
     # return element at i,j of matrix
     def mele(self,i:int,j:int,chk=True,ret='a')->Decimal:
+        '''
+#### Get an element of matrix.
+- **i**: Row index
+- **j**: Column index
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return self.__matx[i][j];
@@ -129,6 +190,12 @@ class matx:
 
     # return tuple of i'th row
     def mrow(self,i:int,chk=True,ret='a')->tuple[Decimal,...]:
+        '''
+#### Get a row of matrix.
+- **i**: Row index
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return self.__matx[i];
@@ -140,6 +207,12 @@ class matx:
 
     # returns tuple of i'th column
     def mcol(self,j:int,chk=True,ret='a')->tuple[Decimal,...]:
+        '''
+#### Get the column of matrix.
+- **j**: Column index
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return tuple([self.__matx[i][j] for i in range(self.__collen)]);
@@ -150,6 +223,13 @@ class matx:
         except Exception as e:print("Invalid command: matx.mcol()");retrn(ret,e);
     
     def gele(self,a:list|tuple,r=False,chk=True,ret='a')->tuple[tuple[Decimal,...],...]:
+        '''
+#### Get the rows or columns of the matrix.
+- **a**: List or tuple of row or column indexes
+- **r**: True for row and False for column
+- **chk**: Check argument
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:pass;
@@ -175,6 +255,13 @@ class matutils:
     # returns scalar matrix of size nxn
     @staticmethod
     def sclrm(n:int,el:Decimal,chk=True,ret='a')->matx:
+        '''
+#### Get a scalar matrix as a matx object.
+- **n**: Number of rows for square matrix
+- **el**: Value for the diagonal elements
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:pass;
@@ -194,6 +281,14 @@ class matutils:
     # returns matrix of size mxn with equal elements
     @staticmethod
     def eqelm(m:int,n:int,i:Decimal,chk=True,ret='a')->matx:
+        '''
+#### Get a matrix of equal elements as a matx object.
+- **m**: Number of rows
+- **n**: Number of columns
+- **i**: Value for elements
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case True:return matx(tuple([tuple([i for _ in range(n)]) for _ in range(m)]),False,'c');
@@ -204,6 +299,15 @@ class matutils:
 
     @staticmethod
     def addmatx(a:matx,*b:matx,r=False,chk=True,ret='a')->matx:
+        '''
+        What is row?
+#### Add matrices in matx objects along row or column.
+- **a**: matx object
+- **\\*b**: matx objects
+- **r**: True for row and False for column
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:pass;
@@ -239,6 +343,13 @@ class matutils:
 
     @classmethod
     def maddval(cls,a:matx,x:Decimal,chk=True,ret='a')->matx:
+        '''
+#### Add a number to all the elements of a matrix in matx object.
+- **a**: matx object
+- **x**: Number
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return cls.addmatx(cls.eqelm(a.collen,1,x,False,'c'),a,r=False,chk=False,ret='c');
