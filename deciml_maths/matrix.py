@@ -1,4 +1,4 @@
-from deciml.deciml import algbra as alg, galgbra as galg, trig, htrig, Decimal
+from deciml.deciml import algbra as alg, galgbra as galg, trig, htrig, Decimal, getpr, deciml
 from compare.cmpr import tmatx, eqval, tdeciml, eqllen, tint
 from terminate import retrn
 
@@ -266,7 +266,7 @@ class matutils:
             match chk:
                 case False:pass;
                 case True:
-                    if (n:=tint.intn(n)) is None or str(el:=Decimal(str(el)))=='NaN':raise Exception;
+                    if (n:=tint.intn(n)) is None or str(el:=deciml(str(el)))=='NaN':raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool");
             m=list()
             for i in range(n):
@@ -293,14 +293,13 @@ class matutils:
             match chk:
                 case True:return matx(tuple([tuple([i for _ in range(n)]) for _ in range(m)]),False,'c');
                 case False:
-                    if (n:=tint.intn(n)) is None or (m:=tint.intn(m)) is None or str(i:=Decimal(str(i)))=='NaN':raise Exception;
+                    if (n:=tint.intn(n)) is None or (m:=tint.intn(m)) is None or str(i:=deciml(str(i)))=='NaN':raise Exception;
                     return matx(tuple([tuple([i for _ in range(n)]) for _ in range(m)]),False,'c')
         except Exception as e:print("Invalid command: matutils.eqelm()");retrn(ret,e);
 
     @staticmethod
     def addmatx(a:matx,*b:matx,r=False,chk=True,ret='a')->matx:
         '''
-        What is row?
 #### Add matrices in matx objects along row or column.
 - **a**: matx object
 - **\\*b**: matx objects
@@ -362,6 +361,12 @@ class matutils:
     # convert list x to x
     @staticmethod
     def matlxtox(a:matx,chk=True,ret='a')->tuple:
+        '''
+#### Get the columns of matrix as matx objects.
+- **a**: matx object
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return tuple([matx(i,False,'c') for i in a.matx]);
@@ -373,6 +378,12 @@ class matutils:
 
     @staticmethod
     def matxtolx(a:tuple[matx,...]|list,chk=True,ret='a')->matx:
+        '''
+#### Get a matrix from column matrices as a matx object.
+- **a**: matx object
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             x=list()
             match chk:
@@ -390,12 +401,26 @@ class matutils:
     # returns row or column elements of the matrix
     @staticmethod
     def gele(a:matx,b:list,r=False,chk=True,ret='a')->matx:
+        '''
+#### Get the rows or columns of a matrix as a matx object of matrix.
+- **a**: matx object
+- **b**: List or tuple with indexes of rows or columns
+- **r**: True for rows and False for columns
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:return matx(a.gele(b,r,chk,r),False,'c');
         except Exception as e:print("Invalid command: matutils.gele()");retrn(ret,e);
 
     # returns the transpose of the matrix
     @classmethod
     def tpose(cls,a:matx,chk=True,ret='a')->matx:
+        '''
+#### Get the transpose matrix as matx object.
+- **a**: matx object
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return matx(tuple(zip(*a.matx)),False,'c');
@@ -408,6 +433,14 @@ class matutils:
     # returns the co-factor of the matrix element
     @classmethod
     def cofac(cls,a:matx,b:int,c:int,chk=True,ret='a')->Decimal:
+        '''
+#### Get the cofactor of a matrix for an element.
+- **a**: matx object
+- **b**: row index
+- **c**: column index
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case True:
@@ -423,6 +456,12 @@ class matutils:
     # returns the determinant of the matrix
     @classmethod
     def dnant(cls,a:matx,chk=True,ret='a')->Decimal:
+        '''
+#### Get the determinant of a matrix.
+- **a**: matx object
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:pass;
@@ -448,6 +487,9 @@ class matutils:
     # returns adjoint matrix of the matrix
     @classmethod
     def adjnt(cls,a:matx,chk=True,ret='a')->matx:
+        '''
+#### Get the adjoint matrix as a matx object for a matrix.
+        '''
         try:
             match chk:
                 case False:return matx(tuple([tuple([cls.cofac(a,j,i,False,'c') for j in range(a.collen)]) for i in range(a.rowlen)]),False,'c');
@@ -461,6 +503,9 @@ class matutils:
     # returns inverse matrix of the matrix
     @classmethod
     def invse(cls,a:matx,chk=True,ret='a')->matx:
+        '''
+#### Get the inverse matrix of a matrix as a matx object.
+        '''
         try:
             match chk:
                 case False:pass;
@@ -475,6 +520,9 @@ class matutils:
     # returns inverse matrix of the matrix using matrix transformation
     @classmethod
     def invsednant(cls,a:matx,chk=True,ret='a')->Decimal:
+        '''
+#### Get the determinant of the inverse matrix for a matrix.
+        '''
         try:
             match chk:
                 case True:
@@ -508,7 +556,10 @@ class matutils:
 
     # returns matrix after row or column tranformation
     @classmethod
-    def tform(cls,a:matx,b:int,c:int,d: Decimal,r=False,chk=True,ret='a')->matx:
+    def tform(cls,a:matx,b:int,c:int,d:Decimal,r=False,chk=True,ret='a')->matx:
+        '''
+#### Get the row or column transformation for a matrix as a matx object.
+        '''
         try:
             match chk:
                 case False:pass;
@@ -529,6 +580,9 @@ class matutils:
     # returns sum of two matrices
     @staticmethod
     def madd(a:matx,b:matx,sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
+        '''
+#### Get the added matrix of two matrices as a matx object.
+        '''
         try:
             match chk:
                 case False:pass;
@@ -545,7 +599,10 @@ class matutils:
         except Exception as e:print("Invalid command: matutils.madd()");retrn(ret,e);
     
     @classmethod
-    def saddcnst(cls,a: tuple | list | Decimal,b: matx,r=False,sumr=None,chk=True,ret='a')->matx | tuple[Decimal,...]:
+    def saddcnst(cls,a:tuple|list|Decimal,b:matx,r=False,sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
+        '''
+#### Get the addition of a single constant added to each of rows or columns as a matx object.
+        '''
         try:
             match chk:
                 case False:pass;
@@ -578,6 +635,9 @@ class matutils:
     # returns difference of two matrices
     @staticmethod
     def msub(a:matx,b:matx,sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
+        '''
+#### Get the subtracted matrix of two matrices as a matx object.
+        '''
         try:
             match chk:
                 case False:pass;
@@ -596,6 +656,9 @@ class matutils:
     # returns matrix after scalar multiplication
     @staticmethod
     def smult(a:Decimal,b:matx,sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
+        '''
+#### Get the matrix for elements of a matrix multiplied by a number as a matx object.
+        '''
         try:
             match chk:
                 case False:pass;
@@ -613,6 +676,9 @@ class matutils:
 
     @classmethod
     def smultfac(cls,a:tuple|list,b:matx,r=True,sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
+        '''
+#### Get the matrix for all rows or columns of a matrix multiplied by a number as a matx object.
+        '''
         try:
             match chk:
                 case False:pass;
@@ -637,6 +703,9 @@ class matutils:
     # returns matrix after matrix multiplication
     @classmethod
     def mmult(cls,a:matx,b:matx,t=(False,False),sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
+        '''
+#### Get the multiplied matrix of two matrices as a matx object.
+        '''
         try:
             match t:
                 case (False,False):
@@ -677,6 +746,9 @@ class matutils:
     
     @staticmethod
     def melmult(a:matx,b:matx,t=(False,False),sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
+        '''
+#### Get the matrix as a matx object for elements of two matrices multiplied.
+        '''
         try:
             match t:
                 case (False,False):
@@ -717,6 +789,9 @@ class matutils:
 
     @staticmethod
     def uldcompose(a:matx,chk=True,ret='a')->tuple:
+        '''
+#### Get the upper, lower, and diagonal matrices for a matrix as a tuple of matx objects.
+        '''
         try:
             match chk:
                 case True:
@@ -735,7 +810,10 @@ class matutils:
         except Exception as e:print("Invalid command: matutils.uldcompose()");retrn(ret,e);
     
     @classmethod
-    def dpose(cls,a: matx,li: list | tuple,r=False,chk=True,ret='a')->tuple:
+    def dpose(cls,a:matx,li:list|tuple,r=False,chk=True,ret='a')->tuple:
+        '''
+#### Get the matrices as a tuple of matx objects for groups of rows or columns of a matrix.
+        '''
         try:
             match chk:
                 case True:
