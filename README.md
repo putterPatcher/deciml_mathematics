@@ -21,15 +21,22 @@
     **(o) matx**: Object that stores matrix properties
 
     ```python
-    from deciml_maths.matrix import matx
+    >>> from deciml_maths.matrix import matx
+    >>> from deciml.deciml import setpr
+    >>> setpr(0)
     >>> matrix = matx([[1,2,3],[2,3,4],[3,4,5],[4,5,6]],True,'w')
     '''
         [[1,2,3],[2,3,4],[3,4,5],[4,5,6]] - 2-D matrix
         True: Check argument types
         'w': wait and exit
     '''
-    >>> matrix
-
+    >>> matrix.pmatx
+    matx(
+    |'1.0', '2.0', '3.0'|
+    |'2.0', '3.0', '4.0'|
+    |'3.0', '4.0', '5.0'|
+    |'4.0', '5.0', '6.0'|
+    )
     ```
 
 

@@ -1,6 +1,6 @@
-from deciml.deciml import algbra as alg, galgbra as galg, trig, htrig, Decimal, getpr, deciml, setpr
 from compare.cmpr import tmatx, eqval, tdeciml, eqllen, tint
 from terminate import retrn
+from deciml_maths import *
 
 class matx:
     
@@ -93,13 +93,6 @@ class matx:
         print("matx(")
         for k in [[str(j) for j in i] for i in self.__matx]:print('|'+str(k)[1:-1]+'|');
         print(')\n')
-
-    def __str__(self):
-        s = ""
-        s+="matx(\n"
-        for k in [[str(j) for j in i] for i in self.__matx]:s+='|'+str(k)[1:-1]+'|\n';
-        str+=')\n'
-        return str
     
     def dnant(self)->Decimal:
         '''
@@ -955,6 +948,9 @@ class melutils:
 
     @staticmethod
     def add(a:matx,li:list[list[int]]|tuple[list[int]]|str,r=False,chk=True,ret='a')->matx:
+        '''
+#### 
+        '''
         try:
             if li!='all':
                 l=list()
