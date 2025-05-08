@@ -1,6 +1,7 @@
 from compare.cmpr import tmatx, eqval, tdeciml, eqllen, tint
 from terminate import retrn
 from deciml_maths import *
+from decimal import Decimal
 
 class matx:
     
@@ -20,14 +21,14 @@ class matx:
                             if (tli0:=li[0].__class__.__name__)=='tuple' or tli0=='list':
                                 if eqllen(li) is None:raise Exception("Invalid argument: li");
                             else:li=li,;
-                            if (li:=tdeciml.dall(li)) is None:raise Exception("Invalid argument: li");
+                            if (li:=tdeciml.dall(li,getpr())) is None:raise Exception("Invalid argument: li");
                         else:raise Exception("Invalid argument: li => list/tuple/matx");
                     case False:
                         match tli:
                             case 'tuple':
                                 if li[0].__class__.__name__=='Decimal':li=li,;
                                 elif li[0].__class__.__name__=='tuple':pass;
-                                elif li[0].__class__.__name__=='float':li=tdeciml.dall(li),;
+                                elif li[0].__class__.__name__=='float':li=tdeciml.dall(li,getpr()),;
                                 else:raise Exception("Invalid argument: li");
                             case _:raise Exception("Invalid argument: li => tuple/matx");
                     case _:raise Exception("Invalid argument: chk => bool");
@@ -37,7 +38,7 @@ class matx:
                 lc=len(li);lr=len(li[0]);
                 if lr==lc:sq=True;
                 else:sq=False;
-                self.__matx=li;self.__collen=lc;self.__rowlen=lr;self.__sqmatx=sq;self.__dnant=None;self.__invse=None;self.__invsednant=None;self.__cofacm=None;self.__adjnt=None;self.__tpose=None;
+                self.__matx: tuple[tuple[Decimal,...]]=li;self.__collen=lc;self.__rowlen=lr;self.__sqmatx=sq;self.__dnant=None;self.__invse=None;self.__invsednant=None;self.__cofacm=None;self.__adjnt=None;self.__tpose=None;
         except Exception as e:print("Invalid command: matx()");retrn(ret,e);
 
     @property
@@ -55,7 +56,7 @@ class matx:
                 if (tli0:=li[0].__class__.__name__)=='tuple' or tli0=='list':
                     if eqllen(li) is None:raise Exception("Invalid argument: li");
                 else:li=li,;
-                if (li:=tdeciml.dall(li)) is None:raise Exception("Invalid argument: li");
+                if (li:=tdeciml.dall(li,getpr())) is None:raise Exception("Invalid argument: li");
                 lc=len(li);lr=len(li[0]);
                 if lr==lc:sq=True;
                 else:sq=False;
@@ -86,13 +87,14 @@ class matx:
     
     # prints the value of matx object
     @matx.getter
-    def pmatx(self)->None:
+    def pmatx(self)->tuple[tuple[Decimal,...]]:
         '''
 #### Print the matrix.
         '''
         print("matx(")
         for k in [[str(j) for j in i] for i in self.__matx]:print('|'+str(k)[1:-1]+'|');
         print(')\n')
+        return self.matx
     
     def dnant(self)->Decimal:
         '''
@@ -484,7 +486,7 @@ class matutils:
                 else:ep=0;e=ele;
                 setpr(getpr()+1)
                 for i in range(lr):
-                    if i!=ep:ele=li[i];fac=alg.div(alg.mul('-1',ele,pr=getpr()+2),e,getpr()+1);a.matx=cls.tform(a,i,ep,fac,False,False,'c');
+                    if i!=ep:ele=li[i];fac=alg.div(alg.mul('-1',ele,pr=getpr()+2),e,getpr()+1);print(alg.div(Decimal('0.0'), e),e);a.matx=cls.tform(a,i,ep,fac,False,False,'c');
                 setpr(getpr()-1)
                 return alg.mul(e,cls.cofac(a,0,ep,False,'c'))
         except Exception as e:print("Invalid command: matutils.dnant()");retrn(ret,e);
@@ -652,7 +654,7 @@ class matutils:
                 case False:pass;
                 case True:
                     if r is not None:
-                        if (a:=tdeciml.dall(a)) is None:raise Exception;
+                        if (a:=tdeciml.dall(a,getpr())) is None:raise Exception;
                     else:
                         if str(a:=Decimal(str(a)))=='NaN':raise Exception;
                     if tmatx(b) is None:raise Exception;
@@ -754,7 +756,7 @@ class matutils:
             match chk:
                 case False:pass;
                 case True:
-                    if (a:=tdeciml.dall(a)) is None or tmatx(b) is None:raise Exception;
+                    if (a:=tdeciml.dall(a,getpr())) is None or tmatx(b) is None:raise Exception;
                     match r:
                         case True:
                             if eqval(len(a),b.collen) is None:raise Exception;
@@ -993,9 +995,9 @@ class melutils:
                 case True:
                     match an.__class__.__name__:
                         case 'tuple':
-                            if (an:=tdeciml.dall(an)) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
                         case 'list':
-                            if (an:=tdeciml.dall(an)) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
                         case _:raise Exception("Invalid argument: a => tuple/list");
                     if eqval(len(an),2) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool");
@@ -1015,9 +1017,9 @@ class melutils:
                 case True:
                     match an.__class__.__name__:
                         case 'tuple':
-                            if (an:=tdeciml.dall(an)) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
                         case 'list':
-                            if (an:=tdeciml.dall(an)) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
                         case _:raise Exception("Invalid argument: a => tuple/list");
                     if eqval(len(an),2) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool");
@@ -1037,9 +1039,9 @@ class melutils:
                 case True:
                     match an.__class__.__name__:
                         case 'tuple':
-                            if (an:=tdeciml.dall(an)) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
                         case 'list':
-                            if (an:=tdeciml.dall(an)) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
                         case _:raise Exception("Invalid argument: a => tuple/list");
                     if eqval(len(an),2) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool");

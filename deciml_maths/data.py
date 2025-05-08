@@ -1,7 +1,7 @@
 from matrix import matx, matutils, melutils
-from deciml.deciml import deciml, Decimal
 from compare.cmpr import tmatx, eqval, tdata, tint, tdeciml
 from terminate import retrn
+from deciml_maths import *
 
 class data:
     
