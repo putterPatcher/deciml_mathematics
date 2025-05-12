@@ -1,16 +1,16 @@
-from compare.cmpr import tmatx, eqval, tdeciml, eqllen, tint
+from compare.cmpr import tmatx, eqval, tdeciml, eqllen, tint, ttup
 from terminate import retrn
 from deciml_maths import *
 from decimal import Decimal
 
 class matx:
     
-    def __init__(self,li:list|tuple,chk=True,ret='a')->None:
+    def __init__(self,li:list[Decimal|str|float]|tuple[Decimal|str|float]|list[list[Decimal|str|float]]|tuple[tuple[Decimal|str|float,...]],chk=True,ret='a')->None:
         '''
 #### 2-D Matrix object.
-- **li**: list or tuple of lists or tuples of numbers
-- **chk**: boolean to check for valid 2-D matrix
-- **ret**: exit type
+- **li**: List or tuple of lists or tuples of numbers
+- **chk**: Check and convert elements to Decimal for set precision
+- **ret**: Exit type
         '''
         try:
             if (tli:=li.__class__.__name__)=='matx':self.__matx=li.matx;self.__collen=li.collen;self.__rowlen=li.rowlen;self.__sqmatx=li.sqmatx;self.__dnant=None;self.__invse=None;self.__invsednant=None;self.__cofacm=None;self.__adjnt=None;self.__tpose=None;
@@ -19,22 +19,23 @@ class matx:
                     case True:
                         if tli=='list' or tli=='tuple':
                             if (tli0:=li[0].__class__.__name__)=='tuple' or tli0=='list':
-                                if eqllen(li) is None:raise Exception("Invalid argument: li");
+                                if eqllen(li) is None:raise Exception("Invalid argument: li - Row lengths not equal.");
                             else:li=li,;
-                            if (li:=tdeciml.dall(li,getpr())) is None:raise Exception("Invalid argument: li");
-                        else:raise Exception("Invalid argument: li => list/tuple/matx");
+                            if (li:=tdeciml.dall(li,getpr())) is None:raise Exception("Invalid argument: li - Cannot convert elements to Decimal.");
+                        else:raise Exception("Invalid argument: li => list/tuple/matx, got {}".format(tli));
                     case False:
                         match tli:
                             case 'tuple':
                                 if li[0].__class__.__name__=='Decimal':li=li,;
                                 elif li[0].__class__.__name__=='tuple':pass;
-                                elif li[0].__class__.__name__=='float':li=tdeciml.dall(li,getpr()),;
-                                else:raise Exception("Invalid argument: li");
-                            case _:raise Exception("Invalid argument: li => tuple/matx");
-                    case _:raise Exception("Invalid argument: chk => bool");
-                for i in li:
-                    for j in i:
-                        if j.__class__.__name__!='Decimal':raise Exception(str(j)+" is not Decimal");
+                                elif (tli0:=li[0].__class__.__name__)=='float' or tli0=='int':li=tdeciml.dall(li,getpr()),;
+                                else:raise Exception("Invalid argument: li - Decimal/tuple/float/int, got {}".format(tli0));
+                            case _:raise Exception("Invalid argument: li => tuple/matx, got {}".format(tli));
+                        if eqllen(li) is None:raise Exception("Invalid argument: li - Row lengths not equal.");
+                        for i in li:
+                            for j in i:
+                                if j.__class__.__name__!='Decimal':raise Exception(str(j)+" is not Decimal");
+                    case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
                 lc=len(li);lr=len(li[0]);
                 if lr==lc:sq=True;
                 else:sq=False;
@@ -54,14 +55,14 @@ class matx:
             if (tli:=li.__class__.__name__)=='matx':self.__matx=li.matx;self.__collen=li.collen;self.__rowlen=li.rowlen;self.__sqmatx=li.sqmatx;self.__dnant=None;self.__invse=None;self.__invsednant=None;self.__cofacm=None;self.__adjnt=None;self.__tpose=None;
             elif tli=='list' or tli=='tuple':
                 if (tli0:=li[0].__class__.__name__)=='tuple' or tli0=='list':
-                    if eqllen(li) is None:raise Exception("Invalid argument: li");
+                    if eqllen(li) is None:raise Exception("Invalid argument: li - Row lengths not equal.");
                 else:li=li,;
-                if (li:=tdeciml.dall(li,getpr())) is None:raise Exception("Invalid argument: li");
+                if (li:=tdeciml.dall(li,getpr())) is None:raise Exception("Invalid argument: li - Cannot convert elements to Decimal");
                 lc=len(li);lr=len(li[0]);
                 if lr==lc:sq=True;
                 else:sq=False;
                 self.__matx=li;self.__collen=lc;self.__rowlen=lr;self.__sqmatx=sq;self.__dnant=None;self.__invse=None;self.__invsednant=None;self.__cofacm=None;self.__adjnt=None;self.__tpose=None;
-            else:raise Exception("Invalid argument: li => list/tuple/matx");
+            else:raise Exception("Invalid argument: li => list/tuple/matx, got {}".format(tli));
         except Exception as e:print("Invalid command: matx()");retrn('a',e);
     
     @property
@@ -94,7 +95,6 @@ class matx:
         print("matx(")
         for k in [[str(j) for j in i] for i in self.__matx]:print('|'+str(k)[1:-1]+'|');
         print(')\n')
-        return self.matx
     
     def dnant(self)->Decimal:
         '''
@@ -158,14 +158,14 @@ class matx:
                 case False:pass;
                 case True:
                     if (i:=tint.ele(i,self.__collen)) is None:raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             match r:
                 case True:m=list(self.__matx);p=m.pop(i);self.__matx=tuple(m);self.__collen=self.__collen-1;
                 case False:
                     m=self.matxl();p=list();
                     for j in range(self.__collen):p.append(m[j].pop(i));m[j]=tuple(m[j]);
                     self.__matx=tuple(m);self.__rowlen=self.__rowlen-1;
-                case _:raise Exception("Invalid argument: r => bool")
+                case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__))
             del m
             if self.__collen==self.__rowlen:self.__sqmatx=True;
             else: self.__sqmatx=False;
@@ -187,7 +187,7 @@ class matx:
                 case True:
                     if (i:=tint.ele(i,self.__collen)) is None or (j:=tint.ele(j,self.__rowlen)) is None:raise Exception;
                     return self.__matx[i][j]
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matx.mele()");retrn(ret,e);
 
     # return tuple of i'th row
@@ -204,7 +204,7 @@ class matx:
                 case True:
                     if (i:=tint.ele(i,self.__collen)) is None:raise Exception;
                     return self.__matx[i]
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matx.mrow()");retrn(ret,e);
 
     # returns tuple of i'th column
@@ -221,7 +221,7 @@ class matx:
                 case True:
                     if (j:=tint.ele(j,self.__rowlen)) is None:raise Exception;
                     return tuple([self.__matx[i][j] for i in range(self.__collen)])
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matx.mcol()");retrn(ret,e);
     
     def gele(self,a:list|tuple,r=False,chk=True,ret='a')->tuple[tuple[Decimal,...],...]:
@@ -240,8 +240,8 @@ class matx:
                     match r:
                         case True:a=tint.ele(a,self.__collen);
                         case False:a=tint.ele(a,self.__rowlen);
-                        case _:raise Exception("Invalid argument: r => bool");
-                case _:raise Exception("Invalid argument: chk => bool");
+                        case _:raise Exception("Invalid argument: r => bool, {}".format(r.__class__.__name__));
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             match r:
                 case True:return tuple([self.__matx[i] for i in a]);
                 case False:
@@ -249,7 +249,7 @@ class matx:
                     for i in self.__matx[1:]:
                         for j in a:r[j[0]].append(i[j[1]]);
                     return tuple([tuple(i) for i in r])
-                case _:raise Exception("Invalid argument: r => bool");
+                case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
         except Exception as e:print("Invalid command: matx.gele()");retrn(ret,e);
 
 class matutils:
@@ -269,7 +269,7 @@ class matutils:
                 case False:pass;
                 case True:
                     if (n:=tint.intn(n)) is None or str(el:=deciml(str(el)))=='NaN':raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             m=list()
             for i in range(n):
                 l1=list()
@@ -293,16 +293,17 @@ class matutils:
         '''
         try:
             match chk:
-                case True:return matx(tuple([tuple([i for _ in range(n)]) for _ in range(m)]),False,'c');
-                case False:
-                    if (n:=tint.intn(n)) is None or (m:=tint.intn(m)) is None or str(i:=deciml(str(i)))=='NaN':raise Exception;
+                case False:return matx(tuple([tuple([i for _ in range(n)]) for _ in range(m)]),False,'c');
+                case True:
+                    if (n:=tint.intn(n)) is None or (m:=tint.intn(m)) is None or str(i:=deciml(i))=='NaN':raise Exception;
                     return matx(tuple([tuple([i for _ in range(n)]) for _ in range(m)]),False,'c')
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
         except Exception as e:print("Invalid command: matutils.eqelm()");retrn(ret,e);
 
     @staticmethod
     def addmatx(a:matx,*b:matx,r=False,chk=True,ret='a')->matx:
         '''
-#### Add matrices in matx objects along row or column.
+#### Get a matrix for matrices in matx objects after appending along row or column direction.
 - **a**: matx object
 - **\\*b**: matx objects
 - **r**: True for row and False for column
@@ -321,25 +322,20 @@ class matutils:
                         case True:
                             for i in b:
                                 if eqval(i.rowlen,a.rowlen) is None:raise Exception;
-                        case _:raise Exception("Invalid argument: r => bool");
-                case _:raise Exception("Invalid argument: chk => bool");
+                        case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             match r:
                 case False:
                     a=list(a.matx)
                     for i in b:
                         l=0
-                        for j in i.matx:
-                            a[l]=a[l]+j;l+=1;
-#                     for i in range(a.collen):
-#                         r1=a.mrow(i,False,'c')
-#                         for k in [j.mrow(i,False,'c') for j in b]:r1+=k;
-#                         r.append(r1)
+                        for j in i.matx:a[l]=a[l]+j;l+=1;
                     return matx(tuple(a),False,'c')
                 case True:
                     r=a.matx
                     for i in b:r+=i.matx;
                     return matx(r,False,'c')
-                case _:raise Exception("Invalid argument: r => bool");
+                case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.addmatx()");retrn(ret,e);
 
     @classmethod
@@ -357,7 +353,7 @@ class matutils:
                 case True:
                     if tmatx(a) is None or str(x:=Decimal(str(x)))=='NaN':raise Exception;
                     return cls.addmatx(cls.eqelm(a.collen,1,x,False,'c'),a,r=False,chk=False,ret='c')
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.maddval()");retrn(ret,e);
 
     # convert list x to x
@@ -375,7 +371,7 @@ class matutils:
                 case True:
                     if tmatx(a) is None:raise Exception;
                     return tuple([matx(i,False,'c') for i in a.matx])
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.matlxtox()");retrn(ret,e);
 
     @staticmethod
@@ -397,7 +393,7 @@ class matutils:
                         if eqval(i.collen,1) is None or eqval(i.rowlen,ar) is None:raise Exception;
                         x.append(i.matx[0])
                     return matx(tuple(x),False,'c')
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.matxtolx()");retrn(ret,e);
 
     # returns row or column elements of the matrix
@@ -429,7 +425,7 @@ class matutils:
                 case True:
                     if tmatx(a) is None:raise Exception;
                     return matx(tuple(zip(*a.matx)),False,'c')
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.tpose()");retrn(ret,e);
 
     # returns the co-factor of the matrix element
@@ -449,13 +445,13 @@ class matutils:
                     if tmatx(a) is None or (b,c:=tint.ele([b,c],a.rowlen)) is None:raise Exception;
                     if a.sqmatx is False:raise Exception("Error: Not a square matrix");
                 case False:pass;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             a=matx(a,False,'c');a.pop(c,False,False,'c');a.pop(b,chk=False,ret='c');
             setpr(getpr()+1)
             dnant = cls.dnant(a,False,'c')
             setpr(getpr()-1)
             if (p:=alg.div((b+c),2))==int(p):return deciml(dnant);
-            else:return alg.mul(-1,dnant);
+            else:return alg.mul('-1',dnant);
         except Exception as e:print("Invalid command: matutils.cofac()");retrn(ret,e);
 
     # returns the determinant of the matrix
@@ -473,7 +469,7 @@ class matutils:
                 case True:
                     if tmatx(a) is None:raise Exception;
                     if a.sqmatx is False:raise Exception("Error: Not a square matrix");
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             a=matx(a,False,'c')
             if (lr:=a.rowlen)==1:return a.mele(0,0,False,'c');
             else:
@@ -486,9 +482,10 @@ class matutils:
                 else:ep=0;e=ele;
                 setpr(getpr()+1)
                 for i in range(lr):
-                    if i!=ep:ele=li[i];fac=alg.div(alg.mul('-1',ele,pr=getpr()+2),e,getpr()+1);print(alg.div(Decimal('0.0'), e),e);a.matx=cls.tform(a,i,ep,fac,False,False,'c');
+                    if i!=ep:ele=li[i];fac=alg.div(alg.mul('-1',ele,pr=getpr()+2),e,getpr()+1);a.matx=cls.tform(a,i,ep,fac,False,False,'c');
+                cofac=cls.cofac(a,0,ep,False,'c')
                 setpr(getpr()-1)
-                return alg.mul(e,cls.cofac(a,0,ep,False,'c'))
+                return alg.mul(e,cofac)
         except Exception as e:print("Invalid command: matutils.dnant()");retrn(ret,e);
 
     # returns adjoint matrix of the matrix
@@ -507,7 +504,7 @@ class matutils:
                     if tmatx(a) is None:raise Exception;
                     if a.sqmatx is False:raise Exception("Error: Not a square matrix");
                     setpr(getpr()+1);m=tuple([tuple([cls.cofac(a,j,i,False,'c') for j in range(a.collen)]) for i in range(a.rowlen)]);setpr(getpr()-1);return matx(m,False,'c');
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.adjnt()");retrn(ret,e);
 
     # returns inverse matrix of the matrix
@@ -524,14 +521,15 @@ class matutils:
                 case False:pass;
                 case True:
                     if tmatx(a) is None:raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if (det:=cls.dnant(a,False,'c')) is None:raise Exception;
             if det==0:raise Exception("Error: Determinant is 0,\nInverse DNE!");
             setpr(getpr()+1);v=alg.div(1,det);adj=cls.adjnt(a,False,'c');setpr(getpr()-1)
             return cls.smult(v,adj,chk=False,ret='c')
         except Exception as e:print("Invalid command: matutils.invse()");retrn(ret,e);
-
+    
     # returns inverse matrix of the matrix using matrix transformation
+    # det(A^-1) = det(B/L^(1/n)) or det(-B/L^(1/n))
     @classmethod
     def invsednant(cls,a:matx,chk=True,ret='a')->Decimal:
         '''
@@ -545,14 +543,11 @@ class matutils:
                 case True:
                     if tmatx(a) is None:raise Exception;
                 case False:pass;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             setpr(getpr()+1)
-            a=matx(a,False,'c');det=cls.dnant(a,False,'c');
-            if det is None:raise Exception;
-            if det==0:raise Exception("Error: Determinant is 0,\nInverse DNE!");
+            a=matx(a,False,'c');
             b=cls.sclrm(a.rowlen,Decimal('1.0'),False,'c')
             l=list()
-            setpr(getpr()+1)
             for i in range(a.collen):
                 ele=a.mele(i,i,False,'c')
                 if ele==0:
@@ -564,14 +559,13 @@ class matutils:
                         raise Exception("Error: Invalid Matrix Inverse");
                 l.append(ele:=a.mele(i,i,False,'c'));row=a.mrow(i,False,'c');col=a.mcol(i,False,'c');
                 for j in range(i+1,a.rowlen):
-                    el=row[j];e=col[j];a.matx=cls.tform(a,j,i,alg.div(alg.mul('-1',el,pr=getpr()+2),ele,getpr()+1),False,False,'c');b.matx=cls.tform(b,j,i,alg.div(alg.mul(-1,el,pr=getpr()+2),ele,getpr()+1),False,False,'c');a.matx=cls.tform(a,j,i,alg.div(alg.mul('-1',e,pr=getpr()+2),ele,getpr()+1),True,False,'c');b.matx=cls.tform(b,j,i,alg.div(alg.mul('-1',e,getpr()+2),ele,getpr()+1),True,False,'c');del e;del el;
+                    el=row[j];e=col[j];
+                    a.matx=cls.tform(a,j,i,alg.div(alg.mul('-1',el,pr=getpr()+2),ele,getpr()+1),False,False,'c');b.matx=cls.tform(b,j,i,alg.div(alg.mul(-1,el,pr=getpr()+2),ele,getpr()+1),False,False,'c');a.matx=cls.tform(a,j,i,alg.div(alg.mul('-1',e,pr=getpr()+2),ele,getpr()+1),True,False,'c');b.matx=cls.tform(b,j,i,alg.div(alg.mul('-1',e,pr=getpr()+2),ele,getpr()+1),True,False,'c');del e;del el;
                 del ele
+            if (lam:=alg.div('1',alg.mul(*l)))==0:raise Exception("Error: Invalid Matrix Inverse");
+            else:ret=alg.mul(lam,cls.dnant(b,False,'c'))
             setpr(getpr()-1)
-            if l==0:raise Exception("Error: Invalid Matrix Inverse");
-            if l>0:b.matx=cls.smult(alg.pwr(alg.mul(*l,pr=getpr()+2),alg.div('-1',a.collen,getpr()+2),getpr()+1),b,chk=False,ret='c');
-            if l<0:b.matx=cls.smult(alg.mul('-1',alg.pwr(alg.mul('-1',alg.mul(*l,pr=getpr()+3),pr=getpr()+2),alg.div('-1',a.collen,getpr()+2),getpr()+1)),b,chk=False,ret='c');
-            setpr(getpr()-1)
-            return cls.dnant(b,False,'c')
+            return deciml(ret)
         except Exception as e:print("Invalid command: matutils.invsednant()");retrn(ret,e);
 
     # returns matrix after row or column tranformation
@@ -593,7 +587,7 @@ class matutils:
                 case False:pass;
                 case True:
                     if tmatx(a) is None or str(d:=Decimal(str(d)))=='NaN':raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if (m:=a.gele([b,c],r,chk,'c')) is None:raise Exception;
             a=list(a.matx)
             setpr(getpr()+1)
@@ -626,19 +620,19 @@ class matutils:
                 case True:
                     if tmatx([a,b],True) is None:raise Exception;
                     if eqval([a.collen,a.rowlen],[b.collen,b.rowlen]) is None:raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             r=[galg.add(*i) for i in zip(a.matx,b.matx)];
             match sumr:
                 case None:return matx(tuple(r),False,'c');
                 case True:return galg.add(*r);
                 case False:return tuple([alg.add(*i) for i in r]);
-                case _:raise Exception("invalid argument: sumr => None/bool");
+                case _:raise Exception("invalid argument: sumr => None/bool, got {}".format(sumr.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.madd()");retrn(ret,e);
     
     @classmethod
     def saddcnst(cls,a:tuple[Decimal,...]|list[Decimal],b:matx,r=False,sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
         '''
-#### Get the addition of a single constant added to each of rows or columns as a matx object.
+#### Get the matrix on addition of a single constant to each row or column as a matx object.
 - **a**: List or tuple of numbers to add
 - **b**: matx object
 - **r**: True to add constant to row and False to add constant to column
@@ -664,20 +658,20 @@ class matutils:
                         case False:
                             if eqval(len(a),b.rowlen) is None:raise Exception;
                         case None:pass;
-                        case _:raise Exception("Invalid argument: r => bool");
-                case _:raise Exception("Invalid argument: chk => bool");
+                        case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             setpr(getpr()+1)
             match r:
                 case True:r=[galg.addsg(i[0],i[1]) for i in zip(a,b.matx)];
                 case False:r=[galg.add(a,i) for i in b.matx];
                 case None:r=[galg.addsg(a,i) for i in b.matx];
-                case _:raise Exception("Invalid argument: r => bool/None");
+                case _:raise Exception("Invalid argument: r => bool/None, got {}".format(r.__class__.__name__));
             setpr(getpr()-1)
             match sumr:
                 case None:return matx(tuple(r),False,'c');
                 case True:return galg.add(*r);
                 case False:return tuple([alg.add(*i) for i in r]);
-                case _:raise Exception("Invalid argument: sumr => None/bool");
+                case _:raise Exception("Invalid argument: sumr => None/bool, got {}".format(sumr.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.saddcnst()");retrn(ret,e);
 
     # returns difference of two matrices
@@ -700,13 +694,13 @@ class matutils:
                 case True:
                     if tmatx([a,b],True) is None:raise Exception;
                     if eqval([a.collen,a.rowlen],[b.collen,b.rowlen]) is None:raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             r=[galg.sub(*i) for i in zip(a.matx,b.matx)];
             match sumr:
                 case None:return matx(tuple(r),False,'c');
                 case True:return galg.add(*r);
                 case False:return tuple([alg.add(*i) for i in r]);
-                case _:raise Exception("invalid argument: sumr => None/bool");
+                case _:raise Exception("invalid argument: sumr => None/bool, got {}".format(sumr.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.msub()");retrn(ret,e);
 
     # returns matrix after scalar multiplication
@@ -729,13 +723,13 @@ class matutils:
                 case True:
                     if str(a:=Decimal(str(a)))=='NaN':raise Exception;
                     if tmatx(b) is None:raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             r=[galg.mulsg(a,i,getpr()+1) for i in b.matx]
             match sumr:
                 case None:return matx(tuple(r),False,'c');
                 case True:return galg.add(*r);
                 case False:return tuple([alg.add(*i) for i in r]);
-                case _:raise Exception("Invalid argument: sumr => None/bool");
+                case _:raise Exception("Invalid argument: sumr => None/bool, got {}".format(sumr.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.smult()");retrn(ret,e);
 
     @classmethod
@@ -762,15 +756,15 @@ class matutils:
                             if eqval(len(a),b.collen) is None:raise Exception;
                         case False:
                             if eqval(len(a),b.rowlen) is None:raise Exception;
-                        case _:raise Exception("Invalid argument: r => bool");
-                case _:raise Exception("Invalid argument: chk => bool");
+                        case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if r is True:r=[galg.mulsg(i[0],i[1],getpr()+1) for i in zip(a,b.matx)];
             else:r=[galg.mul(a,i,pr=getpr()+1) for i in b.matx];
             match sumr:
                 case None:return matx(tuple(r),False,'c');
                 case True:return galg.add(*r);
                 case False:return tuple([alg.add(*i) for i in r]);
-                case _:raise Exception("Invalid argument: sumr => None/bool");
+                case _:raise Exception("Invalid argument: sumr => None/bool, got {}".format(sumr.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.smultfac()");retrn(ret,e);
 
     # returns matrix after matrix multiplication
@@ -801,35 +795,35 @@ class matutils:
                         case True:
                             if tmatx([a,b],True) is None or eqval(a.rowlen,b.collen) is None:raise Exception;
                             r=[matutils.smultfac(i,b,True,True,False,'c') for i in a.matx]
-                        case _:raise Exception("Invalid argument: chk => bool");
+                        case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
                 case (False,True):
                     match chk:
                         case False:r=[matutils.smultfac(i,b,False,False,False,'c') for i in a.matx];
                         case True:
                             if tmatx([a,b],True) is None or eqval(a.rowlen,b.rowlen) is None:raise Exception;
                             r=[matutils.smultfac(i,b,False,False,False,'c') for i in a.matx]
-                        case _:raise Exception("Invalid argument: chk => bool");
+                        case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
                 case (True,False):
                     match chk:
                         case False:r=[matutils.smultfac(i,b,True,True,False,'c') for i in zip(*a.matx)];
                         case True:
                             if tmatx([a,b],True) is None or eqval(a.collen,b.collen) is None:raise Exception;
                             r=[matutils.smultfac(i,b,True,True,False,'c') for i in zip(*a.matx)]
-                        case _:raise Exception("Invalid argument: chk => bool");
+                        case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
                 case (True,True):
                     match chk:
                         case False:r=[matutils.smultfac(i,b,False,False,False,'c') for i in zip(*a.matx)];
                         case True:
                             if tmatx([a,b],True) is None or eqval(a.collen,b.rowlen) is None:raise Exception;
                             r=[matutils.smultfac(i,b,False,False,False,'c') for i in zip(*a.matx)]
-                        case _:raise Exception("Invalid argument: chk => bool");
-                case _:raise Exception("Invalid argument: t => (bool, bool)");
+                        case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
+                case _:raise Exception("Invalid argument: t => (bool, bool), got {}".format(t.__class__.__name__));
             setpr(getpr()-1)
             match sumr:
                 case None:return matx(tuple(r),False,'c');
                 case False:return tuple([alg.add(*i) for i in r]);
                 case True:return galg.add(*r);
-                case _:raise Exception("Invalid argument: sumr => None/bool");
+                case _:raise Exception("Invalid argument: sumr => None/bool, got {}".format(sumr.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.mmult()");retrn(ret,e);
     
     @staticmethod
@@ -859,35 +853,35 @@ class matutils:
                         case True:
                             if tmatx([a,b],True) is None or eqval([a.collen,a.rowlen],[b.collen,b.rowlen]) is None:raise Exception;
                             r=tuple([galg.mul(*i) for i in zip(a.matx,b.matx)])
-                        case _:raise Exception("Invalid argument: chk => bool");
+                        case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
                 case (True,False):
                     match chk:
                         case False:r=tuple([galg.mul(*i) for i in zip(zip(*a.matx),b.matx)]);
                         case True:
                             if tmatx([a,b],True) is None or eqval([a.collen,a.rowlen],[b.collen,b.rowlen]) is None:raise Exception;
                             r=tuple([galg.mul(*i) for i in zip(zip(*a.matx),b.matx)])
-                        case _:raise Exception("Invalid argument: chk => bool");
+                        case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
                 case (False,True):
                     match chk:
                         case False:r=tuple([galg.mul(*i) for i in zip(a.matx,zip(*b.matx))]);
                         case True:
                             if tmatx([a,b],True) is None or eqval([a.collen,a.rowlen],[b.collen,b.rowlen]) is None:raise Exception;
                             r=tuple([galg.mul(*i) for i in zip(a.matx,zip(*b.matx))])
-                        case _:raise Exception("Invalid argument: chk => bool");
+                        case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
                 case (True,True):
                     match chk:
                         case False:r=tuple([galg.mul(*i) for i in zip(zip(*a.matx),zip(*b.matx))])
                         case True:
                             if tmatx([a,b],True) is None or eqval([a.collen,a.rowlen],[b.rowlen,b.collen]) is None:raise Exception;
                             r=tuple([galg.mul(*i) for i in zip(zip(*a.matx),zip(*b.matx))])
-                        case _:raise Exception("Invalid argument: chk => bool");
-                case _:raise Exception("Invalid argument: t => (bool, bool)");
+                        case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
+                case _:raise Exception("Invalid argument: t => (bool, bool), got {}".format(t.__class__.__name__));
             setpr(getpr()-1)
             match sumr:
                 case None:return matx(r,False,'c');
                 case True:return galg.add(*r);
                 case False:return tuple([alg.add(*i) for i in r]);
-                case _:raise Exception("Invalid argument: sumr => None/bool");
+                case _:raise Exception("Invalid argument: sumr => None/bool, got {}".format(sumr.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.melmult()");retrn(ret,e);
 
     @staticmethod
@@ -903,7 +897,7 @@ class matutils:
                 case True:
                     if tmatx(a) is None or a.sqmatx is None:raise Exception;
                 case False:pass;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             ut=list();lt=list();dia=list();
             for i in range(a.collen):
                 ut1=list();lt1=list();
@@ -937,14 +931,61 @@ class matutils:
                             if eqval(sum(li),a.rowlen) is None:raise Exception;
                         case True:
                             if eqval(sum(li),a.collen) is None:raise Exception;
-                        case _:raise Exception("Invalid argument: r => bool");
+                        case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
                 case False:pass;
-                case _:raise Exception("Invalid argument: chk => bool");
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             i=0;ln=list();
             for j in li:ln.append([i+k for k in range(j)]);i+=j;
             return tuple([cls.gele(a,i,r,False,'c') for i in ln])
         except Exception as e:print("Invalid command: matutils.dpose()");retrn(ret,e);
 
+    def moperate(a:tuple[str,tuple[tuple|matx,...]],chk:bool=True,ret:bool='a')->matx:
+        '''
+#### Get the matx object after all matrix operations.
+- a: Tuple with operation and matx objects
+    - **("add" or "sub" or "mul" or "inverse", (matx,...) or another level)**
+        - ***"sub"***: subtract the matrices of matx objects following the first matx object from its matrix in tuple
+- chk: Check arguments
+- ret: Exit type
+        '''
+        try:
+            match chk:
+                case True:
+                    def __check(t):
+                        if not ttup(t):raise Exception
+                        if len(t) != 2:raise Exception("Invalid argument: a => tuple[str,tuple[tuple|matx,...]], tuple {} length not 2.".format([i.__class__.__name__ for i in t]))
+                case False:pass
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
+            def __operate(o:str,a:tuple[matx,...]):
+                match o:
+                    case "add":return tuple(map(lambda x:galg.add(*x),zip(a)))
+                    case "sub":return tuple(map(lambda x,y:galg.sub(x,y),zip(a[0],__operate("add",a[1:]))))
+                    case "mul":pass
+                    case "inverse":pass
+                    case "lxtox":pass
+                    case "xtolx":pass
+                    case "tpose":pass
+                    case _:
+                        if o.__class__.__name__=='str':raise Exception("Invalid argument: a - {} not 'add'/'sub'/'mul'/'inverse'.".format(o))
+                        else:raise Exception("Invalid argument: a - {} not a string.".format(o.__class__.__name__))
+            t=a
+            def __calculate(t):
+                if chk:__check(t)
+                a=[]
+                nt=[]
+                for i in t[1]:
+                    if tmatx(i):a.append(i)
+                    else:nt.append(i)
+                for i in nt:
+                    a.append(__calculate(i))
+                if len(a) < 2:
+                    if t[0] not in ["inverse","lxtox","xtolx","tpose"]:
+                        raise Exception("Invalid argument: a - require more than one matx object to {}".format(t[0]))
+                    if len(a) == 0:
+                        raise Exception("Invalid argument: a - require at least one matx object to {}".format(t[0]))
+                __operate(t[0],a)
+            return __calculate(t)
+        except Exception as e:print("Invalid command: matx_after_operations()");retrn(ret,e);
 
 class melutils:
 
