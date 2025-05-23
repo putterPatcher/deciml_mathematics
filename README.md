@@ -2,9 +2,17 @@
 
 ## pip install deciml_mathematics
 
-### Note - *ret* argument is the *r* argument of *"retrn"* function in "terminate" library.
 
-### Note - If *chk* argument is False, incorrect argument types result in error.
+### Note - *'ret'* argument is the *'r'* argument of *"retrn"* function in "terminate" library.
+
+### Note - If *'chk'* argument is False,
+- **Incorrect argument types (Below declaration snippets in README) result in error.**
+- **Using List instead of Tuple can result in error.**
+
+### If *'chk'* is True,
+- **Decimal type can be replaced with float, int, or string.**
+
+### Note - Detailed description of arguments is available in the *docstring*.
 
 **Use the *"setpr"* function to set the precision for a calculation (*"getpr"* to check the precision).**
 
@@ -32,7 +40,9 @@
   <summary>matx</summary>
   <p>
     
-**(o) matx**: Object that stores matrix properties
+**(o) matx(li, chk=True, ret='a')**: Object that stores matrix properties
+
+- ***li*** - *tuple[ tuple[Decimal, ...] ] | tuple[Decimal, ...]*
 
 ```python
 >>> from deciml_maths.matrix import matx
@@ -67,6 +77,8 @@ matx(
 
 ii. **(g) matx**: Get the 2-D matrix as a tuple
 
+Returns tuple
+
 ```python
 >>> mat = matrix.matx
 >>> mat
@@ -95,7 +107,7 @@ False
 ```
 
 vi. **(g) pmatx**: Print the matrix and return the matrix as a tuple
-#### Note - Can be used to check for errors :'/ *change the matx to pmatx*
+#### Note - Can be used to check for errors. :'/ *Change the matx to pmatx*
 
 ```python
 >>> matrix.pmatx
@@ -105,7 +117,7 @@ matx(
 
 ```
 
-v. **(f) dnant**: Get the determinant of matrix
+v. **(f) dnant() -> Decimal**: Get the determinant of matrix
 
 ```python
 >>> matrix = matx([[1,2,3,5],[2,4,4,5],[3,4,8,6],[7,5,6,7]])
@@ -113,13 +125,13 @@ v. **(f) dnant**: Get the determinant of matrix
 Decimal('-155.000')
 ```
 
-vi. **(f) invsednant**: Get the determinant of the inverse matrix
+vi. **(f) invsednant() -> Decimal**: Get the determinant of the inverse matrix
 
 ```python
 >>> matrix.invsednant()
 Decimal('-0.006452')
 ```
-vii. **(f) invse**: Get the inverse matrix of the matrix
+vii. **(f) invse() -> matx**: Get the inverse matrix of the matrix
 
 ```python
 >>> mat = matrix.invse()
@@ -133,7 +145,7 @@ matx(
 
 ```
 
-vii. **(f) adjnt**: Get the adjoint matrix of the matrix
+vii. **(f) adjnt() -> matx**: Get the adjoint matrix of the matrix
 
 ```python
 >>> mat = matrix.adjnt()
@@ -147,7 +159,7 @@ matx(
 
 ```
 
-viii. **(f) tpose**: Get the transpose matrix of the matrix
+viii. **(f) tpose() -> matx**: Get the transpose matrix of the matrix
 
 ```python
 >>> mat = matrix.tpose()
@@ -161,7 +173,7 @@ matx(
 
 ```
 
-ix. **(f) cofacm**: Get the matrix of cofactors for the matrix
+ix. **(f) cofacm() -> matx**: Get the matrix of cofactors for the matrix
 
 ```python
 >>> mat = matrix.cofacm()
@@ -175,64 +187,81 @@ matx(
 
 ```
 
-x. **(f) mele(i, j, chk, ret)**: Get an element of the matrix 
+x. **(f) mele(i, j, chk=True, ret='a') -> Decimal**: Get an element of the matrix 
+
+- **i** - *int*
+- **j** - *int*
 
 ```python
->>> matrix.mele(0,0,True,'e')
+>>> ele = matrix.mele(0,0,True,'e')
 '''
   0 - Row index
   0 - Column index
   True - Check arguments
   'e' - Exit if error
 '''
+>>> ele
 Decimal('1.0')
 ```
 
-xi. **(f) mrow(i, chk, ret)**: Get a row of the matrix
+xi. **(f) mrow(i, chk=True, ret='a') -> tuple[Decimal, ...]**: Get a row of the matrix
+
+- **i** - *int*
 
 ```python
->>> matrix.mrow(0, True, 'c')
+>>> row = matrix.mrow(0, True, 'c')
 '''
   0 - Row index
   True - Check arguments
   'c' - Continue if error
 '''
+>>> row
 (Decimal('1.0'), Decimal('2.0'), Decimal('3.0'), Decimal('5.0'))
 ```
 
-xii. **(f) mcol(j, chk, ret)**: Get a column of the matrix
+xii. **(f) mcol(j, chk=True, ret='a') -> tuple[Decimal, ...]**: Get a column of the matrix
+
+- **j** - *int*
 
 ```python
->>> matrix.mcol(0, True, 'a')
+>>> col = matrix.mcol(0, True, 'a')
 '''
   0 - Column index
   True - Check arguments
   'a' - Ask to exit if error
 '''
+>>> col
 (Decimal('1.0'), Decimal('2.0'), Decimal('3.0'), Decimal('7.0'))
 ```
 
-xiii. **(f) gele(a, r, chk, ret)**: Get the rows or columns of the matrix
+xiii. **(f) gele(a, r=False, chk=True, ret='a') -> tuple[ tuple[Decimal, ...] ]**: Get the rows or columns of the matrix
+
+- **a** - *list[ int ]*
+- **r** - *bool*
 
 ```python
->>> matrix.gele([0,2], False, False, 'e')
+>>> cols = matrix.gele([0,2], False, False, 'e')
 '''
-  [0,2] - Row or column indexes
+  [0,2] - Column indexes
   False - Get columns
   False - Skip arguments check
   'e' - Exit if error
 '''
+>>> cols
 ((Decimal('1.0'), Decimal('2.0'), Decimal('3.0'), Decimal('7.0')), (Decimal('3.0'), Decimal('4.0'), Decimal('8.0'), Decimal('6.0')))
 ```
 
-xiv. **(f) matxl()**: Get the matrix as a list of Decimal objects
+xiv. **(f) matxl() -> list[ list[ Decimal ] ]**: Get the matrix as a list of Decimal objects
 
 ```python
 >>> matrix.matxl()
 [[Decimal('1.0'), Decimal('2.0'), Decimal('3.0'), Decimal('5.0')], [Decimal('2.0'), Decimal('4.0'), Decimal('4.0'), Decimal('5.0')], [Decimal('3.0'), Decimal('4.0'), Decimal('8.0'), Decimal('6.0')], [Decimal('7.0'), Decimal('5.0'), Decimal('6.0'), Decimal('7.0')]]
 ```
 
-xv. **(f) pop(i, r, chk, ret)**: Remove a row or column of the matrix
+xv. **(f) pop(i, r=True, chk=True, ret='a') -> tuple[Decimal, ...]**: Remove a row or column of the matrix
+
+- **i** - *int*
+- **r** - *bool*
 
 ```python
 >>> matrix.pop(0, False, True, 'c')
@@ -266,7 +295,10 @@ matx(
 Imported deciml...
 ```
 
-i. **(sm) sclrm(n, el, chk, ret)**: Get a matx object with a scalar matrix
+i. **(sm) sclrm(n, el, chk=True, ret='a') -> matx**: Get a matx object with a scalar matrix
+
+- **n** - *int*
+- **el** - *Decimal*
 
 ```python
 >>> from deciml_maths import setpr                
@@ -288,7 +320,11 @@ matx(
 
 ```
 
-ii. **(sm) eqelm(m, n, i, chk, ret)**: Get a matx object of matrix with equal elements
+ii. **(sm) eqelm(m, n, i, chk=True, ret='a') -> matx**: Get a matx object of matrix with equal elements
+
+- **m** - *int*
+- **n** - *int*
+- **i** - *Decimal*
 
 ```python
 >>> mat = matutils.eqelm(4, 3, 12.12345, True, 'e')
@@ -309,7 +345,11 @@ matx(
 
 ```
 
-iii. **(sm) addmatx(a, *b, r, chk, ret)**: Get a matrix as a matx object for matrices of matx objects appended along row or column direction 
+iii. **(sm) addmatx(a, *b, r=False, chk=True, ret='a') -> matx**: Get a matrix as a matx object for matrices of matx objects appended along row or column direction 
+
+- **a** - *matx*
+- **\*b** - *matx*
+- **r** - *bool*
 
 ```python
 >>> mat1 = matx([[1,2,3,4],[12.1234, 1.2365, 3, 4]])
@@ -347,7 +387,10 @@ matx(
 
 ```
 
-iv. **(cm) maddval(a, x, chk, ret)**: Get a matrix as a matx object with a number added to all the rows in the matrix of a matx object at the first index
+iv. **(cm) maddval(a, x, chk=True, ret='a') -> matx**: Get a matrix as a matx object with a number added to all the rows in the matrix of a matx object at the first index
+
+- **a** - *matx*
+- **x** - *Decimal*
 
 ```python
 >>> mat = matutils.maddval(mat1, 10.1234, True, 'a')
@@ -365,7 +408,9 @@ matx(
 
 ```
 
-v. **(sm) matlxtox(a, chk, ret)**: Convert matx object to a tuple of matx objects with row matrix
+v. **(sm) matlxtox(a, chk=True, ret='a') -> tuple[matx, ...]**: Convert matx object to a tuple of matx objects with row matrix
+
+- **a** - *matx*
 
 ```python
 >>> a = matutils.matlxtox(mat1, True, 'a')
@@ -387,7 +432,9 @@ matx(
 
 ```
 
-vi. **(sm) matxtolx(a, chk, ret)**: Convert a tuple of matx objects with row matrix to a matx object
+vi. **(sm) matxtolx(a, chk=True, ret='a') -> matx**: Convert a tuple of matx objects with row matrix to a matx object
+
+- **a** - *matx*
 
 ```python
 >>> mat = matutils.matxtolx(a, True, 'a')
@@ -404,7 +451,11 @@ matx(
 
 ```
 
-vii. **(sm) gele(a, b, r, chk, ret)**: Get the rows or columns of the matrix for a matx object as a matx object
+vii. **(sm) gele(a, b, r=False, chk=True, ret='a') -> matx**: Get the rows or columns of the matrix for a matx object as a matx object
+
+- **a** - *matx*
+- **b** - *list[ int ]*
+- **r** - *bool*
 
 ```python
 >>> cols = matutils.gele(mat, [0,3], False, True, 'a')
@@ -436,7 +487,9 @@ matx(
 
 ```
 
-viii. **(cm) tpose(a, chk, ret)**: Get the transpose matrix as a matx object for matrix of a matx object
+viii. **(cm) tpose(a, chk=True, ret='a') -> matx**: Get the transpose matrix as a matx object for matrix of a matx object
+
+
 
 ```python
 >>> tmat = matutils.tpose(mat, True, 'a')
@@ -455,7 +508,11 @@ matx(
 
 ```
 
-ix. **(cm) cofac(a, b, c, chk, ret)**: Get the matrix of cofactors as a matx object for matrix of a matx object
+ix. **(cm) cofac(a, b, c, chk=True, ret='a') -> matx**: Get the matrix of cofactors as a matx object for matrix of a matx object
+
+- **a** - *matx*
+- **b** - *int*
+- **c** - *int*
 
 ```python
 >>> cofac = matutils.cofac(mat, 0, 0, True, 'a')
@@ -477,7 +534,9 @@ n
 Decimal('8.0')
 ```
 
-x. **(cm) dnant(a, chk, ret)**: Get the determinant of matrix for a matx object
+x. **(cm) dnant(a, chk=True, ret='a') -> Decimal**: Get the determinant of matrix for a matx object
+
+- **a** - *matx*
 
 ```python
 >>> det = matutils.dnant(mat, True, 'a')
@@ -490,7 +549,9 @@ x. **(cm) dnant(a, chk, ret)**: Get the determinant of matrix for a matx object
 Decimal('2.0')
 ```
 
-xi. **(cm) adjnt(a, chk, ret)**: Get the adjoint of matrix for a matx object
+xi. **(cm) adjnt(a, chk=True, ret='a') -> matx**: Get the adjoint of matrix for a matx object
+
+- **a** - *matx*
 
 ```python
 >>> adjmat = matutils.adjnt(mat, True, 'a')
@@ -508,7 +569,9 @@ matx(
 
 ```
 
-xii. **(cm) invse(a, chk, ret)**: Get the inverse matrix as a matx object for matrix of a matx object
+xii. **(cm) invse(a, chk=True, ret='a') -> matx**: Get the inverse matrix as a matx object for matrix of a matx object
+
+- **a** - *matx*
 
 ```python
 >>> invmat = matutils.invse(mat, True, 'a')
@@ -526,7 +589,9 @@ matx(
 
 ```
 
-xiii. **(cm) invsednant(a, chk, ret)**: Get the determinant of the inverse matrix for matrix of a matx object
+xiii. **(cm) invsednant(a, chk=True, ret='a') -> Decimal**: Get the determinant of the inverse matrix for matrix of a matx object
+
+- **a** - *matx*
 
 ```python
 >>> mat = matx([[1,2,3],[2.256245,4,4],[1,3.2358,5.332526]])
@@ -542,7 +607,12 @@ Decimal('0.449')
 Decimal('0.449')
 ```
 
-xiv. **(cm) tform(a, b, c, d, r, chk, ret)**: Get a matx object with matrix for matrix of a matx object after a row or column transformation
+xiv. **(cm) tform(a, b, c, d, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix for matrix of a matx object after a row or column transformation
+
+- **a** - *matx*
+- **b** - *int*
+- **c** - *int*
+- **d** - *Decimal*
 
 ***Note - Transformation is [b] -> [b] + c\*[d]***
 
@@ -567,7 +637,11 @@ matx(
 
 ```
 
-xv. **(sm) madd(a, b, sumr, chk, ret)**: Get the matrix as a matx object after matrix addition for matrices of two matx objects
+xv. **(sm) madd(a, b, sumr=None, chk=True, ret='a') -> matx | tuple[Decimal, ...]**: Get the matrix as a matx object after matrix addition for matrices of two matx objects
+
+- **a** - *matx*
+- **b** - *matx*
+- **sumr** - *bool/None*
 
 ```python
 >>> mat1 = matx([[5,6,7],[3,4,1],[5,4,1]])
@@ -584,17 +658,23 @@ matx(
 |'6.0', '13.245', '6.0'|
 )
 
->>> matutils.madd(mat, mat1, False, True, 'a')
+>>> sum_of_rows = matutils.madd(mat, mat1, False, True, 'a')
 '''
 	mat, mat1 - matx objects
-	False - Return sum of each column instead
+	False - Return sum of elements at a row index in each column
 	True - Check arguments
 	'a' - Ask to exit if error
 '''
+>>> sum_of_rows
 (Decimal('45.747'), Decimal('30.996'), Decimal('35.245'))
 ```
 
-xvi. **(cm) saddcnst(a, b, r, sumr, chk, ret)**: Get the matrix as matx object after addition of a constant to each row or column in matrix of a matx object
+xvi. **(cm) saddcnst(a, b, r=False, sumr=None, chk=True, ret='a') -> matx | tuple[Decimal, ...]**: Get the matrix as matx object after addition of a constant to each row or column in matrix of a matx object
+
+- **a** - *list[ Decimal ] | tuple[Decimal, ...] | Decimal*
+- **b** - *matx*
+- **r** - *bool/None*
+- **sumr** - *bool/None*
 
 ```python
 >>> mat = matutils.saddcnst(0.4826, mat, None, chk=True, ret='a')
@@ -629,23 +709,169 @@ matx(
 
 ```
 
-xvii. **(sm) msub(a, b, sumr, chk, ret)**: Get the matrix as a matx object after matrix subtraction for matrices of two matx objects
+xvii. **(sm) msub(a, b, sumr=None, chk=True, ret='a') -> matx | tuple[Decimal, ...]**: Get the matrix as a matx object after matrix subtraction for matrices of two matx objects
+
+- **a** - *matx*
+- **b** - *matx*
+- **sumr** - *bool/None*
 
 ```python
- 
+>>> mat1 = matx([[1.1234,2.2123,12.2541,3],[1,5,4,2],[3,1,2,2]])
+>>> mat2 = matx([[2,3,1,1],[3,3,5,6],[2,3,1,1]])
+>>> mat = matutils.msub(mat1, mat2, chk=True, ret='a')
+'''
+	mat1, mat2 - matx objects
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat)
+matx(
+|'-0.877', '-0.788', '11.254', '2.0'|
+|'-2.0', '2.0', '-1.0', '-4.0'|
+|'1.0', '-2.0', '1.0', '1.0'|
+)
+
 ```
 
-xviii. **(sm) smult(a, b, sumr, chk, ret)**: Get the matrix as matx object after multiplication of a number 
+xviii. **(sm) smult(a, b, sumr=None, chk=False, ret='a') -> matx | tuple[Decimal, ...]**: Get the matrix as matx object after multiplication of a number
 
-xix. **(cm) smultfac(a, b, r, sumr, chk, ret)**: Get the matrix as a matx object after multiplication of a number to each row or column in matrix of a matx object
+- **a** - *matx*
+- **b** - *matx*
+- **sumr** - *bool/None*
 
-xx. **(cm) mmult(a, b, t, sumr, chk, ret)**: Get the matrix as a matx object after matrix multiplication for matrices of two matx objects
+```python
+>>> mat = matutils.smult(0.1595, mat)
+'''
+	0.1595 - Number
+	mat - matx object
+'''
+>>> print(mat)
+matx(
+|'-0.140', '-0.126', '1.801', '0.320'|
+|'-0.320', '0.320', '-0.160', '-0.640'|
+|'0.160', '-0.320', '0.160', '0.160'|
+)
 
-xxi. **(sm) melmult(a, b, t, sumr, chk, ret)**: Get the matrix as a matx object after multipling the elements at the same indexes of the matrices of two matx objects
+```
 
-xxii. **(sm) uldcompose(a, chk, ret)**: Get a tuple with matx objects of upper triangular, diagonal, and lower triangular matrices for a matrix of a matx 
+xix. **(cm) smultfac(a, b, r=True, sumr=None, chk=True, ret='a') -> matx | tuple[Decimal, ...]**: Get the matrix as a matx object after multiplication of a number to each row or column in matrix of a matx object
 
-xxiii. **(cm) dpose(a, li, r, chk, ret)**: Get a tuple of matrices after decomposing a matrix of a matx object along the row or column direction
+- **a** - *list[ Decimal ] | tuple[Decimal, ...]*
+- **b** - *matx*
+- **r** - *bool*
+- **sumr** - *bool/None*
+
+```python
+>>> mat = matutils.smultfac([1,2,3,10], mat, False)
+'''
+	[1,2,3,10]
+	mat
+	False
+'''
+>>> print(mat)
+matx(
+|'-0.140', '-0.252', '5.403', '3.200'|
+|'-0.320', '0.640', '-0.480', '-6.400'|
+|'0.160', '-0.640', '0.480', '1.600'|
+)
+
+```
+
+xx. **(cm) mmult(a, b, t=(False, False), sumr=None, chk=True, ret='a') -> matx | tuple[Decimal, ...]**: Get the matrix as a matx object after matrix multiplication for matrices of two matx objects
+
+- **a** - *matx*
+- **b** - *matx*
+- **t** - *tuple[bool, bool]*
+- **sumr** - *bool/None*
+
+```python
+>>> mat = matutils.mmult(mat, mat1, (False, True))
+'''
+	mat, mat1 - matx objects
+	(False, True) - Use transpose of 'mat1'
+'''
+>>> print(mat)
+matx(
+|'75.094', '26.612', '16.534'|
+|'-24.026', '-11.840', '-14.080'|
+|'9.446', '2.080', '4.0'|
+)
+>>> mat = matutils.mmult(mat1, mat2, (False, True), False)
+>>> mat
+(Decimal('137.5470'), Decimal('96.0'), Decimal('60.0'))
+```
+
+xxi. **(sm) melmult(a, b, t=(False, False), sumr=None, chk=True, ret='a') -> matx | tuple[Decimal, ...]**: Get the matrix as a matx object after multipling the elements at the same indexes of the matrices of two matx objects
+
+- **a** - *matx*
+- **b** - *matx*
+- **t** - *tuple[bool, bool]*
+- **sumr** - *bool/None*
+
+```python
+>>> mat = matutils.melmult(mat1, mat2)
+'''
+	mat1, mat2 - matx objects
+'''
+>>> print(mat)
+matx(
+|'2.246', '6.636', '12.254', '3.0'|
+|'3.0', '15.0', '20.0', '12.0'|
+|'6.0', '3.0', '2.0', '2.0'|
+)
+
+```
+
+xxii. **(sm) uldcompose(a, chk=True, ret='a')**: Get a tuple with matx objects of upper triangular, diagonal, and lower triangular matrices for a matrix of a matx 
+
+- **a** - *matx*
+
+```python
+>>> u,l,d = matutils.uldcompose(matutils.gele(mat, [0,1,2], False))
+'''
+	matutils.gele(mat, [0,1,2], False) - matx object to decompose
+'''
+>>> print("{}{}{}".format(u,l,d))
+matx(
+|'0.0', '3.0', '6.0'|
+|'0.0', '0.0', '3.0'|
+|'0.0', '0.0', '0.0'|
+)
+matx(
+|'0.0', '0.0', '0.0'|
+|'6.636', '0.0', '0.0'|
+|'12.254', '20.0', '0.0'|
+)
+matx(
+|'2.246', '15.0', '2.0'|
+)
+
+```
+
+xxiii. **(cm) dpose(a, li, r=False, chk=True, ret='a')**: Get a tuple of matrices after decomposing a matrix of a matx object along the row or column direction
+
+- **a** - *matx*
+- **li** - *list[ int ] | tuple[int, ...]*
+- **r** - *bool*
+
+```python
+>>> mats = matutils.dpose(mat, [2,2])
+'''
+	mat - matx object
+	[2,2] - Number of columns to decompose
+'''
+>>> for i in mats:print(i, end="")
+... 
+matx(
+|'2.246', '3.0', '6.0'|
+|'6.636', '15.0', '3.0'|
+)
+matx(
+|'12.254', '20.0', '2.0'|
+|'3.0', '12.0', '2.0'|
+)
+
+```
 
   </p>
 </details>

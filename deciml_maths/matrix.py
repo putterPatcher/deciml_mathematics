@@ -608,8 +608,8 @@ class matutils:
 - **b**: matx object
 - **sumr**: Return sum of rows or columns as a tuple instead of a matx object
     - ***None***: matx object
-    - ***True***: sum of rows
-    - ***False***: sum of columns
+    - ***True***: sum of elements in each column
+    - ***False***: sum of elements in each row
 - **chk**: Check arguments
 - **ret**: Exit type
         '''
@@ -642,8 +642,8 @@ class matutils:
     - ***False***: Add a number to each column
 - **sumr**: Return sum of rows or columns as a tuple instead of a matx object
     - ***None***: matx object
-    - ***True***: sum of rows
-    - ***False***: sum of columns
+    - ***True***: sum of elements in each column
+    - ***False***: sum of elements in each row
 - **chk**: Check arguments
 - **ret**: Exit type
         '''
@@ -687,8 +687,8 @@ class matutils:
 - **b**: matx object
 - **sumr**: Return sum of rows or columns as a tuple instead of a matx object
     - ***None***: matx object
-    - ***True***: sum of rows
-    - ***False***: sum of columns
+    - ***True***: sum of elements in each column
+    - ***False***: sum of elements in each row
 - **chk**: Check arguments
 - **ret**: Exit type
         '''
@@ -718,8 +718,8 @@ class matutils:
 - **b**: matx object
 - **sumr**: Return sum of rows or columns as a tuple instead of a matx object
     - ***None***: matx object
-    - ***True***: sum of rows
-    - ***False***: sum of columns
+    - ***True***: sum of elements in each column
+    - ***False***: sum of elements in each row
 - **chk**: Check arguments
 - **ret**: Exit type
         '''
@@ -731,7 +731,7 @@ class matutils:
                     if tmatx(b) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if sumr != None:setpr(getpr()+1)
-            r=[galg.mulsg(a,i,getpr()+1) for i in b.matx]
+            r=[galg.mulsg(a,i) for i in b.matx]
             if sumr != None:setpr(getpr()-1)
             match sumr:
                 case None:return matx(tuple(r),False,'c');
@@ -749,8 +749,8 @@ class matutils:
 - **r**: True for row multiplied by a single number and False for column multiplied by a simgle number
 - **sumr**: Return sum of rows or columns instead of matx object
     - ***None***: matx object
-    - ***True***: sum or rows
-    - ***False***: sum of columns
+    - ***True***: sum of elements in each column
+    - ***False***: sum of elements in each row
 - **chk**: Check arguments
 - **ret**: Exit type
         '''
@@ -768,7 +768,7 @@ class matutils:
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if sumr != None:setpr(getpr()+1)
             if r is True:r=[galg.mulsg(i[0],i[1],getpr()+1) for i in zip(a,b.matx)];
-            else:r=[galg.mul(a,i,pr=getpr()+1) for i in b.matx];
+            else:r=[galg.mul(a,i) for i in b.matx];
             if sumr != None:setpr(getpr()-1)
             match sumr:
                 case None:return matx(tuple(r),False,'c');
@@ -791,8 +791,8 @@ class matutils:
         - ***True***: multiply with *"b"* transpose instead
 - **sumr**: Return sum of rows or columns as a tuple instead of matx object
     - ***None***: matx object
-    - ***True***: sum of rows
-    - ***False***: sum of columns
+    - ***True***: sum of elements in each column
+    - ***False***: sum of elements in each row
 - **chk**: Check arguments
 - **ret**: Exit type
         '''
@@ -849,8 +849,8 @@ class matutils:
         - ***True***: Transpose of *"b"* instead
 - **sumr**: Return sum of rows or columns instead of matx object
     - ***None***: Return matx object
-    - ***True***: sum of rows
-    - ***False***: sum ofcolumns
+    - ***True***: sum of elements in each column
+    - ***False***: sum of elements in each row
 - **chk**: Check arguments
 - **ret**: Exit type
         '''
@@ -1009,9 +1009,17 @@ class melutils:
     @staticmethod
     def add(a:matx,li:list[list[int]]|tuple[list[int]]|str,r=False,chk=True,ret='a')->matx:
         '''
-#### 
+#### Returns a matx with
         '''
         try:
+            match chk:
+                case False:pass;
+                case True:
+                    if not tmatx(a):raise Exception;
+                    if li != 'all':
+                        for i in li:
+                            if not tint.ele(i, a.collen if r == True else a.rowlen):raise Exception;
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if li!='all':
                 l=list()
                 for i in li:
@@ -1030,6 +1038,14 @@ class melutils:
     @staticmethod
     def mult(a:matx,li:list[list]|tuple[list]|str,r=False,chk=True,ret='a')->matx:
         try:
+            match chk:
+                case False:pass;
+                case True:
+                    if not tmatx(a):raise Exception
+                    if li != 'all':
+                        for i in li:
+                            if not tint.ele(i, a.collen if r == True else a.rowlen):raise Exception;
+                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if li!='all':
                 l=list()
                 for i in li:
