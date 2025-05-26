@@ -5,7 +5,7 @@ from decimal import Decimal
 
 class matx:
     
-    def __init__(self,li:list[Decimal|str|float]|tuple[Decimal|str|float]|list[list[Decimal|str|float]]|tuple[tuple[Decimal|str|float,...]],chk:bool=True,ret:str='a')->None:
+    def __init__(self,li:list[Decimal|str|float]|tuple[Decimal|str|float]|list[list[Decimal|str|float]]|tuple[tuple[Decimal|str|float,...]],chk=True,ret='a')->None:
         '''
 #### 2-D Matrix object.
 - **li**: List or tuple of lists or tuples of numbers
@@ -145,7 +145,7 @@ class matx:
         '''
         return [list(i) for i in self.__matx];
     
-    def pop(self,i:int,r:bool=True,chk:bool=True,ret:str='a')->tuple[Decimal,...]:
+    def pop(self,i:int,r=True,chk=True,ret='a')->tuple[Decimal,...]:
         '''
 #### Pop a row or column of the matrix.
 - **i**: Row or column index
@@ -173,7 +173,7 @@ class matx:
         except Exception as e:print("Invalid command: matx.pop()");retrn(ret,e);
 
     # return element at i,j of matrix
-    def mele(self,i:int,j:int,chk:bool=True,ret:str='a')->Decimal:
+    def mele(self,i:int,j:int,chk=True,ret='a')->Decimal:
         '''
 #### Get an element of matrix.
 - **i**: Row index
@@ -191,7 +191,7 @@ class matx:
         except Exception as e:print("Invalid command: matx.mele()");retrn(ret,e);
 
     # return tuple of i'th row
-    def mrow(self,i:int,chk:bool=True,ret:str='a')->tuple[Decimal,...]:
+    def mrow(self,i:int,chk=True,ret='a')->tuple[Decimal,...]:
         '''
 #### Get a row of matrix.
 - **i**: Row index
@@ -208,7 +208,7 @@ class matx:
         except Exception as e:print("Invalid command: matx.mrow()");retrn(ret,e);
 
     # returns tuple of i'th column
-    def mcol(self,j:int,chk:bool=True,ret:str='a')->tuple[Decimal,...]:
+    def mcol(self,j:int,chk=True,ret='a')->tuple[Decimal,...]:
         '''
 #### Get the column of matrix.
 - **j**: Column index
@@ -224,7 +224,7 @@ class matx:
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matx.mcol()");retrn(ret,e);
     
-    def gele(self,a:list|tuple,r:bool=False,chk:bool=True,ret:str='a')->tuple[tuple[Decimal,...],...]:
+    def gele(self,a:list|tuple,r=False,chk=True,ret='a')->tuple[tuple[Decimal,...],...]:
         '''
 #### Get the rows or columns of the matrix.
 - **a**: List or tuple of row or column indexes
@@ -256,7 +256,7 @@ class matutils:
 
     # returns scalar matrix of size nxn
     @staticmethod
-    def sclrm(n:int,el:Decimal,chk:bool=True,ret:str='a')->matx:
+    def sclrm(n:int,el:Decimal,chk=True,ret='a')->matx:
         '''
 #### Get a scalar matrix as a matx object.
 - **n**: Number of rows for square matrix
@@ -282,7 +282,7 @@ class matutils:
 
     # returns matrix of size mxn with equal elements
     @staticmethod
-    def eqelm(m:int,n:int,i:Decimal,chk:bool=True,ret:str='a')->matx:
+    def eqelm(m:int,n:int,i:Decimal,chk=True,ret='a')->matx:
         '''
 #### Get a matrix of equal elements as a matx object.
 - **m**: Number of rows
@@ -301,7 +301,7 @@ class matutils:
         except Exception as e:print("Invalid command: matutils.eqelm()");retrn(ret,e);
 
     @staticmethod
-    def addmatx(a:matx,*b:matx,r:bool=False,chk:bool=True,ret:str='a')->matx:
+    def addmatx(a:matx,*b:matx,r=False,chk=True,ret='a')->matx:
         '''
 #### Get a matrix for matrices in matx objects after appending along row or column direction.
 - **a**: matx object
@@ -339,7 +339,7 @@ class matutils:
         except Exception as e:print("Invalid command: matutils.addmatx()");retrn(ret,e);
 
     @classmethod
-    def maddval(cls,a:matx,x:Decimal,chk:bool=True,ret:str='a')->matx:
+    def maddval(cls,a:matx,x:Decimal,chk=True,ret='a')->matx:
         '''
 #### Get a matrix as a matx object with a number added to all matrix rows at the first index.
 - **a**: matx object
@@ -358,7 +358,7 @@ class matutils:
 
     # convert list x to x
     @staticmethod
-    def matlxtox(a:matx,chk:bool=True,ret:str='a')->tuple:
+    def matlxtox(a:matx,chk=True,ret='a')->tuple:
         '''
 #### Get the rows of matrix as matx objects.
 - **a**: matx object
@@ -375,7 +375,7 @@ class matutils:
         except Exception as e:print("Invalid command: matutils.matlxtox()");retrn(ret,e);
 
     @staticmethod
-    def matxtolx(a:tuple[matx,...]|list,chk:bool=True,ret:str='a')->matx:
+    def matxtolx(a:tuple[matx,...]|list,chk=True,ret='a')->matx:
         '''
 #### Get a matrix from row matrices as a matx object.
 - **a**: matx object
@@ -398,7 +398,7 @@ class matutils:
 
     # returns row or column elements of the matrix
     @staticmethod
-    def gele(a:matx,b:list,r:bool=False,chk:bool=True,ret:str='a')->matx:
+    def gele(a:matx,b:list,r=False,chk=True,ret='a')->matx:
         '''
 #### Get the rows or columns of a matrix as a matx object of matrix.
 - **a**: matx object
@@ -412,7 +412,7 @@ class matutils:
 
     # returns the transpose of the matrix
     @classmethod
-    def tpose(cls,a:matx,chk:bool=True,ret:str='a')->matx:
+    def tpose(cls,a:matx,chk=True,ret='a')->matx:
         '''
 #### Get the transpose matrix as matx object.
 - **a**: matx object
@@ -430,7 +430,7 @@ class matutils:
 
     # returns the co-factor of the matrix element
     @classmethod
-    def cofac(cls,a:matx,b:int,c:int,chk:bool=True,ret:str='a')->Decimal:
+    def cofac(cls,a:matx,b:int,c:int,chk=True,ret='a')->Decimal:
         '''
 #### Get the cofactor of a matrix for an element.
 - **a**: matx object
@@ -457,7 +457,7 @@ class matutils:
 
     # returns the determinant of the matrix
     @classmethod
-    def dnant(cls,a:matx,chk:bool=True,ret:str='a')->Decimal:
+    def dnant(cls,a:matx,chk=True,ret='a')->Decimal:
         '''
 #### Get the determinant of a matrix.
 - **a**: matx object
@@ -491,7 +491,7 @@ class matutils:
 
     # returns adjoint matrix of the matrix
     @classmethod
-    def adjnt(cls,a:matx,chk:bool=True,ret:str='a')->matx:
+    def adjnt(cls,a:matx,chk=True,ret='a')->matx:
         '''
 #### Get the adjoint matrix as a matx object for a matrix.
 - **a**: matx object
@@ -510,7 +510,7 @@ class matutils:
 
     # returns inverse matrix of the matrix
     @classmethod
-    def invse(cls,a:matx,chk:bool=True,ret:str='a')->matx:
+    def invse(cls,a:matx,chk=True,ret='a')->matx:
         '''
 #### Get the inverse matrix of a matrix as a matx object.
 - **a**: matx object
@@ -532,7 +532,7 @@ class matutils:
     # returns inverse matrix of the matrix using matrix transformation
     # det(A^-1) = det(B/L^(1/n)) or det(-B/L^(1/n))
     @classmethod
-    def invsednant(cls,a:matx,chk:bool=True,ret:str='a')->Decimal:
+    def invsednant(cls,a:matx,chk=True,ret='a')->Decimal:
         '''
 #### Get the determinant of the inverse matrix for a matrix.
 - **a**: matx object
@@ -571,7 +571,7 @@ class matutils:
 
     # returns matrix after row or column tranformation
     @classmethod
-    def tform(cls,a:matx,b:int,c:int,d:Decimal,r:bool=False,chk:bool=True,ret:str='a')->matx:
+    def tform(cls,a:matx,b:int,c:int,d:Decimal,r=False,chk=True,ret='a')->matx:
         '''
 #### Get the row or column transformation for a matrix as a matx object.
 - **a**: matx object
@@ -601,7 +601,7 @@ class matutils:
 
     # returns sum of two matrices
     @staticmethod
-    def madd(a:matx,b:matx,sumr:bool|None=None,chk:bool=True,ret:str='a')->matx|tuple[Decimal,...]:
+    def madd(a:matx,b:matx,sumr:bool|None=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
         '''
 #### Get the added matrix of two matrices as a matx object.
 - **a**: matx object
@@ -631,7 +631,7 @@ class matutils:
         except Exception as e:print("Invalid command: matutils.madd()");retrn(ret,e);
     
     @classmethod
-    def saddcnst(cls,a:tuple[Decimal,...]|list[Decimal]|Decimal,b:matx,r:bool|None=False,sumr:bool|None=None,chk:bool=True,ret:str='a')->matx|tuple[Decimal,...]:
+    def saddcnst(cls,a:tuple[Decimal,...]|list[Decimal]|Decimal,b:matx,r=False,sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
         '''
 #### Get the matrix on addition of a single constant to each row or column as a matx object.
 - **a**: A number or list/tuple of numbers to add
@@ -680,7 +680,7 @@ class matutils:
 
     # returns difference of two matrices
     @staticmethod
-    def msub(a:matx,b:matx,sumr:bool|None=None,chk:bool=True,ret:str='a')->matx|tuple[Decimal,...]:
+    def msub(a:matx,b:matx,sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
         '''
 #### Get the subtracted matrix of two matrices as a matx object.
 - **a**: matx object
@@ -711,7 +711,7 @@ class matutils:
 
     # returns matrix after scalar multiplication
     @staticmethod
-    def smult(a:Decimal,b:matx,sumr:bool|None=None,chk:bool=True,ret:str='a')->matx|tuple[Decimal,...]:
+    def smult(a:Decimal,b:matx,sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
         '''
 #### Get the matrix for elements of a matrix multiplied by a number as a matx object.
 - **a**: Number
@@ -741,7 +741,7 @@ class matutils:
         except Exception as e:print("Invalid command: matutils.smult()");retrn(ret,e);
 
     @classmethod
-    def smultfac(cls,a:tuple[Decimal,...]|list[Decimal],b:matx,r:bool=True,sumr:bool|None=None,chk:bool=True,ret:str='a')->matx|tuple[Decimal,...]:
+    def smultfac(cls,a:tuple[Decimal,...]|list[Decimal],b:matx,r=True,sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
         '''
 #### Get the matrix for rows or columns of a matrix multiplied by a number as a matx object.
 - **a**: List or tuple of numbers
@@ -779,7 +779,7 @@ class matutils:
 
     # returns matrix after matrix multiplication
     @classmethod
-    def mmult(cls,a:matx,b:matx,t:tuple[bool,bool]=(False,False),sumr:bool|None=None,chk:bool=True,ret:str='a')->matx|tuple[Decimal,...]:
+    def mmult(cls,a:matx,b:matx,t:tuple[bool,bool]=(False,False),sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
         '''
 #### Get the multiplied matrix of two matrices as a matx object.
 - **a**: matx object
@@ -837,7 +837,7 @@ class matutils:
         except Exception as e:print("Invalid command: matutils.mmult()");retrn(ret,e);
     
     @staticmethod
-    def melmult(a:matx,b:matx,t=(False,False),sumr:bool|None=None,chk:bool=True,ret:str='a')->matx|tuple[Decimal,...]:
+    def melmult(a:matx,b:matx,t=(False,False),sumr=None,chk=True,ret='a')->matx|tuple[Decimal,...]:
         '''
 #### Get the matrix as a matx object for elements of two matrices multiplied.
 - **a**: matx object
@@ -895,7 +895,7 @@ class matutils:
         except Exception as e:print("Invalid command: matutils.melmult()");retrn(ret,e);
 
     @staticmethod
-    def uldcompose(a:matx,chk:bool=True,ret:str='a')->tuple:
+    def uldcompose(a:matx,chk=True,ret='a')->tuple:
         '''
 #### Get the upper, lower, and diagonal matrices for a matrix as a tuple of matx objects.
 - **a**: matx object
@@ -920,7 +920,7 @@ class matutils:
         except Exception as e:print("Invalid command: matutils.uldcompose()");retrn(ret,e);
     
     @classmethod
-    def dpose(cls,a:matx,li:list[int]|tuple[int,...],r:bool=False,chk:bool=True,ret:str='a')->tuple[matx,...]:
+    def dpose(cls,a:matx,li:list[int]|tuple[int,...],r=False,chk=True,ret='a')->tuple[matx,...]:
         '''
 #### Get the matrices as a tuple of matx objects for groups of rows or columns of a matrix.
 - **a**: matx object
@@ -949,12 +949,12 @@ class matutils:
             return tuple([cls.gele(a,i,r,False,'c') for i in ln])
         except Exception as e:print("Invalid command: matutils.dpose()");retrn(ret,e);
 
-    def moperate(a:tuple[str,tuple[tuple|matx,...]],chk:bool=True,ret:str='a')->matx:
+    def moperate(a:tuple[str,tuple[tuple|matx,...]],chk:bool=True,ret:bool='a')->matx:
         '''
 #### Get the matx object after all matrix operations.
 - a: Tuple with operation and matx objects
     - **("add" or "sub" or "mul" or "inverse", (matx,...) or another level)**
-    - ***"sub"***: subtract the matrices of matx objects following the first matx object from its matrix in tuple
+        - ***"sub"***: subtract the matrices of matx objects following the first matx object from its matrix in tuple
 - chk: Check arguments
 - ret: Exit type
         '''
@@ -1007,7 +1007,7 @@ class matutils:
 class melutils:
 
     @staticmethod
-    def add(a:matx,li:list[list[int]]|tuple[list[int]]|str,r:bool=False,chk:bool=True,ret:str='a')->matx:
+    def add(a:matx,li:list[list[int]]|tuple[list[int]]|str,r=False,chk=True,ret='a')->matx:
         '''
 #### Returns a matx object with matrix rows as sum of elements with same row/column indexes in columns/rows.
 - **a**: matx object
@@ -1022,7 +1022,6 @@ class melutils:
                 case True:
                     if not tmatx(a):raise Exception;
                     if li != 'all':
-                        if (tli:=li.__class__.__name__) !- 'list' or tli != 'tuple':raise Exception("Invalid argument: li => 'all'/list/tuple, got {}".format(tli));
                         for i in li:
                             if not tint.ele(i, a.collen if r == True else a.rowlen):raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
@@ -1034,16 +1033,15 @@ class melutils:
                 d=dict()
                 for i in enumerate(a.gele(l,r,chk,'c')):d[l[i[0]]]=i[1];
                 return matx(tuple([galg.add(*[d[j] for j in i]) for i in li]),False,'c')
-            elif li=='all':
+            else:
                 match r:
                     case False:return matx(tuple([alg.add(*i) for i in a.matx]),False,'c');
                     case True:return matx(galg.add(*a.matx),False,'c');
-                    case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
-            else:raise Exception("Invalid argument: li => 'all'/list/tuple, got {}".format(li.__class__.__name__))
+                    case _:raise Exception("Invalid argument: r => bool");
         except Exception as e:print("Invalid command: melutils.add()");retrn(ret,e);
     
     @staticmethod
-    def mult(a:matx,li:list[list[int]]|tuple[list[int]]|str,r:bool=False,chk:bool=True,ret:str='a')->matx:
+    def mult(a:matx,li:list[list[int]]|tuple[list[int]]|str,r=False,chk=True,ret='a')->matx:
         '''
 #### Returns a matx object with matrix rows as multiplication of elements with same row/column indexes in columns/rows.
 - **a**: matx object
@@ -1074,14 +1072,14 @@ class melutils:
                 match r:
                     case False:return matx(tuple([alg.mul(*i) for i in a.matx]),False,'c');
                     case True:return matx(galg.mul(*a.matx),False,'c');
-                    case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
+                    case _:raise Exception("Invalid argument: r => bool");
         except Exception as e:print("Invalid command: melutils.mult()");retrn(ret,e);
 
     @staticmethod
-    def pow(an:list|tuple[Decimal,Decimal],a:matx,li:list[int]|tuple[int]|str,r:bool=False,chk:bool=True,ret:str='a')->matx:
+    def pow(an:list|tuple[Decimal,Decimal],a:matx,li:list[int]|tuple[int]|str,r=False,chk=True,ret='a')->matx:
         '''
 #### Returns a matx object with matrix rows as exponentiated rows or columns.
-- **an**: Tuple with first element as factor multiplied and second element as power
+- **an**: Tuple with first element as the factor and second element as power
 ##### (a*[x])^n
 - **li**: 'all' or list/tuple of row or column indexes
 - **r**: True if row indexes or False if column indexes
@@ -1097,9 +1095,9 @@ class melutils:
                             if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
                         case 'list':
                             if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
-                        case _:raise Exception("Invalid argument: a => tuple/list, got {}".format(a.__class__.__name__));
+                        case _:raise Exception("Invalid argument: a => tuple/list");
                     if eqval(len(an),2) is None:raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
+                case _:raise Exception("Invalid argument: chk => bool");
             if li!='all':
                 if an[0]!=1:return matx(tuple([galg.pwrgs(galg.mulsg(an[0],i),an[1]) for i in a.gele(li,r,chk,'c')]),False,'c');
                 else:return matx(tuple([galg.pwrgs(i,an[1]) for i in a.gele(li,r,chk,'c')]),False,'c');
@@ -1109,7 +1107,7 @@ class melutils:
         except Exception as e:print("Invalid command: melutils.pow()");retrn(ret,e);
 
     @staticmethod
-    def log(an:list|tuple[Decimal,Decimal],a:matx,li:list[int]|tuple[int]|str,r:bool=False,chk:bool=True,ret:str='a')->matx:
+    def log(an:list|tuple[Decimal,Decimal],a:matx,li:list[int]|tuple[int]|str,r=False,chk=True,ret='a')->matx:
         '''
 #### Returns a matx object with matrix rows as logarithm of elements of rows or columns.
 - **a**: matx object
@@ -1139,15 +1137,12 @@ class melutils:
         except Exception as e:print("Invalid command: melutils.log()");retrn(ret,e);
 
     @staticmethod
-    def expo(an:list|tuple[Decimal,Decimal],a:matx,li:list[int]|tuple[int,...]|str,r:bool=False,chk:bool=True,ret:str='a')->matx:
+    def expo(an:list|tuple[Decimal,Decimal],a:matx,li:list|tuple|str,r=False,chk=True,ret='a')->matx:
         '''
 #### Returns a matx object with matrix rows as number exponentiated by a factor of elements in rows or columns.
-- **an**: Tuple with first element as number to exponentiate and second elementas factor multiplied
-- **a**: matx object
-- **li**: 'all' or list/tuple of row or column indexes
-- **r**: True if row indexes or False if column indexes
-- **chk**: Check arguments
-- **ret**: Exit type
+- **an**: Tuple with first element as number to exponentiate and second element as factor to multiply with elements
+##### $\frac{a}{n*[x]}$
+
         '''
         try:
             match chk:
@@ -1170,309 +1165,195 @@ class melutils:
         except Exception as e:print("Invalid command: melutils.expo()");retrn(ret,e);
 
     @staticmethod
-    def trig(n:Decimal,a:matx,li:list[int]|tuple[int,...]|str,r:bool=False,f:str='cos',chk:bool=True,ret:str='a')->matx:
-        '''
-#### Returns matx object with matrix rows as trignometric function values for elements of rows or columns.
-- **n**: Factor to multiply with elements
-- **a**: matx object
-- **li**: 'all' or list/tuple of row or column indexes
-- **r**: True if row indexes or False if column indexes
-- **f**: Trignometric function
-- **chk**: Check arguments
-- **ret**: Exit type
-        '''
+    def trig(n:Decimal,a:matx,li:list[int]|tuple[int,...]|str,r=False,f='cos',chk=True,ret='a')->matx:
         try:
             match chk:
                 case False:pass;
                 case True:
                     if str(n:=deciml(n,getpr()))=='NaN':raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
-            
             if li!='all':
                 if n!=1:
-                    x=tuple(map(lambda x:galg.mulsg(n,x,getpr()+1),a.gele(li,r,chk,'c')))
+                    match f:
+                        case 'cos':return matx(tuple([tuple([trig.cos(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'sin':return matx(tuple([tuple([trig.sin(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'tan':return matx(tuple([tuple([trig.tan(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'sec':return matx(tuple([tuple([trig.sec(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'cosec':return matx(tuple([tuple([trig.cosec(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'cot':return matx(tuple([tuple([trig.cot(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'acos':return matx(tuple([tuple([trig.acos(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'asin':return matx(tuple([tuple([trig.asin(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'atan':return matx(tuple([tuple([trig.atan(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'asec':return matx(tuple([tuple([trig.asec(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'acosec':return matx(tuple([tuple([trig.acosec(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'acot':return matx(tuple([tuple([trig.acot(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'sinh':return matx(tuple([tuple([htrig.sinh(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'cosh':return matx(tuple([tuple([htrig.cosh(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'tanh':return matx(tuple([tuple([htrig.tanh(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'cosech':return matx(tuple([tuple([htrig.cosech(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'sech':return matx(tuple([tuple([htrig.sech(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'coth':return matx(tuple([tuple([htrig.coth(alg.mul(n,j)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
                 else:
-                    x=a.gele(li,r,chk,'c')
+                    match f:
+                        case 'cos':return matx(tuple([tuple([trig.cos(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'sin':return matx(tuple([tuple([trig.sin(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'tan':return matx(tuple([tuple([trig.tan(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'sec':return matx(tuple([tuple([trig.sec(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'cosec':return matx(tuple([tuple([trig.cosec(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'cot':return matx(tuple([tuple([trig.cot(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'acos':return matx(tuple([tuple([trig.acos(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'asin':return matx(tuple([tuple([trig.asin(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'atan':return matx(tuple([tuple([trig.atan(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'asec':return matx(tuple([tuple([trig.asec(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'acosec':return matx(tuple([tuple([trig.acosec(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'acot':return matx(tuple([tuple([trig.acot(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'sinh':return matx(tuple([tuple([htrig.sinh(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'cosh':return matx(tuple([tuple([htrig.cosh(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'tanh':return matx(tuple([tuple([htrig.tanh(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'cosech':return matx(tuple([tuple([htrig.cosech(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'sech':return matx(tuple([tuple([htrig.sech(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                        case 'coth':return matx(tuple([tuple([htrig.coth(j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
             else:
                 if n!=1:
-                    x=tuple(map(lambda x:galg.mulsg(n,x,getpr()+1),a.matx if r else matutils.tpose(a).matx))
+                    match f:
+                        case 'cos':return matx(tuple([tuple([trig.cos(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'sin':return matx(tuple([tuple([trig.sin(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'tan':return matx(tuple([tuple([trig.tan(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'sec':return matx(tuple([tuple([trig.sec(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'cosec':return matx(tuple([tuple([trig.cosec(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'cot':return matx(tuple([tuple([trig.cot(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'acos':return matx(tuple([tuple([trig.acos(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'asin':return matx(tuple([tuple([trig.asin(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'atan':return matx(tuple([tuple([trig.atan(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'asec':return matx(tuple([tuple([trig.asec(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'acosec':return matx(tuple([tuple([trig.acosec(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'acot':return matx(tuple([tuple([trig.acot(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'sinh':return matx(tuple([tuple([htrig.sinh(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'cosh':return matx(tuple([tuple([htrig.cosh(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'tanh':return matx(tuple([tuple([htrig.tanh(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'cosech':return matx(tuple([tuple([htrig.cosech(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'sech':return matx(tuple([tuple([htrig.sech(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
+                        case 'coth':return matx(tuple([tuple([htrig.coth(alg.mul(n,j)) for j in i]) for i in a.matx]),False,'c');
                 else:
-                    x=a.matx if r else matutils.tpose(a).matx
-            match f:
-                case 'cos':return matx(tuple(map(lambda x:gtrig.cosine(x),x)),False,'c');
-                case 'sin':return matx(tuple(map(lambda x:gtrig.sine(x),x)),False,'c');
-                case 'tan':return matx(tuple(map(lambda x:gtrig.tan(x),x)),False,'c');
-                case 'sec':return matx(tuple(map(lambda x:gtrig.sec(x),x)),False,'c');
-                case 'cosec':return matx(tuple(map(lambda x:gtrig.cosec(x),x)),False,'c');
-                case 'cot':return matx(tuple(map(lambda x:gtrig.cot(x),x)),False,'c');
-                case 'acos':return matx(tuple(map(lambda x:grtig.acosine(x),x)),False,'c');
-                case 'asin':return matx(tuple(map(lambda x:gtrig.asine(x),x)),False,'c');
-                case 'atan':return matx(tuple(map(lambda x:gtrig.atan(x),x)),False,'c');
-                case 'asec':return matx(tuple(map(lambda x:grtig.asec(x),x)),False,'c');
-                case 'acosec':return matx(tuple(map(lambda x:gtrig.acosec(x),x)),False,'c');
-                case 'acot':return matx(tuple(map(lambda x:gtrig.acot(x),x)),False,'c');
-                case 'sinh':return matx(tuple(map(lambda x:ghtrig.sinh(x),x)),False,'c');
-                case 'cosh':return matx(tuple(map(lambda x:ghtrig.cosh(x),x)),False,'c');
-                case 'tanh':return matx(tuple(map(lambda x:ghtrig.tanh(x),x)),False,'c');
-                case 'cosech':return matx(tuple(map(lambda x:ghtrig.cosech(x),x)),False,'c');
-                case 'sech':return matx(tuple(map(lambda x:ghtrig.sech(x),x)),False,'c');
-                case 'coth':return matx(tuple(map(lambda x:ghtrig.coth(x),x)),False,'c');
+                    match f:
+                        case 'cos':return matx(tuple([tuple([trig.cos(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'sin':return matx(tuple([tuple([trig.sin(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'tan':return matx(tuple([tuple([trig.tan(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'sec':return matx(tuple([tuple([trig.sec(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'cosec':return matx(tuple([tuple([trig.cosec(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'cot':return matx(tuple([tuple([trig.cot(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'acos':return matx(tuple([tuple([trig.acos(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'asin':return matx(tuple([tuple([trig.asin(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'atan':return matx(tuple([tuple([trig.atan(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'asec':return matx(tuple([tuple([trig.asec(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'acosec':return matx(tuple([tuple([trig.acosec(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'acot':return matx(tuple([tuple([trig.acot(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'sinh':return matx(tuple([tuple([htrig.sinh(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'cosh':return matx(tuple([tuple([htrig.cosh(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'tanh':return matx(tuple([tuple([htrig.tanh(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'cosech':return matx(tuple([tuple([htrig.cosech(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'sech':return matx(tuple([tuple([htrig.sech(j) for j in i]) for i in a.matx]),False,'c');
+                        case 'coth':return matx(tuple([tuple([htrig.coth(j) for j in i]) for i in a.matx]),False,'c');
         except Exception as e:print("Invalid command: melutils.trig()");retrn(ret,e);
 
 class matstat:
     
     @staticmethod
-    def amean(a:matx,el:str='row',chk:bool=True,ret:str='a')->tuple[Decimal,...]|Decimal:
-        '''
-#### Returns the arithmatic mean for all elements in matrix or all matrix rows/columns.
-- **a**: matx object
-- **el**: The arithmatic mean for,
-    - ***'row'***: all rows of matrix
-    - ***'col'***: all columns of matrix
-    - ***'all'***: all matrix elements
-- **chk**: Check arguments
-- **ret**: Exit type
-        '''
+    def amean(a:matx,el='row',chk=True,ret='a')->tuple[Decimal,...]|Decimal:
         try:
             match chk:
                 case False:pass;
                 case True:
                     if tmatx(a) is None: raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
+                case _:raise Exception("Invalid argument: a => matx");
             match el:
-                case 'row':return tuple(map(lambda x:stat.amean(x),a.matx));
-                case 'col':return tuple(map(lambda x:stat.amean(x),tuple(zip(a.matx))));
-                case 'all':
-                    li=tuple();
-                    for i in a.matx:li+=i;
-                    return stat.amean(li);
-                case _:raise Exception("Invalid argument: el => {} is not 'row'/'col'/'all'".format(el));
+                case 'row':return galg.divgs([alg.add(*i) for i in a.matx],a.rowlen);
+                case 'col':return galg.divgs(galg.add(*a.matx),a.collen);
+                case 'all':return alg.div(alg.add(*[alg.add(*i) for i in a.matx]),a.rowlen*a.collen);
+                case _:raise Exception("Invalid argument: el => 'row'/'col'/'all");
         except Exception as e:print("Invalid command: matstat.amean()");retrn(ret,e);
     
-    @staticmethod
-    def gmean(a:matx,el:str='row',chk:bool=True,ret:bool='a')->tuple[Decimal,...]|Decimal:
-        '''
-#### Returns the geometric mean for all elements in matrix or all matrix rows/columns.
-- **a**: matx object
-- **el**: The geometric mean for,
-    - ***'row'***: all rows of matrix
-    - ***'col'***: all columns of matrix
-    - ***'all'***: all matrix elements
-- **chk**: Check arguments
-- **ret**: Exit type
-        '''
+    @classmethod
+    def gmean(cls,a:matx,el='row',chk=True,ret='a')->tuple[Decimal,...]|Decimal:
         try:
             match chk:
                 case False:pass;
                 case True:
                     if tmatx(a) is None:raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
+                case _:raise Exception("Invalid argument: a => matx");
             match el:
-                case 'row':return tuple(zip(lambda i:stat.gmean(i),a.matx));
-                case 'col':return tuple(zip(lambda i:stat.gmean(i),tuple(zip(a.matx))));
-                case 'all':
-                    li=tuple()
-                    for i in a.matx:li+=i;
-                    return stat.gmean(li);
-                case _:raise Exception("Invalid argument: el => {} is not 'row'/'col'/'all'".format(el));
+                case 'row':return galg.pwrgs([alg.mul(*i) for i in a.matx],alg.div('1',a.rowlen));
+                case 'col':return galg.pwrgs(galg.mul(*a.matx),alg.div('1',a.collen));
+                case 'all':return alg.pwr(alg.mul(*[alg.mul(*i) for i in a.matx]),alg.div('1',a.rowlen*a.collen));
+                case _:raise Exception("Invalid argument: el => 'row'/'col'/'all");
         except Exception as e:print("Invalid command: matstat.gmean()");retrn(ret,e);
 
-    @staticmethod
-    def hmean(a:matx,el:str='row',chk:bool=True,ret:str='a')->tuple[Decimal,...]|Decimal:
-        '''
-#### Returns the harmonic mean for all elements in matrix or all matrix row/columns.
-- **a**: matx object
-- **el**: The harmonic mean for,
-    - ***'row'***: all rows of matrix
-    - ***'col'***: all columns of matrix
-    - ***'all'***: all matrix elements
-- **chk**: Check arguments
-- **ret**: Exit type 
-        '''
+    @classmethod
+    def hmean(cls,a:matx,el='row',chk=True,ret='a')->tuple[Decimal,...]|Decimal:
         try:
             match chk:
                 case False:pass;
                 case True:
                     if tmatx(a) is None:raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
+                case _:raise Exception("Invalid argument: a => matx");
             match el:
-                case 'row':return tuple(map(lambda i:stat.hmean(i),a.matx));
-                case 'col':return tuple(map(lambda i:stat.hmean(i),tuple(zip(a.matx))));
-                case 'all':
-                    li=tuple()
-                    for i in a.matx:li+=i;
-                    return stat.hmean(li);
-                case _:raise Exception("Invalid argument: el => {} is not 'row'/'col'/'all'".format(el));
+                case 'row':return galg.divsg(a.rowlen,[alg.add(*galg.divsg('1',i)) for i in a.matx]);
+                case 'col':return galg.divsg(a.collen,galg.add(*[galg.divsg('1',i) for i in a.matx]));
+                case 'all':return alg.div(a.rowlen*a.collen,alg.add(*[alg.add(*galg.divsg('1',i)) for i in a.matx]));
+                case _:raise Exception("Invalid argument: el => 'row'/'col'/'all");
         except Exception as e:print("Invalid command: matstat.hmean()");retrn(ret,e);
 
-    @staticmethod
-    def qmean(a:matx,el:str='row',chk:bool=True,ret:str='a')->tuple[Decimal,...]|Decimal:
-        '''
-#### Returns the quadratic mean for all elements in matrix or all matrix rows/columns.
-- **a**: matx object
-- **el**: The quadratic mean for,
-    - ***'row'***: all rows of matrix
-    - ***'col'***: all columns of matrix
-    - ***'all'***: all matrix elements
-- **chk**: Check arguments
-- **ret**: Exit type
-        '''
+    @classmethod
+    def qmean(cls,a: matx,el='row',chk=True,ret='a')->tuple[Decimal,...]|Decimal:
         try:
             match chk:
                 case False:pass;
                 case True:
                     if tmatx(a) is None: raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
+                case _:raise Exception("Invalid argument: a => matx");
             match el:
-                case 'row':return tuple(map(lambda i:stat.gmean(i),a.matx));
-                case 'col':return tuple(map(lambda i:stat.gmean(i),tuple(zip(a.matx))));
-                case 'all':
-                    li=tuple()
-                    for i in a.matx:li+=i
-                    return stat.gmean(li);
-                case _:raise Exception("Invalid argument: el => {} is not 'row'/'col'/'all'".format(el));
+                case 'row':return galg.pwrgs(galg.divgs([alg.add(*galg.pwrgs(i,'2')) for i in a.matx],a.rowlen),'0.5');
+                case 'col':return galg.pwrgs(galg.divgs(galg.add(*[galg.pwrgs(i,'2') for i in a.matx]),a.collen),'0.5');
+                case 'all':return alg.pwr(alg.div(alg.add(*[alg.add(*galg.pwrgs(i,'2')) for i in a.matx]),a.rowlen*a.collen),'0.5');
+                case _:raise Exception("Invalid argument: el => 'row'/'col'/'all");
         except Exception as e:print("Invalid command: matstat.qmean()");retrn(ret,e);
     
-    @staticmethod
-    def var(a:matx,el:str='row',samp:bool=True,chk:bool=True,ret:str='a')->tuple[Decimal,...]|Decimal:
-        '''
-#### Returns the variance for all elements in matrix or all matrix rows/columns.
-- **a**: matx object
-- **el**: The variance for,
-    - ***'row'***: all rows of matrix
-    - ***'col'***: all columns of matrix
-    - ***'all'***: all matrix elements
-- **samp**: Variance type
-    - ***True***: Sample variance
-    - ***False***: Population variance
-- **chk**: Check arguments
-- **ret**: Exit type
-        '''
+    @classmethod
+    def var(cls,a: matx,el='row',samp=True,chk=True,ret='a')->tuple[Decimal,...]|Decimal:
         try:
             match chk:
                 case False:pass;
                 case True:
                     if tmatx(a) is None:raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
+                case _:raise Exception("Invalid argument: a => matx");
             match el:
                 case 'row':
                     match samp:
-                        case True:return tuple(map(lambda i:stat.svar(i),a.matx));
-                        case False:return tuple(map(lambda i:stat.pvar(i),a.matx));
-                        case _:raise Exception("Invalid argument: samp => bool, got {}".format(samp.__class__.__name__));
+                        case True:d=(ar:=a.rowlen)-1;
+                        case False:d=(ar:=a.rowlen);
+                        case _:raise Exception("Invalid argument: samp => bool");
+                    return galg.divgs([alg.sub(alg.add(*galg.pwrgs(i,'2')),alg.div(alg.pwr(alg.add(*i),'2'),ar)) for i in a.matx],d);
                 case 'col':
                     match samp:
-                        case True:return tuple(map(lambda i:stat.svar(i),tuple(zip(a.matx))));
-                        case False:return tuple(map(lambda i:stat.pvar(i),tuple(zip(a.matx))));
-                        case _:raise Exception("Invalid argument: samp => bool, got {}".format(samp.__class__.__name__));
+                        case True:d=(ac:=a.collen)-1;
+                        case False:d=(ac:=a.collen);
+                        case _:raise Exception("Invalid argument: samp => bool");
+                    return galg.divgs(galg.sub(galg.add(*[galg.pwrgs(i,'2') for i in a.matx]),galg.divgs(galg.pwrgs(galg.add(*a.matx),ac),'2')),d);
                 case 'all':
-                    li=tuple()
-                    for i in a.matx:li+=i
                     match samp:
-                        case True:return stat.svar(li);
-                        case False:return stat.pvar(li);
-                        case _:raise Exception("Invalid argument: samp => bool, got {}".format(samp.__class__.__name__));;
-                case _:raise Exception("Invalid argument: el => {} is not 'row'/'col'/'all'".format(el));
+                        case True:d=(n:=a.rowlen*a.collen)-1;
+                        case False:d=(n:=a.rowlen*a.collen);
+                        case _:raise Exception("Invalid argument: samp => bool");
+                    return alg.div(alg.sub(alg.add(*[alg.add(*galg.pwrgs(i,'2')) for i in a.matx]),alg.div(alg.pwr(alg.add(*[alg.add(*i) for i in a.matx]),'2'),n)),d);
+                case _:raise Exception("Invalid argument: el => 'row'/'col'/'all");
         except Exception as e:print("Invalid command: matstat.var()");retrn(ret,e);
     
-    @staticmethod
-    def sd(a:matx,el:str='row',samp:bool=True,chk:bool=True,ret:str='a')->tuple[Decimal,...]|Decimal:
-        '''
-#### Returns the standard deviation for all elements in matrix or all matrix rows/columns.
-- **a**: matx object
-- **el**: The standard deviation for,
-    - ***'row'***: all rows of matrix
-    - ***'col'***: all columns of matrix
-    - ***'all'***: all matrix elements
-- **samp**: Standard deviation type
-    - ***True***: Sample standard deviation
-    - ***False***: Population standard deviation
-- **chk**: Check arguments
-- **ret**: Exit type
-        '''
+    @classmethod
+    def sd(cls,a: matx,el='row',samp=True,chk=True,ret='a')->tuple[Decimal,...]|Decimal:
         try:
-            match chk:
-                case False:pass
-                case True:
-                    if tmatx(a) is None:raise Exception;
-                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
-            match samp:
-                case True:
-                    match el:
-                        case 'row':return tuple(map(lambda i:stat.sstd_dev(i),a.matx));
-                        case 'col':return tuple(map(lambda i:stat.sstd_dev(i),a.matx));
-                        case 'all':
-                            li=tuple()
-                            for i in a.matx:li+=i
-                            return stat.sstd_dev(li)
-                        case _:raise Exception("Invalid argument: el => {} is not 'row'/'col'/'all'".format(el))
-                case False:
-                    match el:
-                        case 'row':return tuple(map(lambda i:stat.pstd_dev(i),a.matx));
-                        case 'col':return tuple(map(lambda i:stat.pstd_dev(i),tuple(zip(a.matx))));
-                        case 'all':
-                            li=tuple()
-                            for i in a.matx:li+=i
-                            return stat.pstd_dev(li)
-                        case _:raise Exception("Invalid argument: el => {} is not 'row'/'col'/'all'".format(el))
-                case _:raise Exception("Invalid argument: samp => bool, got {}".format(samp.__class__.__name__))
+            if el!='all':return galg.pwrgs(cls.var(a,el,samp,chk,'c'),'0.5');
+            else:return alg.pwr(cls.var(a,el,samp,chk,'c'),'0.5');
         except Exception as e:print("Invalid command: matstat.sd()");retrn(ret,e);
-
-    @staticmethod
-    def median(a:matx,el:str='row',chk:bool=True,ret:str='a')->tuple[Decimal]|Decimal:
-        '''
-#### Returns the median of all elements in matrix or all matrix rows/columns.
-- **a**: matx object
-- **el**: The median for,
-    - ***'row'***: all rows of matrix
-    - ***'col'***: all columns of matrix
-    - ***'all'***: all matrix elements
-- **chk**: Check arguments
-- **ret**: Exit type
-        '''
-        try:
-            match chk:
-                case True:
-                    if not tmatx(a):raise Exception;
-                case False:pass
-                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
-            match el:
-                case 'row':return tuple(zip(lambda i:stat.median(i),a.matx));
-                case 'col':return tuple(zip(lambda i:stat.median(i),tuple(zip(a.matx))));
-                case 'all':
-                    li=tuple()
-                    for i in a.matx:li+=i
-                    return stat.median(li)
-                case _:raise Exception("Invalid argument: el => {} is not 'row'/'col'/'all'".format(el))
-        except Exception as e:print("Invalid command: matstat.median()");retrn(ret,e);
-
-    @staticmethod
-    def mode(a:matx,el:str='row',chk:bool=True,ret:str='a')->tuple[dict]|dict:
-        '''
-#### Returns the mode of all elements in matrix or all matrix rows/columns.
-- **a**: matx object
-- **el**: The mode for,
-    - ***'row'***: all rows of matrix
-    - ***'col'***: all columns of matrix
-    - ***'all'***: all matrix elements
-- **chk**: Check arguments
-- **ret**: Exit type
-        '''
-        try:
-            match chk:
-                case True:
-                    if not tmatx(a):raise Exception;
-                case False:pass
-                case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
-            match el:
-                case 'row':return tuple(zip(lambda i:stat.mode(i),a.matx));
-                case 'col':return tuple(zip(lambda i:stat.mode(i),tuple(zip(a.matx))))
-                case 'all':
-                    li=tuple()
-                    for i in a.matx:li+=i
-                    return stat.mode(li)
-                case _:raise Exception("Invalid argument: el => {} is not 'row'/'col'/'all'".format(el))
-        except Exception as e:print("Invalid command: matstat.mode()");retrn(ret,e);
 
 # print("1")
 # z=[1,2,3]
