@@ -23,7 +23,6 @@
 29
 ```
 
-
 ## *Abbrevations*
 - c: class
 - o: object
@@ -75,9 +74,7 @@ matx(
 
 ```
 
-ii. **(g) matx**: Get the 2-D matrix as a tuple
-
-Returns tuple
+ii. **(g) matx -> tuple**: Get the 2-D matrix as a tuple
 
 ```python
 >>> mat = matrix.matx
@@ -85,21 +82,21 @@ Returns tuple
 ((Decimal('1.5'), Decimal('2.826'), Decimal('3.255')),)
 ```
 
-iii. **(g) rowlen**: Get the length of rows
+iii. **(g) rowlen -> int**: Get the length of rows
 
 ```python
 >>> matrix.rowlen
 3
 ```
 
-iv. **(g) collen**: Get the length of columns
+iv. **(g) collen -> int**: Get the length of columns
 
 ```python
 >>> matrix.collen
 1
 ```
 
-v. **(g) sqmatx**: Get if square matrix
+v. **(g) sqmatx -> bool**: Get if square matrix
 
 ```python
 >>> matrix.sqmatx
@@ -878,16 +875,17 @@ matx(
 <details>
   <summary>melutils</summary>
   <p>
-i. 
+i. **add(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as sum of elements in rows or columns in a matrix of a matx object
 
-ii.
+ii. **mult(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as multiplication of elements in rows or columns in a matrix of a matx object
 
-iii.
+iii. **pow(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as exponentiation of elements in rows or columns in a matrix of a matx object
 
-iv.
+iv. **log(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as logarithm of elements in rows or columns in a matrix of a matx object
 
-v.
+v. **expo(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as exponentiation of a number by elements in rows or columns in a matrix of a matx object
 
+vi. **trig(n, a, li, r=False, f='cos', chk=True, ret='a') -> matx**: 
 
   </p>
 </details>

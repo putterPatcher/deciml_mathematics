@@ -966,23 +966,47 @@ class matutils:
                         if len(t) != 2:raise Exception("Invalid argument: a => tuple[str,tuple[tuple|matx,...]], tuple {} length not 2.".format([i.__class__.__name__ for i in t]))
                 case False:pass
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
-            def __operate(o:str,a:tuple[matx,...]):
-                setpr(getpr()+1)
+            def __operate(o:str,a:tuple[matx|tuple[tuple[Decimal,...]],...]):
+                a=tuple(map(lambda m:m.matx if m.__class__.__name__=='matx' else m,a))
                 match o:
-                    case "add":return tuple(map(lambda x:galg.add(*x),zip(a)))
-                    case "sub":return tuple(map(lambda x,y:galg.sub(x,y),zip(a[0],__operate("add",a[1:]))))
+                    case "add":return tuple(map(lambda x:galg.add(*x),zip(*a)))
+                    case "sub":return tuple(map(lambda xy:galg.sub(xy[0],xy[1]),zip(a[0],__operate("add",a[1:]))))
                     case "mul":
                         a,b=a[0],a[1:]
                         for i in b:
-                            a=None;
-                    case "inverse":pass
-                    case "lxtox":pass
-                    case "xtolx":pass
-                    case "tpose":pass
+                            i=tuple(zip(*i))
+                            a=tuple(map(lambda x_1:tuple(map(lambda x:alg.add(*galg.mul(x,x_1,pr=getpr()+1)),i)),a))
+                        return a
+                    case "invse":
+                        def __cofac(__a,__j):
+                           return __det(tuple(map(lambda i:i[:__j]+i[__j+1:],__a[1:]))) if len(__a)!=2 else __a[1][0 if __j==1 else 1]
+                        def __det(__a):
+                            det=0
+                            setpr(getpr()+1)
+                            for i in range(len(__a)):
+                                det=alg.add(det,alg.mul((-1)**i,__a[0][i],__cofac(__a,i),pr=getpr()+1))
+                            setpr(getpr()-1)
+                            return det
+                        def __adj(__a):
+                            li=list()
+                            for i in range(len(__a)):
+                                li1=list()
+                                for j in range(len(__a)):
+                                    x=tuple(map(lambda k:k[:j]+k[j+1:],__a[:i]+__a[i+1:]))
+                                    li1.append(__det(x))
+                                li.append(tuple(li1))
+                            return tuple(zip(*li))
+                        def __inv(__a):
+                            det=__det(__a)
+                            print(__adj(__a),det,getpr())
+                            return tuple(map(lambda x:galg.divgs(x,det),__adj(__a)))
+                        return tuple(map(lambda m:__inv(m),a))
+                    case "lxtox":return tuple(map(lambda m:tuple(zip(m)),a))
+                    case "xtolx":return tuple(map(lambda x:x[0],a))
+                    case "tpose":return tuple(map(lambda m:tuple(zip(*m)),a))
                     case _:
-                        if o.__class__.__name__=='str':raise Exception("Invalid argument: a - {} not 'add'/'sub'/'mul'/'inverse'.".format(o))
+                        if o.__class__.__name__=='str':raise Exception("Invalid argument: a - {} not 'add'/'sub'/'mul'/'invse'.".format(o))
                         else:raise Exception("Invalid argument: a - {} not a string.".format(o.__class__.__name__))
-                setpr(getpr()-1)
             t=a
             def __calculate(t):
                 if chk:__check(t)
@@ -990,19 +1014,35 @@ class matutils:
                 nt=[]
                 for i in t[1]:
                     if tmatx(i):a.append(i)
-                    else:nt.append(i)
+                    elif i.__class__.__name__=='tuple':nt.append(i)
+                    else:raise Exception("Invalid argument: a => tuple[str,tuple[tuple|matx,...]], has {}".format(i.__class__.__name__))
                 for i in nt:
                     setpr(getpr()+1)
-                    a.append(__calculate(i))
+                    if a[0] in ["add","sub","mul"]:
+                        a.append(__calculate(i))
+                    else:
+                        for j in __calculate(i):
+                            a.append(j)
                     setpr(getpr()-1)
                 if len(a) < 2:
-                    if t[0] not in ["inverse","lxtox","xtolx","tpose"]:
+                    if t[0] not in ["invse","lxtox","xtolx","tpose"]:
                         raise Exception("Invalid argument: a - require more than one matx object to {}".format(t[0]))
                     if len(a) == 0:
                         raise Exception("Invalid argument: a - require at least one matx object to {}".format(t[0]))
                 return __operate(t[0],a)
-            return __calculate(t)
-        except Exception as e:print("Invalid command: matx_after_operations()");retrn(ret,e);
+            setpr(getpr()+1)
+            ret=__calculate(t)
+            setpr(getpr()-1)
+            return matx(ret) if t[0] in ["add","sub","mul"] else ret if len(ret:=tuple(map(lambda m:matx(m),ret))) > 1 else ret[0]
+        except Exception as e:print("Invalid command: moperate()");retrn(ret,e);
+
+setpr(3)
+m=matx([[1.45,2.2854,3.7545],[3.87452,2.8424,8.842872],[2.84254,5.824758,3.8345]])
+setpr(3)
+print(m.invse())
+print(m.dnant())
+setpr(3)
+print(matutils.moperate(('invse', (m,))))
 
 class melutils:
 
@@ -1022,7 +1062,7 @@ class melutils:
                 case True:
                     if not tmatx(a):raise Exception;
                     if li != 'all':
-                        if (tli:=li.__class__.__name__) !- 'list' or tli != 'tuple':raise Exception("Invalid argument: li => 'all'/list/tuple, got {}".format(tli));
+                        if (tli:=li.__class__.__name__) != 'list' or tli != 'tuple':raise Exception("Invalid argument: li => 'all'/list/tuple, got {}".format(tli));
                         for i in li:
                             if not tint.ele(i, a.collen if r == True else a.rowlen):raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
@@ -1187,7 +1227,6 @@ class melutils:
                 case True:
                     if str(n:=deciml(n,getpr()))=='NaN':raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
-            
             if li!='all':
                 if n!=1:
                     x=tuple(map(lambda x:galg.mulsg(n,x,getpr()+1),a.gele(li,r,chk,'c')))
@@ -1241,7 +1280,7 @@ class matstat:
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             match el:
                 case 'row':return tuple(map(lambda x:stat.amean(x),a.matx));
-                case 'col':return tuple(map(lambda x:stat.amean(x),tuple(zip(a.matx))));
+                case 'col':return tuple(map(lambda x:stat.amean(x),tuple(zip(*a.matx))));
                 case 'all':
                     li=tuple();
                     for i in a.matx:li+=i;
@@ -1268,8 +1307,8 @@ class matstat:
                     if tmatx(a) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             match el:
-                case 'row':return tuple(zip(lambda i:stat.gmean(i),a.matx));
-                case 'col':return tuple(zip(lambda i:stat.gmean(i),tuple(zip(a.matx))));
+                case 'row':return tuple(map(lambda i:stat.gmean(i),a.matx));
+                case 'col':return tuple(map(lambda i:stat.gmean(i),tuple(zip(*a.matx))));
                 case 'all':
                     li=tuple()
                     for i in a.matx:li+=i;
@@ -1297,7 +1336,7 @@ class matstat:
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             match el:
                 case 'row':return tuple(map(lambda i:stat.hmean(i),a.matx));
-                case 'col':return tuple(map(lambda i:stat.hmean(i),tuple(zip(a.matx))));
+                case 'col':return tuple(map(lambda i:stat.hmean(i),tuple(zip(*a.matx))));
                 case 'all':
                     li=tuple()
                     for i in a.matx:li+=i;
@@ -1325,7 +1364,7 @@ class matstat:
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             match el:
                 case 'row':return tuple(map(lambda i:stat.gmean(i),a.matx));
-                case 'col':return tuple(map(lambda i:stat.gmean(i),tuple(zip(a.matx))));
+                case 'col':return tuple(map(lambda i:stat.gmean(i),tuple(zip(*a.matx))));
                 case 'all':
                     li=tuple()
                     for i in a.matx:li+=i
@@ -1362,8 +1401,8 @@ class matstat:
                         case _:raise Exception("Invalid argument: samp => bool, got {}".format(samp.__class__.__name__));
                 case 'col':
                     match samp:
-                        case True:return tuple(map(lambda i:stat.svar(i),tuple(zip(a.matx))));
-                        case False:return tuple(map(lambda i:stat.pvar(i),tuple(zip(a.matx))));
+                        case True:return tuple(map(lambda i:stat.svar(i),tuple(zip(*a.matx))));
+                        case False:return tuple(map(lambda i:stat.pvar(i),tuple(zip(*a.matx))));
                         case _:raise Exception("Invalid argument: samp => bool, got {}".format(samp.__class__.__name__));
                 case 'all':
                     li=tuple()
@@ -1371,7 +1410,7 @@ class matstat:
                     match samp:
                         case True:return stat.svar(li);
                         case False:return stat.pvar(li);
-                        case _:raise Exception("Invalid argument: samp => bool, got {}".format(samp.__class__.__name__));;
+                        case _:raise Exception("Invalid argument: samp => bool, got {}".format(samp.__class__.__name__));
                 case _:raise Exception("Invalid argument: el => {} is not 'row'/'col'/'all'".format(el));
         except Exception as e:print("Invalid command: matstat.var()");retrn(ret,e);
     
@@ -1400,7 +1439,7 @@ class matstat:
                 case True:
                     match el:
                         case 'row':return tuple(map(lambda i:stat.sstd_dev(i),a.matx));
-                        case 'col':return tuple(map(lambda i:stat.sstd_dev(i),a.matx));
+                        case 'col':return tuple(map(lambda i:stat.sstd_dev(i),tuple(zip(*a.matx))));
                         case 'all':
                             li=tuple()
                             for i in a.matx:li+=i
@@ -1409,7 +1448,7 @@ class matstat:
                 case False:
                     match el:
                         case 'row':return tuple(map(lambda i:stat.pstd_dev(i),a.matx));
-                        case 'col':return tuple(map(lambda i:stat.pstd_dev(i),tuple(zip(a.matx))));
+                        case 'col':return tuple(map(lambda i:stat.pstd_dev(i),tuple(zip(*a.matx))));
                         case 'all':
                             li=tuple()
                             for i in a.matx:li+=i
@@ -1438,7 +1477,7 @@ class matstat:
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
             match el:
                 case 'row':return tuple(zip(lambda i:stat.median(i),a.matx));
-                case 'col':return tuple(zip(lambda i:stat.median(i),tuple(zip(a.matx))));
+                case 'col':return tuple(zip(lambda i:stat.median(i),tuple(zip(*a.matx))));
                 case 'all':
                     li=tuple()
                     for i in a.matx:li+=i
@@ -1466,7 +1505,7 @@ class matstat:
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
             match el:
                 case 'row':return tuple(zip(lambda i:stat.mode(i),a.matx));
-                case 'col':return tuple(zip(lambda i:stat.mode(i),tuple(zip(a.matx))))
+                case 'col':return tuple(zip(lambda i:stat.mode(i),tuple(zip(*a.matx))))
                 case 'all':
                     li=tuple()
                     for i in a.matx:li+=i
