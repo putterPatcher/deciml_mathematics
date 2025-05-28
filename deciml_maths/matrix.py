@@ -1061,11 +1061,11 @@ class melutils:
                 case True:
                     if not tmatx(a):raise Exception;
                     if li != 'all':
-                        if (tli:=li.__class__.__name__) != 'list' or tli != 'tuple':raise Exception("Invalid argument: li => 'all'/list/tuple, got {}".format(tli));
+                        if (tli:=li.__class__.__name__) != 'list' and tli != 'tuple':raise Exception("Invalid argument: li => 'all'/list/tuple, got {}".format(tli));
                         for i in li:
                             if not tint.ele(i, a.collen if r == True else a.rowlen):raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
-            if li!='all':
+            if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
                 l=list()
                 for i in li:
                     for j in i:
@@ -1101,7 +1101,7 @@ class melutils:
                         for i in li:
                             if not tint.ele(i, a.collen if r == True else a.rowlen):raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
-            if li!='all':
+            if (tli:=tli.__class__.__name__)=='list' or tli=='tuple':
                 l=list()
                 for i in li:
                     for j in i:
@@ -1109,11 +1109,13 @@ class melutils:
                 d=dict()
                 for i in enumerate(a.gele(l,r,chk,'c')):d[l[i[0]]]=i[1];
                 return matx(tuple([galg.mul(*[d[j] for j in i]) for i in li]),False,'c')
-            else:
+            elif li=='all':
                 match r:
                     case False:return matx(tuple([alg.mul(*i) for i in a.matx]),False,'c');
                     case True:return matx(galg.mul(*a.matx),False,'c');
                     case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
+            else:
+                raise Exception("Invalid argument: li => 'all'/list/tuple, got {}".format(li.__class__.__name__))
         except Exception as e:print("Invalid command: melutils.mult()");retrn(ret,e);
 
     @staticmethod
@@ -1121,7 +1123,7 @@ class melutils:
         '''
 #### Returns a matx object with matrix rows as exponentiated rows or columns.
 - **an**: Tuple with first element as factor multiplied and second element as power
-##### (a*[x])^n
+##### (a*[x])<sup>n</sup>
 - **li**: 'all' or list/tuple of row or column indexes
 - **r**: True if row indexes or False if column indexes
 - **chk**: Check arguments
@@ -1131,6 +1133,7 @@ class melutils:
             match chk:
                 case False:pass;
                 case True:
+                    if not tmatx(a):raise Exception
                     match an.__class__.__name__:
                         case 'tuple':
                             if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
@@ -1138,19 +1141,25 @@ class melutils:
                             if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
                         case _:raise Exception("Invalid argument: a => tuple/list, got {}".format(a.__class__.__name__));
                     if eqval(len(an),2) is None:raise Exception;
+                    if li != 'all':
+                        if not tint.ele(li, a.collen if r else a.rowlen):raise Exception
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
-            if li!='all':
-                if an[0]!=1:return matx(tuple([galg.pwrgs(galg.mulsg(an[0],i),an[1]) for i in a.gele(li,r,chk,'c')]),False,'c');
+            if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
+                if an[0]!=1:return matx(tuple([galg.pwrgs(galg.mulsg(an[0],i,getpr()+1),an[1]) for i in a.gele(li,r,chk,'c')]),False,'c');
                 else:return matx(tuple([galg.pwrgs(i,an[1]) for i in a.gele(li,r,chk,'c')]),False,'c');
-            else:
-                if an[0]!=1:return matx(tuple([galg.pwrgs(galg.mulsg(an[0],i),an[1]) for i in a.matx]),False,'c');
+            elif li=='all':
+                if an[0]!=1:return matx(tuple([galg.pwrgs(galg.mulsg(an[0],i,getpr()+1),an[1]) for i in a.matx]),False,'c');
                 else:return matx(tuple([galg.pwrgs(i,an[1]) for i in a.matx]),False,'c');
+            else:
+                raise Exception("Invalid argument: li => 'all'/tuple/list, got {}".format(li.__class__.__name__))
         except Exception as e:print("Invalid command: melutils.pow()");retrn(ret,e);
 
     @staticmethod
     def log(an:list|tuple[Decimal,Decimal],a:matx,li:list[int]|tuple[int]|str,r:bool=False,chk:bool=True,ret:str='a')->matx:
         '''
 #### Returns a matx object with matrix rows as logarithm of elements of rows or columns.
+- **an**: Tuple with first element as the factor multiplied and second element as the base for logarithm
+##### log<sub>n</sub>(a*[x])
 - **a**: matx object
 - **li**: 'all' or list/tuple of row or column indexes
 - **r**: True if row indexes or False if column indexes
@@ -1161,6 +1170,7 @@ class melutils:
             match chk:
                 case False:pass;
                 case True:
+                    if not tmatx(a):raise Exception
                     match an.__class__.__name__:
                         case 'tuple':
                             if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
@@ -1168,13 +1178,17 @@ class melutils:
                             if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
                         case _:raise Exception("Invalid argument: a => tuple/list");
                     if eqval(len(an),2) is None:raise Exception;
+                    if li != 'all':
+                        if not tint.ele(li, a.collen if r else a.rowlen):raise Exception
                 case _:raise Exception("Invalid argument: chk => bool");
-            if li!='all':
-                if an[0]!=1:return matx(tuple([tuple([alg.log(alg.mul(j,an[0]),an[1]) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+            if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
+                if an[0]!=1:return matx(tuple([tuple([alg.log(alg.mul(j,an[0],getpr()+1),an[1]) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
                 else:return matx(tuple([tuple([alg.log(j,an[1]) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
-            else:
-                if an[0]!=1:return matx(tuple([tuple([alg.log(alg.mul(j,an[0]),an[1]) for j in i]) for i in a.matx]),False,'c');
+            elif li=='all':
+                if an[0]!=1:return matx(tuple([tuple([alg.log(alg.mul(j,an[0],getpr()+1),an[1]) for j in i]) for i in a.matx]),False,'c');
                 else:return matx(tuple([tuple([alg.log(j,an[1]) for j in i]) for i in a.matx]),False,'c');
+            else:
+                raise Exception("Invalid argument: li => 'all'/tuple/list, got {}".format(li.__class__.__name__))
         except Exception as e:print("Invalid command: melutils.log()");retrn(ret,e);
 
     @staticmethod
@@ -1182,6 +1196,7 @@ class melutils:
         '''
 #### Returns a matx object with matrix rows as number exponentiated by a factor of elements in rows or columns.
 - **an**: Tuple with first element as number to exponentiate and second elementas factor multiplied
+##### a<sup>n*[x]</sup>
 - **a**: matx object
 - **li**: 'all' or list/tuple of row or column indexes
 - **r**: True if row indexes or False if column indexes
@@ -1192,6 +1207,7 @@ class melutils:
             match chk:
                 case False:pass;
                 case True:
+                    if not tmatx(a):raise Exception
                     match an.__class__.__name__:
                         case 'tuple':
                             if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
@@ -1200,12 +1216,14 @@ class melutils:
                         case _:raise Exception("Invalid argument: a => tuple/list");
                     if eqval(len(an),2) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool");
-            if li!= 'all':
-                if an[1]!=1:return matx(tuple([tuple([alg.pwr(an[0],alg.mul(j,an[1])) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+            if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
+                if an[1]!=1:return matx(tuple([tuple([alg.pwr(an[0],alg.mul(j,an[1],getpr()+1)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
                 else:return matx(tuple([tuple([alg.pwr(an[0],j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
-            else:
-                if an[1]!=1:return matx(tuple([tuple([alg.pwr(an[0],alg.mul(j,an[1])) for j in i]) for i in a.matx]),False,'c');
+            elif li=='all':
+                if an[1]!=1:return matx(tuple([tuple([alg.pwr(an[0],alg.mul(j,an[1],getpr()+1)) for j in i]) for i in a.matx]),False,'c');
                 else:return matx(tuple([tuple([alg.pwr(an[0],j) for j in i]) for i in a.matx]),False,'c');
+            else:
+                raise Exception("Invalid argument: li => 'all'/tuple/list, got {}".format(li.__class__.__name__))
         except Exception as e:print("Invalid command: melutils.expo()");retrn(ret,e);
 
     @staticmethod
@@ -1226,16 +1244,18 @@ class melutils:
                 case True:
                     if str(n:=deciml(n,getpr()))=='NaN':raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
-            if li!='all':
+            if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
                 if n!=1:
                     x=tuple(map(lambda x:galg.mulsg(n,x,getpr()+1),a.gele(li,r,chk,'c')))
                 else:
                     x=a.gele(li,r,chk,'c')
-            else:
+            elif li=='all':
                 if n!=1:
                     x=tuple(map(lambda x:galg.mulsg(n,x,getpr()+1),a.matx if r else matutils.tpose(a).matx))
                 else:
                     x=a.matx if r else matutils.tpose(a).matx
+            else:
+                raise Exception("Invalid argument: li => 'all'/list/tuple, got {}".format(li))
             match f:
                 case 'cos':return matx(tuple(map(lambda x:gtrig.cosine(x),x)),False,'c');
                 case 'sin':return matx(tuple(map(lambda x:gtrig.sine(x),x)),False,'c');
@@ -1457,7 +1477,7 @@ class matstat:
         except Exception as e:print("Invalid command: matstat.sd()");retrn(ret,e);
 
     @staticmethod
-    def median(a:matx,el:str='row',chk:bool=True,ret:str='a')->tuple[Decimal]|Decimal:
+    def median(a:matx,el:str='row',chk:bool=True,ret:str='a')->tuple[Decimal,...]|Decimal:
         '''
 #### Returns the median of all elements in matrix or all matrix rows/columns.
 - **a**: matx object
@@ -1475,8 +1495,8 @@ class matstat:
                 case False:pass
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
             match el:
-                case 'row':return tuple(zip(lambda i:stat.median(i),a.matx));
-                case 'col':return tuple(zip(lambda i:stat.median(i),tuple(zip(*a.matx))));
+                case 'row':return tuple(map(lambda i:stat.median(i),a.matx));
+                case 'col':return tuple(map(lambda i:stat.median(i),tuple(zip(*a.matx))));
                 case 'all':
                     li=tuple()
                     for i in a.matx:li+=i
@@ -1485,7 +1505,7 @@ class matstat:
         except Exception as e:print("Invalid command: matstat.median()");retrn(ret,e);
 
     @staticmethod
-    def mode(a:matx,el:str='row',chk:bool=True,ret:str='a')->tuple[dict]|dict:
+    def mode(a:matx,el:str='row',chk:bool=True,ret:str='a')->tuple[dict,...]|dict:
         '''
 #### Returns the mode of all elements in matrix or all matrix rows/columns.
 - **a**: matx object
@@ -1503,8 +1523,8 @@ class matstat:
                 case False:pass
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
             match el:
-                case 'row':return tuple(zip(lambda i:stat.mode(i),a.matx));
-                case 'col':return tuple(zip(lambda i:stat.mode(i),tuple(zip(*a.matx))))
+                case 'row':return tuple(map(lambda i:stat.mode(i),a.matx));
+                case 'col':return tuple(map(lambda i:stat.mode(i),tuple(zip(*a.matx))))
                 case 'all':
                     li=tuple()
                     for i in a.matx:li+=i

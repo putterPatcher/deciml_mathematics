@@ -889,6 +889,11 @@ xix. **(sm) moperate(a, chk=True, ret='a') -> matx | tuple[matx, ...]**: Returns
 >>> mat2=matx([2.3254,5.2364,3.2541])
 >>> mat3=matx([2.3121,2.3214,5.3211])
 >>> mat=matutils.moperate(('add', (('xtolx', (mat1, mat2, mat3)), ('invse', (('xtolx', (mat2, mat1, mat3)),)))), True, 'a')
+'''
+	('add', (('xtolx', (mat1, mat2, mat3)), ('invse', (('xtolx', (mat2, mat1, mat3)),)))) - Operation sequence
+	True - Check arguments
+	 'a' - Ask to exit if error
+'''
 >>> print(mat)
 matx(
 |'1.811', '-0.453', '4.518'|
@@ -903,47 +908,244 @@ matx(
 <details>
   <summary>melutils</summary>
   <p>
-i. **add(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as sum of elements in rows or columns in a matrix of a matx object
+**(c) melutils**: Methods for operations on rows/columns in matrix of a matx object 
+  
+i. **(sm) add(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as sum of elements in rows or columns in a matrix of a matx object
 
 - **a** - *matx*
-- **li** - *tuple[tuple[int, ...]] | list[list[ int ]]*
+- **li** - *tuple[tuple[int, ...]] | list[list[ int ]] | 'all'*
 - **r** - *bool*
 
 ```python
+>>> mat=matx([[1.0121, 2.3202, 5.3214], [2.3202, 4.2555, 6.3111], [5.3236, 3.5895, 4.2314]])
+>>> mat1=melutils.add(mat, [[1,2],[0,2]], False, True, 'a')
+'''
+	mat - matx object
+	[[1,2],[0,2]] - List of list of column indexes of columns to add
+	False - For columns
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'7.641', '10.567', '7.821'|
+|'6.333', '8.631', '9.555'|
+)
+
+>>> mat1=melutils.add(mat, [[1,2],[0,2]], True, True, 'a')
+'''
+	mat - matx object
+	[[1,2],[0,2]] - List of list of row indexes of rows to add
+	True - For rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'7.644', '7.846', '10.542'|
+|'6.336', '5.910', '9.552'|
+)
 
 ```
 
-ii. **mult(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as multiplication of elements in rows or columns in a matrix of a matx object
+ii. **(sm) mult(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as multiplication of elements in rows or columns in a matrix of a matx object
 
 - **a** - *matx*
-- **li** - *tuple[tuple[int, ...]] | list[list[ int ]]*
+- **li** - *tuple[tuple[int, ...]] | list[list[ int ]] | 'all'*
 - **r** - *bool*
 
 ```python
+>>> mat1=melutils.mult(mat, [[1,2],[0,2]], False, True, 'a')
+'''
+	mat - matx object
+	[[1,2],[0,2]] - List of list of column indexes of columns to multiply
+	False - For columns
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'12.345', '26.86', '15.189'|
+|'5.385', '14.642', '22.526'|
+)
+
+>>> mat1=melutils.mult(mat, [[1,2],[0,2]], True, True, 'a')
+'''
+	mat - matx object
+	[[1,2],[0,2]] - List of list of row indexes of rows to multiply
+	True - For rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'12.352', '15.279', '26.702'|
+|'5.388', '8.329', '22.513'|
+)
+
 ```
 
-iii. **pow(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as exponentiation of elements in rows or columns in a matrix of a matx object
+iii. **(sm) pow(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as exponentiation of elements in rows or columns in a matrix of a matx object
 
 - **an** - *tuple[Decimal, Decimal]*
 - **a** - *matx*
-- **li** - *tuple[int, ...] | list[ int ]*
+- **li** - *tuple[int, ...] | list[ int ] | 'all'*
+- **r** - *bool*
 
 ```python
+>>> mat1=melutils.pow((2, 2), mat, [0,1], False, True, 'a')
+'''
+	(2, 2) - Factor to multiply and power
+	mat - matx object
+	[0,1] - List of column indexes of columns to exponentiate
+	False - For columns
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'4.097', '21.53', '113.38'|
+|'21.53', '72.454', '51.552'|
+)
+
+>>> mat1=melutils.pow((2, 2), mat, [0,1], True, True, 'a')
+'''
+	(2, 2) - Factor to multiply and power
+	mat - matx object
+	[0,1] - List of row indexes of rows to exponentiate
+	True - For rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'4.097', '21.53', '113.252'|
+|'21.53', '72.454', '159.315'|
+)
+
 ```
 
-iv. **log(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as logarithm of elements in rows or columns in a matrix of a matx object
+iv. **(sm) log(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as logarithm of elements in rows or columns in a matrix of a matx object
+
+- **an** - *tuple[Decimal, Decimal]*
+- **a** - *matx*
+- **li** - *tuple[int, ...] | list[ int ] | 'all'*
+- **r** - *bool*
 
 ```python
+>>> mat1=melutils.log((2, 2), mat, [0,1], True, True, 'a')
+'''
+	(2, 2) - Factor to multiply and base
+	mat - matx object
+	[0,1] - List of row indexes of rows for logarithm
+	True - For rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'1.017', '2.214', '3.412'|
+|'2.214', '3.089', '3.658'|
+)
+
+>>> mat1=melutils.log((2, 2), mat, [0,1], False, True, 'a')
+'''
+	(2, 2) - Factor to multiply and base
+	mat - matx object
+	[0,1] - List of column indexes of columns for logarithm
+	False - For columns
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'1.017', '2.214', '3.413'|
+|'2.214', '3.089', '2.844'|
+)
+
 ```
 
-v. **expo(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as exponentiation of a number by elements in rows or columns in a matrix of a matx object
+v. **(sm) expo(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as exponentiation of a number by elements in rows or columns in a matrix of a matx object
+
+- **an** - *tuple[Decimal, Decimal]*
+- **li** - *tuple[int, ...] | list[ int ] | 'all'*
+- **r** - *bool*
 
 ```python
+>>> mat1=melutils.expo((2, 2), mat, [0,1], False, True, 'a')
+'''
+	(2, 2) - Number to exponentiate and factor to multiply
+	mat - matx object
+	[0,1] - List of column indexes of columns for exponentiation
+	False - For columns
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'4.067', '24.933', '1604.602'|
+|'24.933', '365.063', '145.009'|
+)
+
+>>> mat1=melutils.expo((2, 2), mat, [0,1], True, True, 'a')
+'''
+	(2, 2) - Number to exponentiate and factor to multiply
+	mat - matx object
+	[0,1] - List of row indexes of rows for exponentiation
+	True - For rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'4.067', '24.933', '1597.943'|
+|'24.933', '365.063', '6303.774'|
+)
+
 ```
 
-vi. **trig(n, a, li, r=False, f='cos', chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as trignometric function values for elements in rows or columns in a matrix of a matx object
+vi. **(sm) trig(n, a, li, r=False, f='cos', chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as trignometric function values for elements in rows or columns in a matrix of a matx object
+
+- **n** - *Decimal*
+- **a** - *matx*
+- **li** - *tuple[int, ...] | list[ int ] | 'all'*
+- **r** - *bool*
+- **f** - *str*
+	- 'sin', 'cos', 'tan', 'cosec', 'sec', 'cot', 'asin', 'acos', 'atan', 'asec', 'acosec', 'acot', 'sinh', 'cosh', 'tanh', 'sech', 'cosech', 'coth'
 
 ```python
+>>> mat1=melutils.trig(2, mat, [0,1], False, 'tan', True, 'a')
+'''
+	2 - Factor to multiply
+	mat - matx object
+	[0,1] - List of column indexes of columns for trignometric operation
+	False - For columns
+	'tan' - Use the "tan" function
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'-2.053', '13.790', '2.760'|
+|'13.790', '-1.294', '1.252'|
+)
+
+>>> mat1=melutils.trig(2, mat, [0,1], False, 'sinh', False, 'a')
+'''
+	2 - Factor to multiply
+	mat - matx object
+	[0,1] - List of column indexes of columns for trignometric operation
+	False - For columns
+	'sinh' - Use the "sinh" function
+	False - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> print(mat1)
+matx(
+|'3.718', '51.767', '21054.143'|
+|'51.767', '2487.050', '656.454'|
+)
+
 ```
 
   </p>
@@ -951,6 +1153,257 @@ vi. **trig(n, a, li, r=False, f='cos', chk=True, ret='a') -> matx**: Get a matx 
 <details>
   <summary>matstat</summary>
   <p>
+**(c) matstat**: Methods for statistical analysis using matx object
+
+```python
+>>> from deciml_maths.matrix import matstat, matx
+Imported deciml...
+>>> from deciml_maths import setpr
+>>> setpr(3)
+```
+  
+i. **(sm) amean(a, el='row', chk=True, ret='a') -> tuple[Decimal, ...] | Decimal**: Get the arithmatic mean for all rows/columns/elements of matrix in matx object
+
+- **a** - *matx*
+- **el** - *str*
+	- 'row'/'col'/'all'
+
+```python
+>>> mat=matx([[1.2312, 2.321, 5.3214, 3.23651, 5.2514, 5.3652, 4.32145],[12, 13.2642, 5.3251, 8.2569, 6.25412, 7.25631, 1.23651]])
+>>> arith_mean_rows = matstat.amean(mat, 'row', True, 'a')
+'''
+	mat - matx object
+	'row' - For all rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> arith_mean_rows
+(Decimal('3.864'), Decimal('7.656'))
+>>> arith_mean_cols = matstat.amean(mat, 'col', True, 'a')
+'''
+	mat - matx object
+	'col' - For all columns
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> arith_mean_cols
+(Decimal('6.616'), Decimal('7.793'), Decimal('5.323'), Decimal('5.747'), Decimal('5.753'), Decimal('6.311'), Decimal('2.779'))
+>>> arith_mean = matstat.amean(mat, 'all', True, 'a')
+'''
+	mat - matx object
+	'all' - For all elements in matrix
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> arith_mean
+Decimal('5.760')
+```
+
+ii. **gmean(a, el='row', chk=True, ret='a') -> tuple[Decimal, ...] | Decimal**: Get the geometric mean for all rows/columns/elements of matrix in matx object
+
+- **a** - *matx*
+- **el** - *str*
+	- 'row'/'col'/'all'
+
+```python
+>>> geo_mean_rows = matstat.gmean(mat, 'row', True, 'a')
+'''
+	mat - matx object
+	'row' - For all rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> geo_mean_rows
+(Decimal('3.466'), Decimal('6.301'))
+>>> geo_mean_cols = matstat.gmean(mat, 'col', True, 'a')
+'''
+	mat - matx object
+	'col' - For all columns
+	True - Check arguments
+	'a' - Ask to exit if error
+'''       
+>>> geo_mean_cols
+(Decimal('3.843'), Decimal('5.549'), Decimal('5.323'), Decimal('5.17'), Decimal('5.731'), Decimal('6.239'), Decimal('2.312'))
+>>> geo_mean = matstat.gmean(mat, 'all', True, 'a')
+'''
+	mat - matx object
+	'all' - For all elements in matrix
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> geo_mean
+Decimal('4.671')
+```
+
+iii. **hmean(a, el='row', chk=True, ret='a') -> tuple[Decimal, ...] | Decimal**: Get the harmonic mean for all rows/columns/elements of matrix in matx object
+
+- **a** - *matx*
+- **el** - *str*
+	- 'row'/'col'/'all'
+
+```python
+>>> harm_mean_rows = matstat.hmean(mat, 'row', True, 'a')
+'''
+	mat - matx object
+	'row' - For all rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> harm_mean_rows
+(Decimal('0.426'), Decimal('0.635'))
+>>> harm_mean = matstat.hmean(mat, 'all', True, 'a')
+'''
+	mat - matx object
+	'all' - For all elements in matrix
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> harm_mean
+Decimal('0.255')
+```
+
+iv. **qmean(a, el='row', chk=True, ret='a') -> tuple[Decimal, ...] | Decimal**: Get the quadratic mean of all rows/columns/elements of matrix in matx object
+
+- **a** - *matx*
+- **el** - *str*
+	- 'row'/'col'/'all'
+
+```python
+>>> quad_mean_rows = matstat.qmean(mat, 'row', True, 'a')
+'''
+	mat - matx object
+	'row' - For all rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> quad_mean_rows
+(Decimal('3.466'), Decimal('6.301'))
+>>> quad_mean = matstat.qmean(mat, 'all', True, 'a')
+'''
+	mat - matx object
+	'all' - For all elements in matrix
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> quad_mean
+Decimal('4.671')
+```
+
+v. **var(a, el='row', samp=True, chk=True, ret='a') -> tuple[Decimal, ...] | Decimal**: Get the sample or population variance of all rows/columns/elements of matrix in matx object
+
+- **a** - *matx*
+- **el** - *str*
+	- 'row'/'col'/'all'
+- **samp** - *bool*
+
+```python
+>>> samp_var_rows = matstat.var(mat, 'row', True, True, 'a')
+'''
+	mat - matx object
+	'row' - For all rows
+	True - Sample variance
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> samp_var_rows
+(Decimal('2.703'), Decimal('16.574'))
+>>> popul_var = matstat.var(mat, 'all', False, True, 'a')
+'''
+	mat - matx object
+	'all' - For all elements in matrix
+	False - Population variance
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> popul_var
+Decimal('11.857')
+```
+
+vi. **sd(a, el='row', samp=True, chk=True, ret='a') -> tuple[Decimal, ...] | Decimal**: Get the sample or population standard deviation for all rows/columns/elements of matrix in matx object
+
+- **a** - *matx*
+- **el** - *str*
+	- 'row'/'col'/'all'
+- **samp** - *bool*
+
+```python
+>>> std_dev_rows = matstat.sd(mat, 'row', True, True, 'a')
+'''
+	mat - matx object
+	'row' - For all rows
+	True - Sample standard deviation
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> std_dev_rows
+(Decimal('1.644'), Decimal('4.071'))
+>>> popul_std_dev = matstat.sd(mat, 'all', False, True, 'a')
+'''
+	mat - matx object
+	'all' - For all elements in matrix
+	False - Population standard deviation
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> popul_std_dev
+Decimal('3.443')
+```
+
+vii. **median(a, el='row', chk=True, ret='a') -> tuple[Decimal, ...] | Decimal**
+
+- **a** - *matx*
+- **el** - *str*
+	- 'row'/'col'/'all'
+
+```python
+>>> median_rows = matstat.median(mat, 'row', True, 'a')
+'''
+	mat - matx object
+	'row' - For all rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> median_rows
+(Decimal('4.321'), Decimal('7.256'))
+>>> median = matstat.median(mat, 'all', True, 'a')
+'''
+	mat - matx object
+	'all' - For all elements in matrix
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> median
+Decimal('5.323')
+```
+
+viii. **mode(a, el='row', chk=True, ret='a') -> tuple[dict, ...] | dict**
+
+- **a** - *matx*
+- **el** - *str*
+	- 'row'/'col'/'all'
+
+```python
+>>> mat = matx([[1,2,4,6,4,3,4,5,6,4,3,4,5,6,4,4,4],[4,5,6,23,4,65,7,4,23,4,5,6,8,6,4,2,5]])
+>>> mode_rows = matstat.mode(mat, 'row', True, 'a')
+'''
+	mat - matx object
+	'row' - For all rows
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> mode_rows
+({'values': (Decimal('4.0'),), 'mode': 8}, {'values': (Decimal('4.0'),), 'mode': 5})
+>>> mode = matstat.mode(mat, 'all', True, 'a')
+'''
+	mat - matx object
+	'all' - For all elements in matrix
+	True - Check arguments
+	'a' - Ask to exit if error
+'''
+>>> mode
+{'values': (Decimal('4.0'),), 'mode': 13}
+```
+
   </p>
 </details>
 </p>
