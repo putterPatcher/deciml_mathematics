@@ -819,7 +819,7 @@ matx(
 
 ```
 
-xxii. **(sm) uldcompose(a, chk=True, ret='a')**: Get a tuple with matx objects of upper triangular, diagonal, and lower triangular matrices for a matrix of a matx 
+xxii. **(sm) uldcompose(a, chk=True, ret='a') -> tuple[matx, matx, matx]**: Get a tuple with matx objects of upper triangular, diagonal, and lower triangular matrices for a matrix of a matx 
 
 - **a** - *matx*
 
@@ -845,7 +845,7 @@ matx(
 
 ```
 
-xxiii. **(cm) dpose(a, li, r=False, chk=True, ret='a')**: Get a tuple of matrices after decomposing a matrix of a matx object along the row or column direction
+xxiii. **(cm) dpose(a, li, r=False, chk=True, ret='a') -> tuple[matx, ...]**: Get a tuple of matrices after decomposing a matrix of a matx object along the row or column direction
 
 - **a** - *matx*
 - **li** - *list[ int ] | tuple[int, ...]*
@@ -870,6 +870,24 @@ matx(
 
 ```
 
+xix. **(sm) moperate(a, chk=True, ret='a') -> matx | tuple[matx, ...]**: Returns the result after performing specified operations.
+
+- **a**: *tuple[str, tuple[matx|tuple, ...]]*
+	- 1<sup>st</sup> element is the operation to perform
+	- If no operation is to be performed then the elements are matx objects
+	- Operations:
+		- ***"add"***: Perform addition of matrices in matx objects
+		- ***"sub"***: Perform subtraction of matrices in matx objects from matrix in first matx object
+		- ***"mul"***: Perform multiplication of matrices in matx objects
+		- ***"invse"***: Get the inverse matrices for the matrices in matx objects
+		- ***"matlxtox"***: Convert matrices into row matrices of rows of matrices in matx objects
+		- ***"matxtolx"***: Convert row matrices in matx objects into matrix with rows as the rows in row matrices
+		- ***"tpose"***: Get the transpose matrix of matrices in matx objects
+
+```python
+
+```
+
   </p>
 </details>
 <details>
@@ -877,15 +895,33 @@ matx(
   <p>
 i. **add(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as sum of elements in rows or columns in a matrix of a matx object
 
+```python
+```
+
 ii. **mult(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as multiplication of elements in rows or columns in a matrix of a matx object
+
+```python
+```
 
 iii. **pow(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as exponentiation of elements in rows or columns in a matrix of a matx object
 
+```python
+```
+
 iv. **log(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as logarithm of elements in rows or columns in a matrix of a matx object
+
+```python
+```
 
 v. **expo(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as exponentiation of a number by elements in rows or columns in a matrix of a matx object
 
-vi. **trig(n, a, li, r=False, f='cos', chk=True, ret='a') -> matx**: 
+```python
+```
+
+vi. **trig(n, a, li, r=False, f='cos', chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as trignometric function values for elements in rows or columns in a matrix of a matx object
+
+```python
+```
 
   </p>
 </details>

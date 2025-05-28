@@ -1002,7 +1002,7 @@ class matutils:
                             return tuple(map(lambda x:galg.divgs(x,det),__adj(__a)))
                         return tuple(map(lambda m:__inv(m),a))
                     case "lxtox":return tuple(map(lambda m:tuple(zip(m)),a))
-                    case "xtolx":return tuple(map(lambda x:x[0],a))
+                    case "xtolx":return tuple(map(lambda m:tuple(map(lambda x:x[0],m)),a))
                     case "tpose":return tuple(map(lambda m:tuple(zip(*m)),a))
                     case _:
                         if o.__class__.__name__=='str':raise Exception("Invalid argument: a - {} not 'add'/'sub'/'mul'/'invse'.".format(o))
@@ -1034,13 +1034,6 @@ class matutils:
             return matx(r, False, 'c') if t[0] in ["add","sub","mul"] else r if len(r:=tuple(map(lambda m:matx(m, False, 'c'),r))) > 1 else r[0]
         except Exception as e:print("Invalid command: moperate()");retrn(ret,e);
 
-setpr(3)
-m=matx([[1.45,2.2854,3.7545],[3.87452,2.8424,8.842872],[2.84254,5.824758,3.8345]])
-setpr(3)
-print(m.invse())
-print(m.dnant())
-setpr(3)
-print(matutils.moperate(('invse', (m,))))
 
 class melutils:
 
