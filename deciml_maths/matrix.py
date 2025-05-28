@@ -483,7 +483,7 @@ class matutils:
                 else:ep=0;e=ele;
                 setpr(getpr()+1)
                 for i in range(lr):
-                    if i!=ep:ele=li[i];fac=alg.div(alg.mul('-1',ele,pr=getpr()+2),e,getpr()+1);a.matx=cls.tform(a,i,ep,fac,False,False,'c');
+                    if i!=ep:setpr(getpr()+1);ele=li[i];fac=alg.div(alg.mul('-1',ele,pr=getpr()+1),e);a.matx=cls.tform(a,i,ep,fac,False,False,'c');setpr(getpr()-1)
                 cofac=cls.cofac(a,0,ep,False,'c')
                 setpr(getpr()-1)
                 return alg.mul(e,cofac)
@@ -523,7 +523,9 @@ class matutils:
                 case True:
                     if tmatx(a) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
+            setpr(getpr()+2)
             if (det:=cls.dnant(a,False,'c')) is None:raise Exception;
+            setpr(getpr()-2)
             if det==0:raise Exception("Error: Determinant is 0,\nInverse DNE!");
             setpr(getpr()+1);v=alg.div(1,det);adj=cls.adjnt(a,False,'c');setpr(getpr()-1)
             return cls.smult(v,adj,chk=False,ret='c')
@@ -727,7 +729,7 @@ class matutils:
             match chk:
                 case False:pass;
                 case True:
-                    if str(a:=deciml(a,getpr()))=='NaN':raise Exception;
+                    if str(a:=deciml(a,getpr()+1) if a.__class__.__name__!='Decimal' else a):raise Exception;
                     if tmatx(b) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if sumr != None:setpr(getpr()+1)
@@ -767,7 +769,7 @@ class matutils:
                         case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if sumr != None:setpr(getpr()+1)
-            if r is True:r=[galg.mulsg(i[0],i[1],getpr()+1) for i in zip(a,b.matx)];
+            if r is True:r=[galg.mulsg(i[0],i[1]) for i in zip(a,b.matx)];
             else:r=[galg.mul(a,i) for i in b.matx];
             if sumr != None:setpr(getpr()-1)
             match sumr:
@@ -962,8 +964,8 @@ class matutils:
             match chk:
                 case True:
                     def __check(t):
-                        if not ttup(t):raise Exception
-                        if len(t) != 2:raise Exception("Invalid argument: a => tuple[str,tuple[tuple|matx,...]], tuple {} length not 2.".format([i.__class__.__name__ for i in t]))
+                        if not ttup(t):return
+                        if len(t) != 2:print("Invalid argument: a => tuple[str,tuple[tuple|matx,...]], tuple {} length not 2.".format([i.__class__.__name__ for i in t]));return
                 case False:pass
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__))
             def __operate(o:str,a:tuple[matx|tuple[tuple[Decimal,...]],...]):
@@ -979,7 +981,10 @@ class matutils:
                         return a
                     case "invse":
                         def __cofac(__a,__j):
-                           return __det(tuple(map(lambda i:i[:__j]+i[__j+1:],__a[1:]))) if len(__a)!=2 else __a[1][0 if __j==1 else 1]
+                            setpr(getpr()+1)
+                            res=__det(tuple(map(lambda i:i[:__j]+i[__j+1:],__a[1:]))) if len(__a)!=2 else __a[1][0 if __j==1 else 1]
+                            setpr(getpr()-1)
+                            return res
                         def __det(__a):
                             det=0
                             setpr(getpr()+1)
@@ -993,45 +998,48 @@ class matutils:
                                 li1=list()
                                 for j in range(len(__a)):
                                     x=tuple(map(lambda k:k[:j]+k[j+1:],__a[:i]+__a[i+1:]))
-                                    li1.append(__det(x))
+                                    li1.append(alg.mul((-1)**(i+j),__det(x),pr=getpr()+1))
                                 li.append(tuple(li1))
                             return tuple(zip(*li))
                         def __inv(__a):
                             det=__det(__a)
-                            print(__adj(__a),det,getpr())
                             return tuple(map(lambda x:galg.divgs(x,det),__adj(__a)))
                         return tuple(map(lambda m:__inv(m),a))
                     case "lxtox":return tuple(map(lambda m:tuple(zip(m)),a))
-                    case "xtolx":return tuple(map(lambda m:tuple(map(lambda x:x[0],m)),a))
+                    case "xtolx":return tuple(map(lambda m:m[0],a))
                     case "tpose":return tuple(map(lambda m:tuple(zip(*m)),a))
                     case _:
-                        if o.__class__.__name__=='str':raise Exception("Invalid argument: a - {} not 'add'/'sub'/'mul'/'invse'.".format(o))
-                        else:raise Exception("Invalid argument: a - {} not a string.".format(o.__class__.__name__))
+                        if o.__class__.__name__=='str':print("Invalid argument: a - {} not 'add'/'sub'/'mul'/'invse'/'lxtox'/'xtolx'/'tpose'.".format(o));return
+                        else:print("Invalid argument: a - {} not a string.".format(o.__class__.__name__));return
             t=a
             def __calculate(t):
                 if chk:__check(t)
                 a=[]
                 nt=[]
                 for i in t[1]:
-                    if tmatx(i):a.append(i)
+                    if i.__class__.__name__=='matx':a.append(i)
                     elif i.__class__.__name__=='tuple':nt.append(i)
-                    else:raise Exception("Invalid argument: a => tuple[str,tuple[tuple|matx,...]], has {}".format(i.__class__.__name__))
+                    else:raise Exception("Invalid argument: a => tuple[str,tuple[tuple|matx,...]], has {} {}".format(i.__class__.__name__, i))
                 for i in nt:
                     setpr(getpr()+1)
-                    if a[0] in ["add","sub","mul"]:
-                        a.append(__calculate(i))
-                    else:
-                        for j in __calculate(i):
-                            a.append(j)
+                    res=__calculate(i)
+                    if res:
+                        if i[0] in ["add","sub","mul","xtolx"]:
+                            a.append(res)
+                        else:
+                            for j in res:
+                                a.append(j)
+                    else:return
                     setpr(getpr()-1)
                 if len(a) < 2:
                     if t[0] not in ["invse","lxtox","xtolx","tpose"]:
-                        raise Exception("Invalid argument: a - require more than one matx object to {}".format(t[0]))
+                        print("Invalid argument: a - require more than one matx object to {}".format(t[0]));return
                     if len(a) == 0:
-                        raise Exception("Invalid argument: a - require at least one matx object to {}".format(t[0]))
+                        print("Invalid argument: a - require at least one matx object to {}".format(t[0]));return
                 return __operate(t[0],a)
             r=__calculate(t)
-            return matx(r, False, 'c') if t[0] in ["add","sub","mul"] else r if len(r:=tuple(map(lambda m:matx(m, False, 'c'),r))) > 1 else r[0]
+            if not r:raise Exception
+            return matx(r, False, 'c') if t[0] in ["add","sub","mul","xtolx"] else r if len(r:=tuple(map(lambda m:matx(m, False, 'c'),r))) > 1 else r[0]
         except Exception as e:print("Invalid command: moperate()");retrn(ret,e);
 
 

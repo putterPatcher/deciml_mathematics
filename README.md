@@ -880,11 +880,21 @@ xix. **(sm) moperate(a, chk=True, ret='a') -> matx | tuple[matx, ...]**: Returns
 		- ***"sub"***: Perform subtraction of matrices in matx objects from matrix in first matx object
 		- ***"mul"***: Perform multiplication of matrices in matx objects
 		- ***"invse"***: Get the inverse matrices for the matrices in matx objects
-		- ***"matlxtox"***: Convert matrices into row matrices of rows of matrices in matx objects
-		- ***"matxtolx"***: Convert row matrices in matx objects into matrix with rows as the rows in row matrices
+		- ***"lxtox"***: Convert matrices into row matrices of rows of matrices in matx objects
+		- ***"xtolx"***: Convert row matrices in matx objects into matrix with rows as the rows in row matrices
 		- ***"tpose"***: Get the transpose matrix of matrices in matx objects
 
 ```python
+>>> mat1=matx([1.2311,2.23514,3.2365])
+>>> mat2=matx([2.3254,5.2364,3.2541])
+>>> mat3=matx([2.3121,2.3214,5.3211])
+>>> mat=matutils.moperate(('add', (('xtolx', (mat1, mat2, mat3)), ('invse', (('xtolx', (mat2, mat1, mat3)),)))), True, 'a')
+>>> print(mat)
+matx(
+|'1.811', '-0.453', '4.518'|
+|'2.449', '5.878', '2.788'|
+|'2.006', '3.209', '5.156'|
+)
 
 ```
 
@@ -895,15 +905,28 @@ xix. **(sm) moperate(a, chk=True, ret='a') -> matx | tuple[matx, ...]**: Returns
   <p>
 i. **add(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as sum of elements in rows or columns in a matrix of a matx object
 
+- **a** - *matx*
+- **li** - *tuple[tuple[int, ...]] | list[list[ int ]]*
+- **r** - *bool*
+
 ```python
+
 ```
 
 ii. **mult(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as multiplication of elements in rows or columns in a matrix of a matx object
+
+- **a** - *matx*
+- **li** - *tuple[tuple[int, ...]] | list[list[ int ]]*
+- **r** - *bool*
 
 ```python
 ```
 
 iii. **pow(an, a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as exponentiation of elements in rows or columns in a matrix of a matx object
+
+- **an** - *tuple[Decimal, Decimal]*
+- **a** - *matx*
+- **li** - *tuple[int, ...] | list[ int ]*
 
 ```python
 ```
