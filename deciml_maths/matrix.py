@@ -1030,10 +1030,8 @@ class matutils:
                     if len(a) == 0:
                         raise Exception("Invalid argument: a - require at least one matx object to {}".format(t[0]))
                 return __operate(t[0],a)
-            setpr(getpr()+1)
-            ret=__calculate(t)
-            setpr(getpr()-1)
-            return matx(ret) if t[0] in ["add","sub","mul"] else ret if len(ret:=tuple(map(lambda m:matx(m),ret))) > 1 else ret[0]
+            r=__calculate(t)
+            return matx(r, False, 'c') if t[0] in ["add","sub","mul"] else r if len(r:=tuple(map(lambda m:matx(m, False, 'c'),r))) > 1 else r[0]
         except Exception as e:print("Invalid command: moperate()");retrn(ret,e);
 
 setpr(3)
