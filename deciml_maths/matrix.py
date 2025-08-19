@@ -86,15 +86,57 @@ class matx:
         '''
 #### Print the matrix.
         '''
+        max_in_col=tuple(map(lambda i:max(tuple(map(lambda j:len(str(j)),i))),tuple(zip(*self.__matx))))
         print("matx(")
-        for k in [[str(j) for j in i] for i in self.__matx]:print('|'+str(k)[1:-1]+'|');
+        scl=len(str(self.__collen))
+        row=0
+        s=str()
+        for _ in range(scl):s+="_"
+        s+="____|"
+        for i in range(self.__rowlen):
+            spaces=str()
+            for _ in range(int(abs(max_in_col[i]-len(str(i))))):spaces+="_"
+            s+=spaces[:(len(spaces)//2)]+"_["+str(i)+"]"+spaces[len(spaces)//2:]+"_|"
+            if max_in_col[i] < len(str(i)):max_in_col[i]=len(str(i))
+        print(s)
+        for k in [[str(j) for j in i] for i in self.__matx]:
+            spaces=str()
+            for _ in range(scl-len(str(row))):spaces+=" "
+            s=" ("+str(row)+")"+spaces+" |"
+            row+=1
+            for index,l in enumerate(k):
+                spaces=str();
+                for _ in range(max_in_col[index]-len(l)):spaces+=" "
+                s+=spaces+" '"+l+"'"+" |"
+            print(s)
         print(')\n')
 
     def __str__(self):
-        s="matx(\n"
-        for k in [[str(j) for j in i] for i in self.__matx]:s+='|'+str(k)[1:-1]+'|\n';
-        s+=')\n'
-        return s
+        max_in_col=tuple(map(lambda i:max(tuple(map(lambda j:len(str(j)),i))),tuple(zip(*self.__matx))))
+        ret="matx(\n"
+        scl=len(str(self.__collen))
+        row=0
+        s=str()
+        for _ in range(scl):s+="_"
+        s+="____|"
+        for i in range(self.__rowlen):
+            spaces=str()
+            for _ in range(int(abs(max_in_col[i]-len(str(i))))):spaces+="_"
+            s+=spaces[:(len(spaces)//2)]+"_["+str(i)+"]"+spaces[len(spaces)//2:]+"_|"
+            if max_in_col[i] < len(str(i)):max_in_col[i]=len(str(i))
+        ret+=s+"\n"
+        for k in [[str(j) for j in i] for i in self.__matx]:
+            spaces=str()
+            for _ in range(scl-len(str(row))):spaces+=" "
+            s=" ("+str(row)+")"+spaces+" |"
+            row+=1
+            for index,l in enumerate(k):
+                spaces=str();
+                for _ in range(max_in_col[index]-len(l)):spaces+=" "
+                s+=spaces+" '"+l+"'"+" |"
+            ret+=s+"\n"
+        ret+=')\n'
+        return ret
     
     def dnant(self)->Decimal:
         '''
@@ -238,8 +280,8 @@ class matx:
                 case True:
                     if a is None:raise Exception;
                     match r:
-                        case True:a=tint.ele(a,self.__collen);
-                        case False:a=tint.ele(a,self.__rowlen);
+                        case True:a=tint.ele(a,self.__collen,True);
+                        case False:a=tint.ele(a,self.__rowlen,True);
                         case _:raise Exception("Invalid argument: r => bool, {}".format(r.__class__.__name__));
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             match r:
@@ -442,7 +484,7 @@ class matutils:
         try:
             match chk:
                 case True:
-                    if tmatx(a) is None or (b:=tint.ele([b,c],a.rowlen)) is None:raise Exception;
+                    if tmatx(a) is None or (b:=tint.ele([b,c],a.rowlen,True)) is None:raise Exception;
                     else:b,c=b;
                     if a.sqmatx is False:raise Exception("Error: Not a square matrix");
                 case False:pass;
@@ -654,9 +696,9 @@ class matutils:
                 case False:pass;
                 case True:
                     if r is not None:
-                        if (a:=tdeciml.dall(a,getpr())) is None:raise Exception;
+                        if (a:=tdeciml.dall(a,getpr()) if not tdeciml.deciml(a,True) else a) is None:raise Exception;
                     else:
-                        if str(a:=deciml(a,getpr()))=='NaN':raise Exception;
+                        if str(a:=deciml(a,getpr()) if a.__class__.__name__!='Decimal' else a)=='NaN':raise Exception;
                     if tmatx(b) is None:raise Exception;
                     match r:
                         case True:
@@ -760,7 +802,7 @@ class matutils:
             match chk:
                 case False:pass;
                 case True:
-                    if (a:=tdeciml.dall(a,getpr())) is None or tmatx(b) is None:raise Exception;
+                    if (a:=tdeciml.dall(a,getpr()) if not tdeciml.deciml(a,True) else a) is None or tmatx(b) is None:raise Exception;
                     match r:
                         case True:
                             if eqval(len(a),b.collen) is None:raise Exception;
@@ -1062,8 +1104,9 @@ class melutils:
                     if not tmatx(a):raise Exception;
                     if li != 'all':
                         if (tli:=li.__class__.__name__) != 'list' and tli != 'tuple':raise Exception("Invalid argument: li => 'all'/list/tuple, got {}".format(tli));
-                        for i in li:
-                            if not tint.ele(i, a.collen if r == True else a.rowlen):raise Exception;
+                        for index,i in enumerate(li):
+                            if not (i:=tint.ele(i, a.collen if r == True else a.rowlen,True)):raise Exception;
+                            li[index]=i
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
                 l=list()
@@ -1098,8 +1141,9 @@ class melutils:
                 case True:
                     if not tmatx(a):raise Exception
                     if li != 'all':
-                        for i in li:
-                            if not tint.ele(i, a.collen if r == True else a.rowlen):raise Exception;
+                        for index,i in enumerate(li):
+                            if not (i:=tint.ele(i, a.collen if r == True else a.rowlen,True)):raise Exception;
+                            li[index]=i
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if (tli:=tli.__class__.__name__)=='list' or tli=='tuple':
                 l=list()
@@ -1134,15 +1178,15 @@ class melutils:
                 case False:pass;
                 case True:
                     if not tmatx(a):raise Exception
+                    if eqval(len(an),2) is None:raise Exception;
                     match an.__class__.__name__:
                         case 'tuple':
-                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr()) if not tdeciml.deciml(an,True) else an) is None:raise Exception;
                         case 'list':
-                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr()) if not tdeciml.deciml(an,True) else an) is None:raise Exception;
                         case _:raise Exception("Invalid argument: a => tuple/list, got {}".format(a.__class__.__name__));
-                    if eqval(len(an),2) is None:raise Exception;
                     if li != 'all':
-                        if not tint.ele(li, a.collen if r else a.rowlen):raise Exception
+                        if not (li:=tint.ele(li, a.collen if r else a.rowlen,True)):raise Exception
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
                 if an[0]!=1:return matx(tuple([galg.pwrgs(galg.mulsg(an[0],i,getpr()+1),an[1]) for i in a.gele(li,r,chk,'c')]),False,'c');
@@ -1173,13 +1217,13 @@ class melutils:
                     if not tmatx(a):raise Exception
                     match an.__class__.__name__:
                         case 'tuple':
-                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr()) if not tdeciml.deciml(an,True) else an) is None:raise Exception;
                         case 'list':
-                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr()) if not tdeciml.deciml(an,True) else an) is None:raise Exception;
                         case _:raise Exception("Invalid argument: a => tuple/list");
                     if eqval(len(an),2) is None:raise Exception;
                     if li != 'all':
-                        if not tint.ele(li, a.collen if r else a.rowlen):raise Exception
+                        if not (li:=tint.ele(li, a.collen if r else a.rowlen,True)):raise Exception
                 case _:raise Exception("Invalid argument: chk => bool");
             if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
                 if an[0]!=1:return matx(tuple([tuple([alg.log(alg.mul(j,an[0],getpr()+1),an[1]) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
@@ -1210,9 +1254,9 @@ class melutils:
                     if not tmatx(a):raise Exception
                     match an.__class__.__name__:
                         case 'tuple':
-                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr()) if not tdeciml.deciml(an,True) else an) is None:raise Exception;
                         case 'list':
-                            if (an:=tdeciml.dall(an,getpr())) is None:raise Exception;
+                            if (an:=tdeciml.dall(an,getpr()) if not tdeciml.deciml(an,True) else an) is None:raise Exception;
                         case _:raise Exception("Invalid argument: a => tuple/list");
                     if eqval(len(an),2) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool");

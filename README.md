@@ -45,6 +45,7 @@
 
 ```python
 >>> from deciml_maths.matrix import matx
+Imported deciml...
 >>> from deciml.deciml import setpr
 >>> setpr(3)
 >>> matrix = matx([[1.924,2.25452,3.35157],[2.2585441,3.35844,4.25841],[3.58425,4.365258,5.694222],[4.6945485,5.5875155,6.557885]],True,'w')
@@ -53,23 +54,24 @@
     True: Check argument types
     'w': Wait and exit if error
 '''
->>> matrix.pmatx
+>>> print(matrix)
 matx(
-|'1.924', '2.255', '3.352'|
-|'2.259', '3.358', '4.258'|
-|'3.584', '4.365', '5.694'|
-|'4.695', '5.588', '6.558'|
+_____|___[0]___|___[1]___|___[2]___|
+ (0) | '1.924' | '2.255' | '3.352' | 
+ (1) | '2.259' | '3.358' | '4.258' | 
+ (2) | '3.584' | '4.365' | '5.694' | 
+ (3) | '4.695' | '5.588' | '6.558' | 
 )
-
 ```
 
 i. **(s) matx**: Assign a new 2-D matrix
 
 ```python
 >>> matrix.matx = [1.5, 2.8257, 3.25541]
->>> matx.pmatx
+>>> matrix.pmatx
 matx(
-|'1.5', '2.826', '3.255'|
+_____|__[0]__|___[1]___|___[2]___|
+ (0) | '1.5' | '2.826' | '3.255' | 
 )
 
 ```
@@ -107,9 +109,10 @@ vi. **(g) pmatx**: Print the matrix and return the matrix as a tuple
 #### Note - Can be used to check for errors. :'/ *Change the matx to pmatx*
 
 ```python
->>> matrix.pmatx
+matrix.pmatx
 matx(
-|'1.5', '2.826', '3.255'|
+_____|__[0]__|___[1]___|___[2]___|
+ (0) | '1.5' | '2.826' | '3.255' | 
 )
 
 ```
@@ -132,12 +135,13 @@ vii. **(f) invse() -> matx**: Get the inverse matrix of the matrix
 
 ```python
 >>> mat = matrix.invse()
->>> mat.pmatx
+>>> print(mat)
 matx(
-|'-0.051613', '-0.2194', '-0.045161', '0.2323'|
-|'-0.4258', '0.6903', '-0.1226', '-0.083871'|
-|'-0.096774', '-0.1613', '0.2903', '-0.064516'|
-|'0.4387', '-0.1355', '-0.1161', '0.025806'|
+_____|____[0]_____|___[1]____|____[2]_____|____[3]_____|
+ (0) | '-0.05161' | '-0.219' | '-0.04516' |    '0.232' | 
+ (1) |   '-0.426' |  '0.690' |   '-0.123' | '-0.08387' | 
+ (2) | '-0.09677' | '-0.161' |    '0.290' | '-0.06452' | 
+ (3) |    '0.439' | '-0.135' |   '-0.116' |  '0.02581' | 
 )
 
 ```
@@ -146,12 +150,13 @@ vii. **(f) adjnt() -> matx**: Get the adjoint matrix of the matrix
 
 ```python
 >>> mat = matrix.adjnt()
->>> mat.pmatx
+>>> print(mat)
 matx(
-|'8.0', '34.0', '7.0', '-36.0'|
-|'66.0', '-107.0', '19.0', '13.0'|
-|'15.0', '25.0', '-45.0', '10.0'|
-|'-68.0', '21.0', '18.0', '-4.0'|
+_____|___[0]___|___[1]____|___[2]___|___[3]___|
+ (0) |   '8.0' |   '34.0' |   '7.0' | '-36.0' | 
+ (1) |  '66.0' | '-107.0' |  '19.0' |  '13.0' | 
+ (2) |  '15.0' |   '25.0' | '-45.0' |  '10.0' | 
+ (3) | '-68.0' |   '21.0' |  '18.0' |  '-4.0' | 
 )
 
 ```
@@ -160,12 +165,13 @@ viii. **(f) tpose() -> matx**: Get the transpose matrix of the matrix
 
 ```python
 >>> mat = matrix.tpose()
->>> mat.pmatx
+>>> print(mat)
 matx(
-|'1.0', '2.0', '3.0', '7.0'|
-|'2.0', '4.0', '4.0', '5.0'|
-|'3.0', '4.0', '8.0', '6.0'|
-|'5.0', '5.0', '6.0', '7.0'|
+_____|__[0]__|__[1]__|__[2]__|__[3]__|
+ (0) | '1.0' | '2.0' | '3.0' | '7.0' | 
+ (1) | '2.0' | '4.0' | '4.0' | '5.0' | 
+ (2) | '3.0' | '4.0' | '8.0' | '6.0' | 
+ (3) | '5.0' | '5.0' | '6.0' | '7.0' | 
 )
 
 ```
@@ -174,12 +180,13 @@ ix. **(f) cofacm() -> matx**: Get the matrix of cofactors for the matrix
 
 ```python
 >>> mat = matrix.cofacm()
->>> mat.pmatx
+>>> print(mat)
 matx(
-|'8.0', '66.0', '15.0', '-68.0'|
-|'34.0', '-107.0', '25.0', '21.0'|
-|'7.0', '19.0', '-45.0', '18.0'|
-|'-36.0', '13.0', '10.0', '-4.0'|
+_____|___[0]___|___[1]____|___[2]___|___[3]___|
+ (0) |   '8.0' |   '66.0' |  '15.0' | '-68.0' | 
+ (1) |  '34.0' | '-107.0' |  '25.0' |  '21.0' | 
+ (2) |   '7.0' |   '19.0' | '-45.0' |  '18.0' | 
+ (3) | '-36.0' |   '13.0' |  '10.0' |  '-4.0' | 
 )
 
 ```
@@ -262,19 +269,22 @@ xv. **(f) pop(i, r=True, chk=True, ret='a') -> tuple[Decimal, ...]**: Remove a r
 
 ```python
 >>> matrix.pop(0, False, True, 'c')
+>>> popped = matrix.pop(0, False, True, 'c')
 '''
 	0 - Column index
 	False - Pop column
 	True - Check arguments
 	'c' - Continue if error
 '''
+>>> popped
 (Decimal('1.0'), Decimal('2.0'), Decimal('3.0'), Decimal('7.0'))
->>> matrix.pmatx
+>>> print(matrix)
 matx(
-|'2.0', '3.0', '5.0'|
-|'4.0', '4.0', '5.0'|
-|'4.0', '8.0', '6.0'|
-|'5.0', '6.0', '7.0'|
+_____|__[0]__|__[1]__|__[2]__|
+ (0) | '2.0' | '3.0' | '5.0' | 
+ (1) | '4.0' | '4.0' | '5.0' | 
+ (2) | '4.0' | '8.0' | '6.0' | 
+ (3) | '5.0' | '6.0' | '7.0' | 
 )
 
 ```
@@ -309,10 +319,11 @@ i. **(sm) sclrm(n, el, chk=True, ret='a') -> matx**: Get a matx object with a sc
 '''
 >>> print(mat)
 matx(
-|'12.123', '0.0', '0.0', '0.0'|
-|'0.0', '12.123', '0.0', '0.0'|
-|'0.0', '0.0', '12.123', '0.0'|
-|'0.0', '0.0', '0.0', '12.123'|
+_____|___[0]____|___[1]____|___[2]____|___[3]____|
+ (0) | '12.123' |    '0.0' |    '0.0' |    '0.0' |
+ (1) |    '0.0' | '12.123' |    '0.0' |    '0.0' |
+ (2) |    '0.0' |    '0.0' | '12.123' |    '0.0' |
+ (3) |    '0.0' |    '0.0' |    '0.0' | '12.123' |
 )
 
 ```
@@ -334,10 +345,11 @@ ii. **(sm) eqelm(m, n, i, chk=True, ret='a') -> matx**: Get a matx object of mat
 '''
 >>> print(mat)
 matx(
-|'12.123', '12.123', '12.123'|
-|'12.123', '12.123', '12.123'|
-|'12.123', '12.123', '12.123'|
-|'12.123', '12.123', '12.123'|
+_____|___[0]____|___[1]____|___[2]____|
+ (0) | '12.123' | '12.123' | '12.123' |
+ (1) | '12.123' | '12.123' | '12.123' |
+ (2) | '12.123' | '12.123' | '12.123' |
+ (3) | '12.123' | '12.123' | '12.123' |
 )
 
 ```
@@ -361,14 +373,15 @@ iii. **(sm) addmatx(a, *b, r=False, chk=True, ret='a') -> matx**: Get a matrix a
 '''
 >>> print(mat)
 matx(
-|'1.0', '2.0', '3.0', '4.0'|
-|'12.123', '1.237', '3.0', '4.0'|
-|'0.237', '1.236', '4.256', '5.0'|
-|'5.0', '6.0', '7.0', '8.0'|
-|'1.0', '2.0', '3.0', '4.0'|
-|'2.0', '3.0', '4.0', '5.0'|
+_____|___[0]____|___[1]___|___[2]___|__[3]__|
+ (0) |    '1.0' |   '2.0' |   '3.0' | '4.0' |
+ (1) | '12.123' | '1.237' |   '3.0' | '4.0' |
+ (2) |  '0.237' | '1.236' | '4.256' | '5.0' |
+ (3) |    '5.0' |   '6.0' |   '7.0' | '8.0' |
+ (4) |    '1.0' |   '2.0' |   '3.0' | '4.0' |
+ (5) |    '2.0' |   '3.0' |   '4.0' | '5.0' |
 )
- 
+
 >>> mat = matutils.addmatx(mat1, mat2, mat3, r=False, chk=True, ret='w')
 '''
 	mat1, mat2, mat3 - matx objects
@@ -378,8 +391,9 @@ matx(
 '''
 >>> print(mat)
 matx(
-|'1.0', '2.0', '3.0', '4.0', '0.237', '1.236', '4.256', '5.0', '1.0', '2.0', '3.0', '4.0'|
-|'12.123', '1.237', '3.0', '4.0', '5.0', '6.0', '7.0', '8.0', '2.0', '3.0', '4.0', '5.0'|
+_____|___[0]____|___[1]___|__[2]__|__[3]__|___[4]___|___[5]___|___[6]___|__[7]__|__[8]__|__[9]__|_[10]__|_[11]__|
+ (0) |    '1.0' |   '2.0' | '3.0' | '4.0' | '0.237' | '1.236' | '4.256' | '5.0' | '1.0' | '2.0' | '3.0' | '4.0' |
+ (1) | '12.123' | '1.237' | '3.0' | '4.0' |   '5.0' |   '6.0' |   '7.0' | '8.0' | '2.0' | '3.0' | '4.0' | '5.0' |
 )
 
 ```
@@ -399,8 +413,9 @@ iv. **(cm) maddval(a, x, chk=True, ret='a') -> matx**: Get a matrix as a matx ob
 '''
 >>> print(mat)
 matx(
-|'10.123', '1.0', '2.0', '3.0', '4.0'|
-|'10.123', '12.123', '1.237', '3.0', '4.0'|
+_____|___[0]____|___[1]____|___[2]___|__[3]__|__[4]__|
+ (0) | '10.123' |    '1.0' |   '2.0' | '3.0' | '4.0' |
+ (1) | '10.123' | '12.123' | '1.237' | '3.0' | '4.0' |
 )
 
 ```
@@ -908,6 +923,7 @@ matx(
 <details>
   <summary>melutils</summary>
   <p>
+
 **(c) melutils**: Methods for operations on rows/columns in matrix of a matx object 
   
 i. **(sm) add(a, li, r=False, chk=True, ret='a') -> matx**: Get a matx object with matrix of rows as sum of elements in rows or columns in a matrix of a matx object
@@ -1153,6 +1169,7 @@ matx(
 <details>
   <summary>matstat</summary>
   <p>
+
 **(c) matstat**: Methods for statistical analysis using matx object
 
 ```python
@@ -1406,6 +1423,76 @@ viii. **mode(a, el='row', chk=True, ret='a') -> tuple[dict, ...] | dict**
 
   </p>
 </details>
+</p>
+</details>
+
+<details>
+<summary>Data</summary>
+<p>
+<details>
+<summary>data</summary>
+<p>
+
+**(o) data**: Data object to store data values for independent (x) and dependent (y) variables
+
+```python
+
+```
+
+i. **(g) data -> tuple[matx, tuple[Decimal, ...]]**: Get the data as a tuple with matx object of *x values* and tuple of *y values*
+
+ii. **(g) datalen -> int**: Get the length of data
+
+iii. **(g) xvars -> int**: Get the number of *x variables*
+
+iv. **(g) pdata**: Print the data
+
+v. **(f) getax() -> matx**: Get all *x values* as a matx object
+
+vi. **(f) getay() -> tuple[Decimal, ...]**: Get all *y values* as a tuple
+
+vii. **(f) getx(li, chk=True, ret='a') -> matx**: Get the *x values* at indexes
+
+viii. **(f) gety(li, chk=True, ret='a') -> tuple[Decimal, ...]**: Get the *y values* at indexes
+
+ix. **(f) getd(li, chk=True, ret='a') -> tuple[matx, tuple[Decimal, ...]]**: Get a tuple with matx object of *x values* and tuple of *y values* for indexes
+
+x. **(f) getlx(li, chk=True, ret='a') -> matx**: Get the *x values* as a matx object for *x variable* at indexes
+
+</p>
+</details>
+<details>
+<summary>datautils</summary>
+<p>
+
+**(c) datautils**: Methods to use with data object
+
+i. **dataval -> data**: Add a *x variable* with constant value to data
+
+ii. **addata -> data**: Add *x variables* to data object
+
+iii. **datalx -> data**: Get a data object with *x variables* at indexes
+
+iv. **multlx -> data**: Get a data object with multiplication of *x variables* at indexes as added *x variables*
+
+v. **addlx -> data**: Get a data object with addition of *x variables* at indexes as added *x variables* 
+
+vi. **powlx -> data**: Get a data object with exponentiated *x variables* as added *x variables*
+
+vii. **loglx -> data**: Get a data object with logarithm of *x variables* as added *x variables*
+
+viii. **expolx -> data**: Get a data object with exponentiation using *x variables* as added *x variables*
+
+ix. **triglx -> data**: Ge a data object with *x variables* after operation with a trignometric function as added *x variables*
+
+</p>
+</details>
+</p>
+</details>
+
+<details>
+<summary>Functions</summary>
+<p>
 </p>
 </details>
 
