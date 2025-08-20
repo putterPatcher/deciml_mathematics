@@ -68,7 +68,7 @@ class data:
         else:retrn('a',"")
         return self.__ylabel
 
-    def get_label_index(self,labels:list[str],tuple[str,...])->tuple[int]:
+    def get_label_index(self,labels:list[str]|tuple[str,...])->tuple[int]:
         if not tstr(labels):retrn('a',"")
         else:
             indexes=list()
