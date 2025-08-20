@@ -1307,10 +1307,10 @@ class melutils:
                 case 'sec':return matx(tuple(map(lambda x:gtrig.sec(x),x)),False,'c');
                 case 'cosec':return matx(tuple(map(lambda x:gtrig.cosec(x),x)),False,'c');
                 case 'cot':return matx(tuple(map(lambda x:gtrig.cot(x),x)),False,'c');
-                case 'acos':return matx(tuple(map(lambda x:grtig.acosine(x),x)),False,'c');
+                case 'acos':return matx(tuple(map(lambda x:gtrig.acosine(x),x)),False,'c');
                 case 'asin':return matx(tuple(map(lambda x:gtrig.asine(x),x)),False,'c');
                 case 'atan':return matx(tuple(map(lambda x:gtrig.atan(x),x)),False,'c');
-                case 'asec':return matx(tuple(map(lambda x:grtig.asec(x),x)),False,'c');
+                case 'asec':return matx(tuple(map(lambda x:gtrig.asec(x),x)),False,'c');
                 case 'acosec':return matx(tuple(map(lambda x:gtrig.acosec(x),x)),False,'c');
                 case 'acot':return matx(tuple(map(lambda x:gtrig.acot(x),x)),False,'c');
                 case 'sinh':return matx(tuple(map(lambda x:ghtrig.sinh(x),x)),False,'c');
