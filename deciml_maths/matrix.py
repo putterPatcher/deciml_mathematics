@@ -372,11 +372,11 @@ class matutils:
                     for i in b:
                         l=0
                         for j in i.matx:a[l]=a[l]+j;l+=1;
-                    return matx(tuple(a),False,'c')
+                    return matx(tuple(a), True if chk else False,'c')
                 case True:
                     r=a.matx
                     for i in b:r+=i.matx;
-                    return matx(r,False,'c')
+                    return matx(r,True if chk else False,'c')
                 case _:raise Exception("Invalid argument: r => bool, got {}".format(r.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.addmatx()");retrn(ret,e);
 
