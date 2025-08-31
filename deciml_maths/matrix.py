@@ -394,7 +394,7 @@ class matutils:
                 case False:return cls.addmatx(cls.eqelm(a.collen,1,x,False,'c'),a,r=False,chk=False,ret='c');
                 case True:
                     if tmatx(a) is None or str(x:=deciml(str(x),getpr()))=='NaN':raise Exception;
-                    return cls.addmatx(cls.eqelm(a.collen,1,x,False,'c'),a,r=False,chk=False,ret='c')
+                    return cls.addmatx(cls.eqelm(a.collen,1,x,False,'c'),matx(a,True,'c'),r=False,chk=False,ret='c')
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.maddval()");retrn(ret,e);
 
@@ -412,7 +412,7 @@ class matutils:
                 case False:return tuple([matx(i,False,'c') for i in a.matx]);
                 case True:
                     if tmatx(a) is None:raise Exception;
-                    return tuple([matx(i,False,'c') for i in a.matx])
+                    return tuple([matx(i,True,'c') for i in a.matx])
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.matlxtox()");retrn(ret,e);
 
@@ -434,7 +434,7 @@ class matutils:
                     for i in a:
                         if eqval(i.collen,1) is None or eqval(i.rowlen,ar) is None:raise Exception;
                         x.append(i.matx[0])
-                    return matx(tuple(x),False,'c')
+                    return matx(tuple(x),True,'c')
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
         except Exception as e:print("Invalid command: matutils.matxtolx()");retrn(ret,e);
 
