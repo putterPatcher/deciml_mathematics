@@ -771,7 +771,7 @@ class matutils:
             match chk:
                 case False:pass;
                 case True:
-                    if str(a:=deciml(a,getpr()+1) if a.__class__.__name__!='Decimal' else a):raise Exception;
+                    if not str(a:=deciml(a,getpr()+1) if a.__class__.__name__!='Decimal' else a):raise Exception;
                     if tmatx(b) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
             if sumr != None:setpr(getpr()+1)
@@ -802,7 +802,7 @@ class matutils:
             match chk:
                 case False:pass;
                 case True:
-                    if (a:=tdeciml.dall(a,getpr()) if not tdeciml.deciml(a,True) else a) is None or tmatx(b) is None:raise Exception;
+                    if (a:=tdeciml.dall(a,getpr()+1) if not tdeciml.deciml(a,True) else a) is None or tmatx(b) is None:raise Exception;
                     match r:
                         case True:
                             if eqval(len(a),b.collen) is None:raise Exception;
