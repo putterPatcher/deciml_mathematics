@@ -1471,10 +1471,12 @@ viii. **mode(a, el='row', chk=True, ret='a') -> tuple[dict, ...] | dict**
 **(o) data**: Data object to store data values for independent (x) and dependent (y) variables
 
 ```python
-
+from deciml_maths.data import data
 ```
 
 i. **(g) data -> tuple[matx, tuple[Decimal, ...]]**: Get the data as a tuple with matx object of *x values* and tuple of *y values*
+
+
 
 ii. **(g) datalen -> int**: Get the length of data
 

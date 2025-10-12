@@ -137,6 +137,42 @@ class matx:
             ret+=s+"\n"
         ret+=')\n'
         return ret
+
+    def __repr__(self):
+        max_in_col=tuple(map(lambda i:max(tuple(map(lambda j:len(str(j)),i))),tuple(zip(*self.__matx))))
+        ret="matx(\n"
+        scl=len(str(self.__collen))
+        row=0
+        s=str()
+        for _ in range(scl):s+="_"
+        s+="____|"
+        for i in range(self.__rowlen):
+            spaces=str()
+            for _ in range(int(abs(max_in_col[i]-len(str(i))))):spaces+="_"
+            s+=spaces[:(len(spaces)//2)]+"_["+str(i)+"]"+spaces[len(spaces)//2:]+"_|"
+            if max_in_col[i] < len(str(i)):max_in_col[i]=len(str(i))
+        ret+=s+"\n"
+        for k in [[str(j) for j in i] for i in self.__matx]:
+            spaces=str()
+            for _ in range(scl-len(str(row))):spaces+=" "
+            s=" ("+str(row)+")"+spaces+" |"
+            row+=1
+            for index,l in enumerate(k):
+                spaces=str();
+                for _ in range(max_in_col[index]-len(l)):spaces+=" "
+                s+=spaces+" '"+l+"'"+" |"
+            ret+=s+"\n"
+        ret+=')\n'
+        return ret
+
+    def __getitem__(self, index):
+        try:
+            if index.__class__.__name__=='tuple':
+                if len(index)!=2:raise IndexError("Expected 2 slices got {}".format(len(index)))
+                else:return matx([i[index[1]] for i in self.__matx[index[0]]])
+            elif index.__class__.__name__=='slice':return matx(self.__matx[index])
+            else:raise IndexError("Expected slice got {}".format(index.__class__.__name__))
+        except Exception as e:retrn('a', e);
     
     def dnant(self)->Decimal:
         '''
