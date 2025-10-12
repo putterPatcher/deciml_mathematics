@@ -170,9 +170,14 @@ class matx:
             if (ti:=index.__class__.__name__)=='tuple':
                 if len(index)!=2:raise IndexError("Expected 2 slices got {}".format(len(index)))
                 else:
-                    if index[0].__class__.__name__=='int' and index[1].__class__.__name__=='int':return self.__matx[index[0]][index[1]]
-                    elif tslice(index[0]) and (index[1].__class__.__name__=='slice' or index[1].__class__.__name__=='int'):
-                        return matx([i[index[1]] for i in self.__matx[index[0]]])
+                    if (ti0:=index[0].__class__.__name__)=='int' and index[1].__class__.__name__=='int':return self.__matx[index[0]][index[1]]
+                    elif ti0=='int' and (index[1].__class__.__name__=='slice' or index[1].__class__.__name__=='int'):
+                        return matx(self.__matx[index[0]][index[1]])
+                    elif tslice(index[0]):
+                        if index[1].__class__.__name__=='slice':
+                            return matx([i[index[1]] for i in self.__matx[index[0]]])
+                        if index[1].__class__.__name__=='int':
+                            return matx([[i[index[1]],] for i in self.__matx[index[0]]])
                     else:raise IndexError("Expected slice or int got {} and {}".format(index[0].__class__.__name__, index[1].__class__.__name__))
             elif ti=='slice' or ti=='int':return matx(self.__matx[index])
             else:raise IndexError("Expected slice got {}".format(ti))

@@ -65,18 +65,38 @@ class data:
     @y_label.setter
     def y_label(self,s:str):
         if tstr(s):self.__ylabel=s
-        else:retrn('a',"")
+        else:retrn('a',"Invalid argument: s => str")
         return self.__ylabel
 
-    def get_label_index(self,labels:list[str]|tuple[str,...])->tuple[int]:
-        if not tstr(labels):retrn('a',"")
-        else:
-            indexes=list()
-            for i in labels:
-                if i not in self.__xlabels:retrn('a',"{} not a label.".format(i))
-                indexes.append(i)
-            return indexes
-
+    def get_label_index(self,labels:list[str]|tuple[str,...],ret='a')->tuple[int,...]:
+        try:
+            if not tstr(labels, True):retrn('a',"")
+            else:
+                indexes=list()
+                for i in labels:
+                    if i not in self.__xlabels:raise Exception('a',"{} not a label.".format(i))
+                    indexes.append(self.__xlabels.index(i))
+                return indexes
+        except Exception as e:retrn(ret, e)
+    
+    def __getitem__(self, index):
+        try:
+            if len(index)!=2:raise Exception("Expected 2 slices got {}".format(len(index)))
+            if (ti0:=index[0].__class__.__name__)=='int' or ti0=='slice':
+                if (ti1:=index[1].__class__.__name__)=='slice' or ti1=='int':
+                    return data(self.__data[0][index[0],index[1]], self.__data[1][index[0]] if ti0=='slice' else (self.__data[1][index[0]],))
+                elif ti1=='list' or ti1=='tuple':
+                    indexes=self.get_label_index(index[1]);l=[]
+                    for i in self.data[0][index[0]].matx:
+                        l1=[]
+                        for j in indexes:
+                            l1.append(i[j])
+                        l.append(tuple(l1))
+                    return data(l, self.__data[1][index[0]])
+                else:raise Exception("Expected slice, int, or list/tuple got {}".format(ti1))
+            else:raise Exception("Expected slice or int got {}".format(ti0))
+        except Exception as e:retrn('a', e)
+        
     # prints the data
     @data.getter
     def pdata(self)->None:
@@ -86,6 +106,12 @@ class data:
         print("]\n")
 
     def __str__(self):
+        x=self.__data[0].matx;y=self.__data[1];
+        s="data["
+        for i in range(self.datalen):s+="\n  "+str(i)+": "+str([str(j) for j in x[i]])[1:-1]+" | "+str(str(y[i]));
+        return s+"\n]"
+    
+    def __repr__(self):
         x=self.__data[0].matx;y=self.__data[1];
         s="data["
         for i in range(self.datalen):s+="\n  "+str(i)+": "+str([str(j) for j in x[i]])[1:-1]+" | "+str(str(y[i]));
