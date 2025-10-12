@@ -1145,7 +1145,7 @@ class melutils:
                             if not (i:=tint.ele(i, a.collen if r == True else a.rowlen,True)):raise Exception;
                             li[index]=i
                 case _:raise Exception("Invalid argument: chk => bool, got {}".format(chk.__class__.__name__));
-            if (tli:=tli.__class__.__name__)=='list' or tli=='tuple':
+            if (tli:=li.__class__.__name__)=='list' or tli=='tuple':
                 l=list()
                 for i in li:
                     for j in i:
@@ -1226,10 +1226,10 @@ class melutils:
                         if not (li:=tint.ele(li, a.collen if r else a.rowlen,True)):raise Exception
                 case _:raise Exception("Invalid argument: chk => bool");
             if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
-                if an[0]!=1:return matx(tuple([tuple([alg.log(alg.mul(j,an[0],getpr()+1),an[1]) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                if an[0]!=1:return matx(tuple([tuple([alg.log(alg.mul(j,an[0],pr=getpr()+1),an[1]) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
                 else:return matx(tuple([tuple([alg.log(j,an[1]) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
             elif li=='all':
-                if an[0]!=1:return matx(tuple([tuple([alg.log(alg.mul(j,an[0],getpr()+1),an[1]) for j in i]) for i in a.matx]),False,'c');
+                if an[0]!=1:return matx(tuple([tuple([alg.log(alg.mul(j,an[0],pr=getpr()+1),an[1]) for j in i]) for i in a.matx]),False,'c');
                 else:return matx(tuple([tuple([alg.log(j,an[1]) for j in i]) for i in a.matx]),False,'c');
             else:
                 raise Exception("Invalid argument: li => 'all'/tuple/list, got {}".format(li.__class__.__name__))
@@ -1261,10 +1261,10 @@ class melutils:
                     if eqval(len(an),2) is None:raise Exception;
                 case _:raise Exception("Invalid argument: chk => bool");
             if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
-                if an[1]!=1:return matx(tuple([tuple([alg.pwr(an[0],alg.mul(j,an[1],getpr()+1)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
+                if an[1]!=1:return matx(tuple([tuple([alg.pwr(an[0],alg.mul(j,an[1],pr=getpr()+1)) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
                 else:return matx(tuple([tuple([alg.pwr(an[0],j) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
             elif li=='all':
-                if an[1]!=1:return matx(tuple([tuple([alg.pwr(an[0],alg.mul(j,an[1],getpr()+1)) for j in i]) for i in a.matx]),False,'c');
+                if an[1]!=1:return matx(tuple([tuple([alg.pwr(an[0],alg.mul(j,an[1],pr=getpr()+1)) for j in i]) for i in a.matx]),False,'c');
                 else:return matx(tuple([tuple([alg.pwr(an[0],j) for j in i]) for i in a.matx]),False,'c');
             else:
                 raise Exception("Invalid argument: li => 'all'/tuple/list, got {}".format(li.__class__.__name__))
