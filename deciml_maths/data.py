@@ -3,6 +3,22 @@ from compare.cmpr import tmatx, eqval, tdata, tint, tdeciml, tstr
 from terminate import retrn
 from deciml_maths import *
 
+try:
+    from IPython.display import display, HTML
+
+    display(HTML("""
+    <style>
+    .output_scroll {
+        overflow: hidden !important;
+    }
+    .jp-OutputArea {
+        overflow: hidden !important;
+    }
+    </style>
+    """))
+except:
+    pass
+
 class data:
     
     def __init__(self,x:tuple[tuple[int|float|Decimal,...],...]|list[list[int|float|Decimal]]|matx|tuple[matx,...]|list[matx],y:list[int|float|Decimal]|tuple[int|float|Decimal]|tuple[matx,...]|list[matx]|matx,chk:bool=True,ret:str='a')->None:
@@ -169,6 +185,38 @@ class data:
                 s+=" "*(l:=((max_lens[m]-len(str(j)))//2))+" {} ".format(str(j))+" "*(max_lens[m]-l-len(str(j)))+"|"
             s+="|"+" "*(u:=((max_y-len(str(y)))//2))+" {} ".format(y)+" "*(max_y-u-len(str(y)))+"|\n"
         return s+"]"
+    
+    def _repr_html_(self):
+        x=self.__data[0].matx;y=self.__data[1];
+        x_labels = None
+        if self.__xlabels:x_labels=list(self.__xlabels);
+        else:x_labels=[str(i) for i in range(self.xvars)];
+        if self.__ylabel:y_label=self.__ylabel;
+        else:y_label="Y";
+        max_lens=[]
+        for i in matutils.tpose(self.data[0]).matx:
+            max_lens.append(max([len(str(j)) for j in i]))
+        for j,i in enumerate(max_lens):
+            if i < 8:
+                max_lens[j] = 8
+        n=len(str(self.__datalen))
+        max_y=len(str(max(self.__data[1]))) if len(str(max(self.__data[1]))) > 8 else 8
+        s1=str()
+        for i,j in zip(x_labels,max_lens):
+            if (l:=len(i)) > j:
+                s1+="_{}_|".format(i[:j-1]+"*")
+            else:
+                s1+="_"*(u:=((j-l)//2))+"_{}_".format(i)+"_"*(j-u-l)+"|"
+        s1+="|"+"_"*(u:=((max_y-len(y_label))//2 if len(y_label) <= max_y else 0))+"_{}_".format(y_label if len(y_label) <= max_y else y_label[:max_y-1]+"*")+("_"*(max_y-u-len(y_label)) if len(y_label) <= max_y else "")+"|\n"
+        s="<pre style='max-height:45vh;width:{}ch'>data[\n".format(len(s1)+10)+"_"*(n+2)+"|"
+        s+=s1
+        del s1
+        for i,(x,y) in enumerate(zip(self.__data[0].matx, self.__data[1])):
+            s+=" "*(n-len(str(i)))+" {} |".format(i)
+            for m,j in enumerate(x):
+                s+=" "*(l:=((max_lens[m]-len(str(j)))//2))+" {} ".format(str(j))+" "*(max_lens[m]-l-len(str(j)))+"|"
+            s+="|"+" "*(u:=((max_y-len(str(y)))//2))+" {} ".format(y)+" "*(max_y-u-len(str(y)))+"|\n"
+        return s+"]</pre>"
 
     # returns all x
     def getax(self)->matx:return matx(self.__data[0].matx,False,'c');

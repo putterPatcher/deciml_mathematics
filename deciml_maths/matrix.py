@@ -208,7 +208,7 @@ class matx:
                 s+=spaces+" '"+l+"'"+" |"
             ret+=s+"\n"
         ret+=')'
-        return "<pre style='max-height:45vh;min-width:{}ch'>{}</pre>".format(lnth+2, escape(ret))
+        return "<pre style='max-height:45vh;min-width:{}ch'>{}</pre>".format(lnth+10, escape(ret))
 
 
     def __getitem__(self, index:slice|int|tuple[int|slice,int|slice]):
