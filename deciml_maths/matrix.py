@@ -2,6 +2,23 @@ from compare.cmpr import tmatx, eqval, tdeciml, eqllen, tint, ttup, tslice
 from terminate import retrn
 from deciml_maths import *
 from decimal import Decimal
+from html import escape
+
+try:
+    from IPython.display import display, HTML
+
+    display(HTML("""
+    <style>
+    .output_scroll {
+        overflow: hidden !important;
+    }
+    .jp-OutputArea {
+        overflow: hidden !important;
+    }
+    </style>
+    """))
+except:
+    pass
 
 class matx:
     
@@ -164,6 +181,35 @@ class matx:
             ret+=s+"\n"
         ret+=')\n'
         return ret
+    
+    def _repr_html_(self):
+        max_in_col=tuple(map(lambda i:max(tuple(map(lambda j:len(str(j)),i))),tuple(zip(*self.__matx))))
+        scl=len(str(self.__collen))
+        s=str()
+        for _ in range(scl):s+="_"
+        s+="____|"
+        for i in range(self.__rowlen):
+            spaces=str()
+            for _ in range(int(abs(max_in_col[i]-len(str(i))))):spaces+="_"
+            s+=spaces[:(len(spaces)//2)]+"_["+str(i)+"]"+spaces[len(spaces)//2:]+"_|"
+            if max_in_col[i] < len(str(i)):max_in_col[i]=len(str(i))
+        lnth=len(s)
+        ret="matx(\n".format(len(s)+3)
+        row=0
+        ret+=s+"\n"
+        for k in [[str(j) for j in i] for i in self.__matx]:
+            spaces=str()
+            for _ in range(scl-len(str(row))):spaces+=" "
+            s=" ("+str(row)+")"+spaces+" |"
+            row+=1
+            for index,l in enumerate(k):
+                spaces=str();
+                for _ in range(max_in_col[index]-len(l)):spaces+=" "
+                s+=spaces+" '"+l+"'"+" |"
+            ret+=s+"\n"
+        ret+=')'
+        return "<pre style='max-height:45vh;min-width:{}ch'>{}</pre>".format(lnth+2, escape(ret))
+
 
     def __getitem__(self, index:slice|int|tuple[int|slice,int|slice]):
         try:
