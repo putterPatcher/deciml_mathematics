@@ -90,7 +90,7 @@ class data:
             else:
                 indexes=list()
                 for i in labels:
-                    if i not in self.__xlabels:raise Exception('a',"{} not a label.".format(i))
+                    if i not in self.__xlabels:raise Exception("{} not a label.".format(i))
                     indexes.append(self.__xlabels.index(i))
                 return indexes
         except Exception as e:retrn(ret, e)
@@ -235,7 +235,7 @@ class data:
             match chk:
                 case False:return tuple([self.__data[1][i] for i in li]);
                 case True:
-                    if (li:=tint.ele(li,self.__datalen)) is None:raise Exception;
+                    if (li:=tint.ele(li,self.__datalen,True)) is None:raise Exception;
                     return tuple([self.__data[1][i] for i in li])
                 case _:raise Exception("Invalid argument: chk => bool")
         except Exception as e:print("Invalid command: data.gety()");retrn(ret,e);
@@ -246,7 +246,7 @@ class data:
             match chk:
                 case False:return tuple([matutils.gele(self.__data[0],li,True,False,'c'),tuple([self.__data[1][i] for i in li])]);
                 case True:
-                    if (li:=tint.ele(li,self.__datalen)) is None:raise Exception;
+                    if (li:=tint.ele(li,self.__datalen,True)) is None:raise Exception;
                     return tuple([matutils.gele(self.__data[0],li,True,False,'c'),tuple([self.__data[1][i] for i in li])]);
                 case _:raise Exception("Invalid argument: chk => bool")
         except Exception as e:print("Invalid command: data.getd()");retrn(ret,e);

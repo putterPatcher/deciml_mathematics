@@ -1486,7 +1486,7 @@ i. **(s) x_labels**: Set the x labels
 >>> dat.x_labels = ["A", "B", "C", "D"]
 ```
 
-ii. **(g) x_labels**: Get the x labels
+ii. **(g) x_labels -> tuple[str, ...]**: Get the x labels
 
 ```python
 >>> dat.x_labels
@@ -1499,14 +1499,22 @@ iii. **(s) y_label**: Set the y label
 >>> dat.y_label = "Y Value"
 ```
 
-iv. **(g) y_label**: Get the y label
+iv. **(g) y_label -> str**: Get the y label
 
 ```python
 >>> dat.y_label
 'Y Value'
 ```
 
-v. **(f) get_label_index**: Get the index
+v. **(f) get_label_index(labels: tuple[str, ...] | list[str]) -> tuple[int, ...]**: Get the index
+
+```python
+>>> dat.get_label_index(["A", "C", "D"])
+'''
+    ["A", "C", "D"] - List of column names
+'''
+[0, 2, 3]
+```
 
 vi. **get data object using index slicing**
 
@@ -1543,25 +1551,128 @@ ___|____A_____|____B_____|____C_____|____D_____||_Y Value__|
 ]
 ```
 
-i. **(g) data -> tuple[matx, tuple[Decimal, ...]]**: Get the data as a tuple with matx object of *x values* and tuple of *y values*
+vii. **(g) data -> tuple[matx, tuple[Decimal, ...]]**: Get the data as a tuple with matx object of *x values* and tuple of *y values*
 
-ii. **(g) datalen -> int**: Get the length of data
+```python
+>>> dat.data
+(matx(
+_____|__[0]__|__[1]__|__[2]__|__[3]__|
+ (0) | '1.0' | '2.0' | '3.0' | '4.0' |
+ (1) | '2.0' | '3.0' | '4.0' | '5.0' |
+ (2) | '3.0' | '4.0' | '5.0' | '6.0' |
+ (3) | '5.0' | '6.0' | '7.0' | '4.0' |
+ (4) | '9.0' | '8.0' | '7.0' | '0.0' |
+)
+, (Decimal('1.0'), Decimal('2.0'), Decimal('3.0'), Decimal('4.0'), Decimal('5.0')))
+```
 
-iii. **(g) xvars -> int**: Get the number of *x variables*
+viii. **(g) datalen -> int**: Get the length of data
 
-iv. **(g) pdata**: Print the data
+```python
+>>> dat.datalen
+5
+```
 
-v. **(f) getax() -> matx**: Get all *x values* as a matx object
+ix. **(g) xvars -> int**: Get the number of *x variables*
 
-vi. **(f) getay() -> tuple[Decimal, ...]**: Get all *y values* as a tuple
+```python
+>>> dat.xvars
+4
+```
 
-vii. **(f) getx(li, chk=True, ret='a') -> matx**: Get the *x values* at indexes
+x. **(g) pdata**: Print the data
 
-viii. **(f) gety(li, chk=True, ret='a') -> tuple[Decimal, ...]**: Get the *y values* at indexes
+```python
+>>> dat.pdata
+data[
+  0: '1.0', '2.0', '3.0', '4.0' | 1.0
+  1: '2.0', '3.0', '4.0', '5.0' | 2.0
+  2: '3.0', '4.0', '5.0', '6.0' | 3.0
+  3: '5.0', '6.0', '7.0', '4.0' | 4.0
+  4: '9.0', '8.0', '7.0', '0.0' | 5.0
+]
+```
 
-ix. **(f) getd(li, chk=True, ret='a') -> tuple[matx, tuple[Decimal, ...]]**: Get a tuple with matx object of *x values* and tuple of *y values* for indexes
+xi. **(f) getax() -> matx**: Get all *x values* as a matx object
 
-x. **(f) getlx(li, chk=True, ret='a') -> matx**: Get the *x values* as a matx object for *x variable* at indexes
+```python
+>>> dat.getax()
+matx(
+_____|__[0]__|__[1]__|__[2]__|__[3]__|
+ (0) | '1.0' | '2.0' | '3.0' | '4.0' |
+ (1) | '2.0' | '3.0' | '4.0' | '5.0' |
+ (2) | '3.0' | '4.0' | '5.0' | '6.0' |
+ (3) | '5.0' | '6.0' | '7.0' | '4.0' |
+ (4) | '9.0' | '8.0' | '7.0' | '0.0' |
+)
+```
+
+xii. **(f) getay() -> tuple[Decimal, ...]**: Get all *y values* as a tuple
+
+```python
+>>> dat.getay()
+(Decimal('1.0'), Decimal('2.0'), Decimal('3.0'), Decimal('4.0'), Decimal('5.0'))
+```
+
+xiii. **(f) getx(li: list[int] | tuple[int, ...], chk=True, ret='a') -> matx**: Get the *x values* at indexes
+
+```python
+>>> dat.getx([0, 1, 3, 4])
+'''
+    [0, 1, 3, 4] - Row indexes
+'''
+matx(
+_____|__[0]__|__[1]__|__[2]__|__[3]__|
+ (0) | '1.0' | '2.0' | '3.0' | '4.0' |
+ (1) | '2.0' | '3.0' | '4.0' | '5.0' |
+ (2) | '5.0' | '6.0' | '7.0' | '4.0' |
+ (3) | '9.0' | '8.0' | '7.0' | '0.0' |
+)
+```
+
+xiv. **(f) gety(li: list[int] | tuple[int, ...], chk=True, ret='a') -> tuple[Decimal, ...]**: Get the *y values* at indexes
+
+```python
+>>> dat.gety([0, 1, 3, 4])
+'''
+    [0, 1, 3, 4] - Row indexes
+'''
+(Decimal('1.0'), Decimal('2.0'), Decimal('4.0'), Decimal('5.0'))
+```
+
+xv. **(f) getd(li: list[int] | tuple[int, ...], chk=True, ret='a') -> tuple[matx, tuple[Decimal, ...]]**: Get a tuple with matx object of *x values* and tuple of *y values* for indexes
+
+```python
+>>> dat.getd([0, 1, 3, 4])
+'''
+    [0, 1, 3, 4] - Row indexes
+'''
+(matx(
+_____|__[0]__|__[1]__|__[2]__|__[3]__|
+ (0) | '1.0' | '2.0' | '3.0' | '4.0' |
+ (1) | '2.0' | '3.0' | '4.0' | '5.0' |
+ (2) | '5.0' | '6.0' | '7.0' | '4.0' |
+ (3) | '9.0' | '8.0' | '7.0' | '0.0' |
+)
+, (Decimal('1.0'), Decimal('2.0'), Decimal('4.0'), Decimal('5.0')))
+```
+
+xvi. **(f) getlx(li, chk=True, ret='a') -> matx**: Get the *x values* as a matx object for *x variable* at indexes
+
+```python
+>>> dat.getlx(dat.get_label_index(["A", "C", "D"]))
+'''
+    dat.get_label_index(["A", "C", "D"]) - Column indexes
+'''
+matx(
+_____|__[0]__|__[1]__|__[2]__|
+ (0) | '1.0' | '3.0' | '4.0' |
+ (1) | '2.0' | '4.0' | '5.0' |
+ (2) | '3.0' | '5.0' | '6.0' |
+ (3) | '5.0' | '7.0' | '4.0' |
+ (4) | '9.0' | '7.0' | '0.0' |
+)
+```
 
 </p>
 </details>
