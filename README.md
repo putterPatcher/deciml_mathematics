@@ -1506,7 +1506,9 @@ iv. **(g) y_label -> str**: Get the y label
 'Y Value'
 ```
 
-v. **(f) get_label_index(labels: tuple[str, ...] | list[str]) -> tuple[int, ...]**: Get the index
+v. **(f) get_label_index(labels) -> tuple[int, ...]**: Get the index
+
+- **labels** - *tuple[str, ...] | list[str]*
 
 ```python
 >>> dat.get_label_index(["A", "C", "D"])
@@ -1614,7 +1616,11 @@ xii. **(f) getay() -> tuple[Decimal, ...]**: Get all *y values* as a tuple
 (Decimal('1.0'), Decimal('2.0'), Decimal('3.0'), Decimal('4.0'), Decimal('5.0'))
 ```
 
-xiii. **(f) getx(li: list[int] | tuple[int, ...], chk=True, ret='a') -> matx**: Get the *x values* at indexes
+xiii. **(f) getx(li, chk=True, ret='a') -> matx**: Get the *x values* at indexes
+
+- **li** - *list[int] | tuple[int, ...]*
+- **chk** - *bool*
+- **ret** - *str*
 
 ```python
 >>> dat.getx([0, 1, 3, 4])
@@ -1630,7 +1636,11 @@ _____|__[0]__|__[1]__|__[2]__|__[3]__|
 )
 ```
 
-xiv. **(f) gety(li: list[int] | tuple[int, ...], chk=True, ret='a') -> tuple[Decimal, ...]**: Get the *y values* at indexes
+xiv. **(f) gety(li, chk=True, ret='a') -> tuple[Decimal, ...]**: Get the *y values* at indexes
+
+- **li** - *list[int] | tuple[int, ...]*
+- **chk** - *bool*
+- **ret** - *str*
 
 ```python
 >>> dat.gety([0, 1, 3, 4])
@@ -1640,7 +1650,11 @@ xiv. **(f) gety(li: list[int] | tuple[int, ...], chk=True, ret='a') -> tuple[Dec
 (Decimal('1.0'), Decimal('2.0'), Decimal('4.0'), Decimal('5.0'))
 ```
 
-xv. **(f) getd(li: list[int] | tuple[int, ...], chk=True, ret='a') -> tuple[matx, tuple[Decimal, ...]]**: Get a tuple with matx object of *x values* and tuple of *y values* for indexes
+xv. **(f) getd(li, chk=True, ret='a') -> tuple[matx, tuple[Decimal, ...]]**: Get a tuple with matx object of *x values* and tuple of *y values* for indexes
+
+- **li** - *list[int] | tuple[int, ...]*
+- **chk** - *bool*
+- **ret** - *str*
 
 ```python
 >>> dat.getd([0, 1, 3, 4])
@@ -1658,6 +1672,10 @@ _____|__[0]__|__[1]__|__[2]__|__[3]__|
 ```
 
 xvi. **(f) getlx(li, chk=True, ret='a') -> matx**: Get the *x values* as a matx object for *x variable* at indexes
+
+- **li** - *list[int] | tuple[int, ...]*
+- **chk** - *bool*
+- **ret** - *str*
 
 ```python
 >>> dat.getlx(dat.get_label_index(["A", "C", "D"]))
@@ -1682,23 +1700,227 @@ _____|__[0]__|__[1]__|__[2]__|
 
 **(c) datautils**: Methods to use with data object
 
-i. **dataval -> data**: Add a *x variable* with constant value to data
+```python
+>>> from deciml_maths.data import datautils
+```
 
-ii. **addata -> data**: Add *x variables* to data object
+i. **dataval(d, x, chk=True, ret='a') -> data**: Add a *x variable* with constant value to data
 
-iii. **datalx -> data**: Get a data object with *x variables* at indexes
+- **d** - *data*
+- **x** - *Decimal*
+- **chk** - *bool*
+- **ret** - *str*
 
-iv. **multlx -> data**: Get a data object with multiplication of *x variables* at indexes as added *x variables*
+```python
+>>> datautils.dataval(dat, 12.123)
+'''
+    dat - data object
+    12.123 - Column's values
+'''
+data[
+___|____0_____|____1_____|____2_____|____3_____|____4_____||____Y_____|
+ 0 |  12.123  |   1.0    |   2.0    |   3.0    |   4.0    ||   1.0    |
+ 1 |  12.123  |   2.0    |   3.0    |   4.0    |   5.0    ||   2.0    |
+ 2 |  12.123  |   3.0    |   4.0    |   5.0    |   6.0    ||   3.0    |
+ 3 |  12.123  |   5.0    |   6.0    |   7.0    |   4.0    ||   4.0    |
+ 4 |  12.123  |   9.0    |   8.0    |   7.0    |   0.0    ||   5.0    |
+]
+```
 
-v. **addlx -> data**: Get a data object with addition of *x variables* at indexes as added *x variables* 
+ii. **addata(d, \*a, chk=True, ret='a') -> data**: Add *x variables* to data object
 
-vi. **powlx -> data**: Get a data object with exponentiated *x variables* as added *x variables*
+- **d** - *data*
+- **\*a** - *matx*
+- **chk** - *bool*
+- **ret** - *str*
 
-vii. **loglx -> data**: Get a data object with logarithm of *x variables* as added *x variables*
+```python
+>>> datautils.addata(dat, matx([[1],[3],[5],[7],[9]]), matx([[1,1],[2,2],[3,3],[4,4],[5,5]]))
+'''
+    dat - data object
+    matx([[1],[3],[5],[7],[9]]), matx([[1,1],[2,2],[3,3],[4,4],[5,5]]) - matx objects
+'''
+data[
+___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____||____Y_____|
+ 0 |   1.0    |   2.0    |   3.0    |   4.0    |   1.0    |   1.0    |   1.0    ||   1.0    |
+ 1 |   2.0    |   3.0    |   4.0    |   5.0    |   3.0    |   2.0    |   2.0    ||   2.0    |
+ 2 |   3.0    |   4.0    |   5.0    |   6.0    |   5.0    |   3.0    |   3.0    ||   3.0    |
+ 3 |   5.0    |   6.0    |   7.0    |   4.0    |   7.0    |   4.0    |   4.0    ||   4.0    |
+ 4 |   9.0    |   8.0    |   7.0    |   0.0    |   9.0    |   5.0    |   5.0    ||   5.0    |
+]
+```
 
-viii. **expolx -> data**: Get a data object with exponentiation using *x variables* as added *x variables*
+iii. **datalx(d, li, chk=True, ret='a') -> data**: Get a data object with *x variables* at indexes
 
-ix. **triglx -> data**: Ge a data object with *x variables* after operation with a trignometric function as added *x variables*
+- **d** - *data*
+- **li** - *list[int] | tuple[int,...]*
+- **chk** - *bool*
+- **ret** - *str*
+
+```python
+>>> datautils.datalx(dat, [0,1,3])
+'''
+    dat - data object
+    [0,1,3] - Column indexes
+'''
+data[
+___|____0_____|____1_____|____2_____||____Y_____|
+ 0 |   1.0    |   2.0    |   4.0    ||   1.0    |
+ 1 |   2.0    |   3.0    |   5.0    ||   2.0    |
+ 2 |   3.0    |   4.0    |   6.0    ||   3.0    |
+ 3 |   5.0    |   6.0    |   4.0    ||   4.0    |
+ 4 |   9.0    |   8.0    |   0.0    ||   5.0    |
+]
+```
+
+iv. **multlx(d, li, chk=True, ret='a') -> data**: Get a data object with multiplication of *x variables* at indexes as added *x variables*
+
+- **d** - *data*
+- **li** - *list[list[int]] | tuple[tuple[int,...]] | str*
+- **chk** - *bool*
+- **ret** - *str*
+
+```python
+>>> datautils.multlx(dat, [[0,1],[1,2]])
+'''
+    dat - data object
+    [[0,1],[1,2]] - Columns to multiply
+'''
+data[
+___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____||____Y_____|
+ 0 |   1.0    |   2.0    |   3.0    |   4.0    |   2.0    |   6.0    ||   1.0    |
+ 1 |   2.0    |   3.0    |   4.0    |   5.0    |   6.0    |   12.0   ||   2.0    |
+ 2 |   3.0    |   4.0    |   5.0    |   6.0    |   12.0   |   20.0   ||   3.0    |
+ 3 |   5.0    |   6.0    |   7.0    |   4.0    |   30.0   |   42.0   ||   4.0    |
+ 4 |   9.0    |   8.0    |   7.0    |   0.0    |   72.0   |   56.0   ||   5.0    |
+]
+```
+
+v. **aaddlx(d, li, chk=True, ret='a') -> data**: Get a data object with addition of *x variables* at indexes as added *x variables* 
+
+- **d** - *data*
+- **li** - *list[list[int]] | tuple[tuple[int,...]] | str*
+- **chk** - *bool*
+- **ret** - *str*
+
+```python
+>>> datautils.addlx(dat, [[0,1],[1,2]])
+'''
+    dat - data object
+    [[0,1],[1,2]] - Columns to add
+'''
+data[
+___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____||____Y_____|
+ 0 |   1.0    |   2.0    |   3.0    |   4.0    |   3.0    |   5.0    ||   1.0    |
+ 1 |   2.0    |   3.0    |   4.0    |   5.0    |   5.0    |   7.0    ||   2.0    |
+ 2 |   3.0    |   4.0    |   5.0    |   6.0    |   7.0    |   9.0    ||   3.0    |
+ 3 |   5.0    |   6.0    |   7.0    |   4.0    |   11.0   |   13.0   ||   4.0    |
+ 4 |   9.0    |   8.0    |   7.0    |   0.0    |   17.0   |   15.0   ||   5.0    |
+]
+```
+
+vi. **powlx(d, an, li, chk=True, ret='a') -> data**: Get a data object with exponentiated *x variables* as added *x variables*
+
+- **d** - data
+- **an** - *tuple[Decimal, Decimal]*
+- **li** - *list[int] | tuple[int,...] | str*
+- **chk** - *bool*
+- **ret** - *str*
+
+```python
+>>> datautils.powlx(dat, (2, 3), [0,1,2])
+'''
+    dat - data object
+    (2, 3) - multiplication factor and exponent
+    [0,1,2] - column indexes
+'''
+data[
+___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____||____Y_____|
+ 0 |   1.0    |   2.0    |   3.0    |   4.0    |   8.0    |   64.0   |  216.0   ||   1.0    |
+ 1 |   2.0    |   3.0    |   4.0    |   5.0    |   64.0   |  216.0   |  512.0   ||   2.0    |
+ 2 |   3.0    |   4.0    |   5.0    |   6.0    |  216.0   |  512.0   |  1000.0  ||   3.0    |
+ 3 |   5.0    |   6.0    |   7.0    |   4.0    |  1000.0  |  1728.0  |  2744.0  ||   4.0    |
+ 4 |   9.0    |   8.0    |   7.0    |   0.0    |  5832.0  |  4096.0  |  2744.0  ||   5.0    |
+]
+```
+
+vii. **loglx(d, an, li, chk=True, ret='a') -> data**: Get a data object with logarithm of *x variables* as added *x variables*
+
+- **d** - *data*
+- **an** - *tuple[Decimal,Decimal]*
+- **li** - *list[int] | tuple[int,...] | str*
+- **chk** - *bool*
+- **ret** - *str*
+
+```python
+>>> datautils.loglx(dat, (2, 2), [0,1,2])
+'''
+    dat - data object
+    (2, 2) - factor and base
+    [0,1,2] - column indexes
+'''
+data[
+___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____||____Y_____|
+ 0 |   1.0    |   2.0    |   3.0    |   4.0    |   1.0    |   2.0    |  2.585   ||   1.0    |
+ 1 |   2.0    |   3.0    |   4.0    |   5.0    |   2.0    |  2.585   |   3.0    ||   2.0    |
+ 2 |   3.0    |   4.0    |   5.0    |   6.0    |  2.585   |   3.0    |  3.322   ||   3.0    |
+ 3 |   5.0    |   6.0    |   7.0    |   4.0    |  3.322   |  3.585   |  3.807   ||   4.0    |
+ 4 |   9.0    |   8.0    |   7.0    |   0.0    |   4.17   |   4.0    |  3.807   ||   5.0    |
+]
+```
+
+viii. **expolx(d, an, li, chk=True, ret='a') -> data**: Get a data object with exponentiation using *x variables* as added *x variables*
+
+- **d** - *data*
+- **an** - *tuple[Decimal,Decimal]*
+- **li** - *list[int] | tuple[int,...] | str*
+- **chk** - *bool*
+- **ret** - *str*
+
+```python
+>>> datautils.expolx(dat, (2, 2), [0,1,2])
+'''
+    dat - data object
+    (2, 2) - base and factor
+    [0,1,2] - column indexes
+'''
+data[
+___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____||____Y_____|
+ 0 |   1.0    |   2.0    |   3.0    |   4.0    |   4.0    |   16.0   |   64.0   ||   1.0    |
+ 1 |   2.0    |   3.0    |   4.0    |   5.0    |   16.0   |   64.0   |  256.0   ||   2.0    |
+ 2 |   3.0    |   4.0    |   5.0    |   6.0    |   64.0   |  256.0   |  1024.0  ||   3.0    |
+ 3 |   5.0    |   6.0    |   7.0    |   4.0    |  1024.0  |  4096.0  | 16384.0  ||   4.0    |
+ 4 |   9.0    |   8.0    |   7.0    |   0.0    | 262144.0 | 65536.0  | 16384.0  ||   5.0    |
+]
+```
+
+ix. **triglx(d, n, li, f='cos', chk=True, ret='a') -> data**: Ge a data object with *x variables* after operation with a trignometric function as added *x variables*
+
+- **d** - *data*
+- **n** - *Decimal*
+- **li** - *list[int] | tuple[int,...] | str*
+- **f** - *str*
+    - 'sin', 'cos', 'tan', 'cosec', 'sec', 'cot', 'asin', 'acos', 'atan', 'asec', 'acosec', 'acot', 'sinh', 'cosh', 'tanh', 'sech', 'cosech', 'coth'
+- **chk** - *bool*
+- **ret** - *str*
+
+```python
+>>> datautils.triglx(dat, 2, [0,1,2], 'cos')
+'''
+    dat - data object
+    2 - factor
+    [0,1,2] - column indexes
+    'cos' - trignometric operation
+'''
+data[
+___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____||____Y_____|
+ 0 |   1.0    |   2.0    |   3.0    |   4.0    |  -0.416  |  -0.654  |  0.960   ||   1.0    |
+ 1 |   2.0    |   3.0    |   4.0    |   5.0    |  -0.654  |  0.960   |  -0.146  ||   2.0    |
+ 2 |   3.0    |   4.0    |   5.0    |   6.0    |  0.960   |  -0.146  |  -0.839  ||   3.0    |
+ 3 |   5.0    |   6.0    |   7.0    |   4.0    |  -0.839  |  0.844   |  0.137   ||   4.0    |
+ 4 |   9.0    |   8.0    |   7.0    |   0.0    |  0.660   |  -0.958  |  0.137   ||   5.0    |
+]
+```
 
 </p>
 </details>

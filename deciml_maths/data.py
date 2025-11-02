@@ -20,8 +20,15 @@ except:
     pass
 
 class data:
-    
+        
     def __init__(self,x:tuple[tuple[int|float|Decimal,...],...]|list[list[int|float|Decimal]]|matx|tuple[matx,...]|list[matx],y:list[int|float|Decimal]|tuple[int|float|Decimal]|tuple[matx,...]|list[matx]|matx,chk:bool=True,ret:str='a')->None:
+        '''
+#### Create a data object.
+- **x**: X values of data
+- **y**: Y values of data
+- **chk**: Check the arguments
+- **ret**: Exit type
+        '''
         try:
             def __dataxy(x,y,chk:bool)->matx:
                 def __xcheck(x)->tuple:
@@ -54,19 +61,39 @@ class data:
         except Exception as e:print("Invalid command: data()");retrn(ret,e);
 
     @property
-    def data(self)->tuple[matx,tuple[Decimal,...]]:return (self.getax(),self.getay());
+    def data(self)->tuple[matx,tuple[Decimal,...]]:
+        '''
+#### Get the data as a tuple with x values as matx object and y values as a tuple.
+        '''
+        return (self.getax(),self.getay());
     
     @property
-    def datalen(self)->int:return self.__datalen;
+    def datalen(self)->int:
+        '''
+#### Get the number of data points.
+        '''
+        return self.__datalen;
     
     @property
-    def xvars(self)->int:return self.__xvars;
+    def xvars(self)->int:
+        '''
+#### Get the number of x variables.
+        '''
+        return self.__xvars;
 
     @property
-    def x_labels(self)->tuple[str,...]|None:return self.__xlabels;
+    def x_labels(self)->tuple[str,...]|None:
+        '''
+#### Get the x labels for data.
+        '''
+        return self.__xlabels;
 
     @x_labels.setter
     def x_labels(self,labels:list[str]|tuple[str,...])->tuple[str,...]|None:
+        '''
+#### Set the labels for x values.
+- **labels**: List of x labels
+        '''
         try:
             if not tstr(labels,True):raise Exception("Invalid argument: labels => list[str]|tuple[str,...]")
             if len(labels)!=self.__xvars:raise Exception("{} is not equal to number of variables ({})".format(len(labels),self.__xvars))
@@ -76,15 +103,27 @@ class data:
             retrn('a',e)
 
     @property
-    def y_label(self):return self.__ylabel;
+    def y_label(self):
+        '''
+#### Get the y label.
+        '''
+        return self.__ylabel;
     
     @y_label.setter
     def y_label(self,s:str):
+        '''
+#### Set the y label.
+- **s**: Y label
+        '''
         if tstr(s):self.__ylabel=s
         else:retrn('a',"Invalid argument: s => str")
         return self.__ylabel
 
     def get_label_index(self,labels:list[str]|tuple[str,...],ret='a')->tuple[int,...]:
+        '''
+#### Get the index of x labels.
+- **labels**: List of x labels
+        '''
         try:
             if not tstr(labels, True):retrn('a',"")
             else:
@@ -122,6 +161,10 @@ class data:
     # prints the data
     @data.getter
     def pdata(self)->None:
+        '''
+#### Print the data.
+##### **Note: Use print() instead.**
+        '''
         x=self.__data[0].matx;y=self.__data[1];
         print("data[")
         for i in range(self.datalen):print("  "+str(i)+": "+str([str(j) for j in x[i]])[1:-1]+" | "+str(str(y[i])));
@@ -219,18 +262,38 @@ class data:
         return s+"]</pre>"
 
     # returns all x
-    def getax(self)->matx:return matx(self.__data[0].matx,False,'c');
+    def getax(self)->matx:
+        '''
+#### Get all the x values as a matx object.
+        '''
+        return matx(self.__data[0].matx,False,'c');
 
     # returns all y
-    def getay(self)->tuple[Decimal,...]:return self.__data[1];
+    def getay(self)->tuple[Decimal,...]:
+        '''
+#### Get all the y values as a tuple.
+        '''
+        return self.__data[1];
 
     # returns x values from data
-    def getx(self,li,chk:bool=True,ret:str='a') -> matx:
+    def getx(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='a') -> matx:
+        '''
+#### Get the x values at row indexes as a matx object.
+- **li**: List of row indexes
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:return matutils.gele(self.__data[0],li,True,chk,'c');
         except Exception as e:print("Invalid command: data.getx()");retrn(ret,e);
 
     # returns y values from data
     def gety(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='a')->tuple[Decimal,...]:
+        '''
+#### Get the y values at row indexes as a tuple.
+- **li**: List of row indexes.
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return tuple([self.__data[1][i] for i in li]);
@@ -242,6 +305,12 @@ class data:
 
     # returns data values from data
     def getd(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='a')->tuple[matx,tuple[Decimal,...]]:
+        '''
+#### Get the data points at row indexes as a tuple.
+- **li**: List of row indexes
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return tuple([matutils.gele(self.__data[0],li,True,False,'c'),tuple([self.__data[1][i] for i in li])]);
@@ -253,6 +322,12 @@ class data:
 
     # return listed x
     def getlx(self,li:list[int]|tuple[int,...],chk=True,ret='a')->matx:
+        '''
+#### Get the x columns.
+- **li**: List column indexes
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:return matutils.tpose(matutils.gele(self.__data[0],li,False,chk,'c'),False,'c');
         except Exception as e:print("Invalid command: data.getlx()");retrn(ret,e);
 
@@ -261,6 +336,12 @@ class datautils:
     
     @staticmethod
     def dataval(d:data,x:Decimal,chk=True,ret='a')->data:
+        '''
+#### Add a column with the same value and get the data object.
+- **d**: Data object
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return data(matutils.maddval(d.getax(),x,False,'c'),d.getay(),False,'c');
@@ -274,6 +355,13 @@ class datautils:
     # add the listed x to data
     @staticmethod
     def addata(d:data,*a:matx,chk=True,ret='a')->data:
+        '''
+#### Add multiple matx objects as x columns to the data object.
+- **d**: Data object
+- **\*a**: matx objects
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return data(matutils.addmatx(d.getax(),*a,r=False,chk=False,ret='c'),d.getay(),False,'c');
@@ -287,7 +375,14 @@ class datautils:
 
     # retuns a new data object with x of listed positions
     @staticmethod
-    def datalx(d:data,li:list,chk=True,ret='a')->data:
+    def datalx(d:data,li:list[int]|tuple[int,...],chk=True,ret='a')->data:
+        '''
+#### Get a data object with listed x columns.
+- **d**: Data object
+- **li**: Column indexes
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return data(d.getlx(li,False,'c'),d.getay(),False,'c');
@@ -299,7 +394,14 @@ class datautils:
 
     # add multiplication of x at listed positions to data
     @staticmethod
-    def multlx(d:data,li:list[list[int]]|tuple[tuple[int]]|str,chk=True,ret='a')->data:
+    def multlx(d:data,li:list[list[int]]|tuple[tuple[int,...]]|str,chk=True,ret='a')->data:
+        '''
+#### Get the data object after multiplication of x columns as added x columns.
+- **d**: Data object
+- **li**: List with list of column indexes to multiply
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.mult(d.getax(),li,False,False,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c');
@@ -311,7 +413,14 @@ class datautils:
 
     # add addition of x at listed positions to data
     @staticmethod
-    def addlx(d:data,li:list[list[int]]|tuple[tuple[int]]|str,chk=True,ret='a')->data:
+    def addlx(d:data,li:list[list[int]]|tuple[tuple[int,...]]|str,chk=True,ret='a')->data:
+        '''
+#### Get the data object after addition of x columns as added x columns.
+- **d**: Data object
+- **li**: List with list of column indexes to add
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.add(d.getax(),li,False,False,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c');
@@ -324,6 +433,15 @@ class datautils:
     # add powers of x at listed positions to data
     @staticmethod
     def powlx(d:data,an:tuple[Decimal, Decimal],li:list[int]|tuple[int,...]|str,chk=True,ret='a')->data:
+        '''
+#### Get the data object after exponentiation of x columns as added x columns.
+- **d**: Data object
+- **an**: Tuple of multiplication factor and exponent
+##### (a*[x])<sup>n</sup>
+- **li**: List of column indexes to exponentiate
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.pow(an,d.getax(),li,False,False,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c');
@@ -336,6 +454,15 @@ class datautils:
     # append log of x at listed positions to data
     @staticmethod
     def loglx(d:data,an:tuple[Decimal,Decimal],li:list[int]|tuple[int,...]|str,chk=True,ret='a')->data:
+        '''
+#### Get the data object after logarithm of x columns as added x columns.
+- **d**: Data object
+- **an**: Tuple of multiplication factor and base
+##### log<sub>n</sub>(a*[x])
+- **li**: List of column indexes to perform logarithm
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.log(an,d.getax(),li,False,False,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c');
@@ -348,6 +475,15 @@ class datautils:
     # append x at listed positions as a power to data
     @staticmethod
     def expolx(d:data,an:tuple[Decimal,Decimal],li:list[int]|tuple[int,...]|str,chk=True,ret='a')->data:
+        '''
+#### Get the data object after exponentiated to x columns as added x columns.
+- **d**: Data object
+- **an**: Tuple of base and multiplication factor
+##### a<sup>n*[x]</sup>
+- **li**: List of column indexes to perform logarithm
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.expo(an,d.getax(),li,False,False,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c');
@@ -359,6 +495,15 @@ class datautils:
     
     @staticmethod
     def triglx(d:data,n:Decimal,li:list[int]|tuple[int,...]|str,f='cos',chk=True,ret='a')->data:
+        '''
+#### Get the data object after trignometric operation of x columns as added x columns.
+- **d**: Data object
+- **n**: Multiplication factor
+- **li**: List of column indexes to perform logarithm
+- **f**: Function
+- **chk**: Check arguments
+- **ret**: Exit type
+        '''
         try:
             match chk:
                 case False:return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.trig(n,d.getax(),li,False,f,False,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c');
