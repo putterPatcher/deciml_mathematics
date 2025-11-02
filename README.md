@@ -1930,5 +1930,132 @@ ___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____
 <details>
 <summary>Functions</summary>
 <p>
+<details>
+<summary>axn</summary>
+<p>
+
+**(o) axn**: Get the object for a exponentiated variable
+
+```python
+>>> from deciml_maths.functions import axn
+>>> fun = axn(2,5.5)
+```
+
+i. **(f) f(__a)**
+
+- **__a**: The value of the variable
+
+```python
+>>> fun.f(2)
+Decimal('90.51')
+```
+
+ii. **(f) df(__a)**
+
+- **__a**: The value of the variable
+- **__pr**: The precision
+
+```python
+>>> fun.df(2)
+Decimal('248.902')
+```
+
+iii. **(g) getf**
+
+```python
+>>> fun.getf
+(Decimal('2.0'), Decimal('5.5'))
+```
+
+iv. **(g) getdf**
+
+```python
+>>> fun.getdf
+(Decimal('11.0'), Decimal('4.5'))
+```
+
+</p>
+<summary>poly</summary>
+<p>
+
+**(o) poly**: Get the object for a polynomial function
+
+```python
+>>> from deciml_maths.functions import poly
+
+```
+i. **(f) f(__a)**
+
+- **__a**: The value of the variable
+
+```python
+>>> fun.f(2)
+Decimal('106.51')
+```
+
+ii. **(f) df(__a)**
+
+- **__a**: The value of the variable
+
+```python
+>>> fun.df(2)
+Decimal('272.902')
+```
+
+iii. **(g) getf**
+
+```python
+>>> fun.getf
+((Decimal('2.0'), Decimal('3.0')), (Decimal('2.0'), Decimal('5.5')))
+```
+
+iv. **(g) getdf**
+
+```python
+>>> fun.getdf
+((Decimal('6.0'), Decimal('2.0')), (Decimal('11.0'), Decimal('4.5')))
+```
+</p>
+<summary>apolyn</summary>
+<p>
+
+**(o) apolyn**: Get the object for a exponentiated polynomial function
+
+```python
+
+```
+
+i. **(f) f(__a, __pr=getpr())**
+
+- **__a**: The value of the variable
+- **__pr**: The precision
+
+```python
+
+```
+
+ii. **(f) df(__a, __pr=getpr())**
+
+- **__a**: The value of the variable
+- **__pr**: The precision
+
+```python
+
+```
+
+iii. **(f) getf()**
+
+```python
+
+```
+
+iv. **(f) getdf()**
+
+```python
+
+```
+
+</p>
+</details>
 </p>
 </details>

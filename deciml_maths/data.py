@@ -119,7 +119,7 @@ class data:
         else:retrn('a',"Invalid argument: s => str")
         return self.__ylabel
 
-    def get_label_index(self,labels:list[str]|tuple[str,...],ret='a')->tuple[int,...]:
+    def get_label_index(self,labels:list[str]|tuple[str,...],ret:str='a')->tuple[int,...]:
         '''
 #### Get the index of x labels.
 - **labels**: List of x labels
@@ -321,7 +321,7 @@ class data:
         except Exception as e:print("Invalid command: data.getd()");retrn(ret,e);
 
     # return listed x
-    def getlx(self,li:list[int]|tuple[int,...],chk=True,ret='a')->matx:
+    def getlx(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='a')->matx:
         '''
 #### Get the x columns.
 - **li**: List column indexes
@@ -335,7 +335,7 @@ class data:
 class datautils:
     
     @staticmethod
-    def dataval(d:data,x:Decimal,chk=True,ret='a')->data:
+    def dataval(d:data,x:Decimal,chk:bool=True,ret:str='a')->data:
         '''
 #### Add a column with the same value and get the data object.
 - **d**: Data object
@@ -354,7 +354,7 @@ class datautils:
 
     # add the listed x to data
     @staticmethod
-    def addata(d:data,*a:matx,chk=True,ret='a')->data:
+    def addata(d:data,*a:matx,chk:bool=True,ret:str='a')->data:
         '''
 #### Add multiple matx objects as x columns to the data object.
 - **d**: Data object
@@ -375,7 +375,7 @@ class datautils:
 
     # retuns a new data object with x of listed positions
     @staticmethod
-    def datalx(d:data,li:list[int]|tuple[int,...],chk=True,ret='a')->data:
+    def datalx(d:data,li:list[int]|tuple[int,...],chk:bool=True,ret:str='a')->data:
         '''
 #### Get a data object with listed x columns.
 - **d**: Data object
@@ -394,7 +394,7 @@ class datautils:
 
     # add multiplication of x at listed positions to data
     @staticmethod
-    def multlx(d:data,li:list[list[int]]|tuple[tuple[int,...]]|str,chk=True,ret='a')->data:
+    def multlx(d:data,li:list[list[int]]|tuple[tuple[int,...]]|str,chk:bool=True,ret:str='a')->data:
         '''
 #### Get the data object after multiplication of x columns as added x columns.
 - **d**: Data object
@@ -413,7 +413,7 @@ class datautils:
 
     # add addition of x at listed positions to data
     @staticmethod
-    def addlx(d:data,li:list[list[int]]|tuple[tuple[int,...]]|str,chk=True,ret='a')->data:
+    def addlx(d:data,li:list[list[int]]|tuple[tuple[int,...]]|str,chk:bool=True,ret:str='a')->data:
         '''
 #### Get the data object after addition of x columns as added x columns.
 - **d**: Data object
@@ -432,7 +432,7 @@ class datautils:
 
     # add powers of x at listed positions to data
     @staticmethod
-    def powlx(d:data,an:tuple[Decimal, Decimal],li:list[int]|tuple[int,...]|str,chk=True,ret='a')->data:
+    def powlx(d:data,an:tuple[Decimal, Decimal],li:list[int]|tuple[int,...]|str,chk:bool=True,ret:str='a')->data:
         '''
 #### Get the data object after exponentiation of x columns as added x columns.
 - **d**: Data object
@@ -453,7 +453,7 @@ class datautils:
 
     # append log of x at listed positions to data
     @staticmethod
-    def loglx(d:data,an:tuple[Decimal,Decimal],li:list[int]|tuple[int,...]|str,chk=True,ret='a')->data:
+    def loglx(d:data,an:tuple[Decimal,Decimal],li:list[int]|tuple[int,...]|str,chk:bool=True,ret:str='a')->data:
         '''
 #### Get the data object after logarithm of x columns as added x columns.
 - **d**: Data object
@@ -474,7 +474,7 @@ class datautils:
 
     # append x at listed positions as a power to data
     @staticmethod
-    def expolx(d:data,an:tuple[Decimal,Decimal],li:list[int]|tuple[int,...]|str,chk=True,ret='a')->data:
+    def expolx(d:data,an:tuple[Decimal,Decimal],li:list[int]|tuple[int,...]|str,chk:bool=True,ret:str='a')->data:
         '''
 #### Get the data object after exponentiated to x columns as added x columns.
 - **d**: Data object
@@ -494,7 +494,7 @@ class datautils:
         except Exception as e:print("Invalid command: datautils.expolx()");retrn(ret,e);
     
     @staticmethod
-    def triglx(d:data,n:Decimal,li:list[int]|tuple[int,...]|str,f='cos',chk=True,ret='a')->data:
+    def triglx(d:data,n:Decimal,li:list[int]|tuple[int,...]|str,f:str='cos',chk:bool=True,ret:str='a')->data:
         '''
 #### Get the data object after trignometric operation of x columns as added x columns.
 - **d**: Data object
