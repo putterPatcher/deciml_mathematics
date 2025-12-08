@@ -1316,6 +1316,7 @@ class melutils:
                     if li != 'all':
                         if not (li:=tint.ele(li, a.collen if r else a.rowlen,True)):raise Exception
                 case _:raise Exception("Invalid argument: chk => bool");
+            if an[1]==0 or an[0]==0:raise Exception("Base of logarithm or number cannot be zero.")
             if (tli:=li.__class__.__name__)=='tuple' or tli=='list':
                 if an[0]!=1:return matx(tuple([tuple([alg.log(alg.mul(j,an[0],pr=getpr()+1),an[1]) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');
                 else:return matx(tuple([tuple([alg.log(j,an[1]) for j in i]) for i in a.gele(li,r,chk,'c')]),False,'c');

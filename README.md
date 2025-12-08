@@ -17,6 +17,8 @@
 
 **Use the *"setpr"* function to set the precision for a calculation (*"getpr"* to check the precision).**
 
+**Increase the precision value by 2 more than the precision that you want for more accurate calculations**
+
 ```python
 >>> from deciml_maths import setpr, getpr
 >>> setpr(29)
@@ -1831,8 +1833,8 @@ vi. **powlx(d, an, li, chk=True, ret='a') -> data**: Get a data object with expo
 >>> datautils.powlx(dat, (2, 3), [0,1,2])
 '''
     dat - data object
-    (2, 3) - multiplication factor and exponent
-    [0,1,2] - column indexes
+    (2, 3) - Multiplication factor and exponent
+    [0,1,2] - Column indexes
 '''
 data[
 ___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____||____Y_____|
@@ -1856,8 +1858,8 @@ vii. **loglx(d, an, li, chk=True, ret='a') -> data**: Get a data object with log
 >>> datautils.loglx(dat, (2, 2), [0,1,2])
 '''
     dat - data object
-    (2, 2) - factor and base
-    [0,1,2] - column indexes
+    (2, 2) - Factor and base
+    [0,1,2] - Column indexes
 '''
 data[
 ___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____||____Y_____|
@@ -1881,8 +1883,8 @@ viii. **expolx(d, an, li, chk=True, ret='a') -> data**: Get a data object with e
 >>> datautils.expolx(dat, (2, 2), [0,1,2])
 '''
     dat - data object
-    (2, 2) - base and factor
-    [0,1,2] - column indexes
+    (2, 2) - Base and factor
+    [0,1,2] - Column indexes
 '''
 data[
 ___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____||____Y_____|
@@ -1908,9 +1910,9 @@ ix. **triglx(d, n, li, f='cos', chk=True, ret='a') -> data**: Ge a data object w
 >>> datautils.triglx(dat, 2, [0,1,2], 'cos')
 '''
     dat - data object
-    2 - factor
-    [0,1,2] - column indexes
-    'cos' - trignometric operation
+    2 - Factor
+    [0,1,2] - Column indexes
+    'cos' - Trignometric operation
 '''
 data[
 ___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____||____Y_____|
@@ -1936,9 +1938,17 @@ ___|____0_____|____1_____|____2_____|____3_____|____4_____|____5_____|____6_____
 
 **(o) axn**: Get the object for a exponentiated variable
 
+- **__f1** - *Decimal*
+- **__f2** - *Decimal*
+- **ret** - *str*
+
 ```python
 >>> from deciml_maths.functions import axn
 >>> fun = axn(2,5.5)
+'''
+    2 - Coefficient
+    5.5 - Power
+'''
 ```
 
 i. **(f) f(__a)**
@@ -1957,7 +1967,7 @@ ii. **(f) df(__a)**
 
 ```python
 >>> fun.df(2)
-Decimal('248.902')
+Decimal('248.901')
 ```
 
 iii. **(g) getf**
@@ -1975,14 +1985,22 @@ iv. **(g) getdf**
 ```
 
 </p>
+</details>
+<details>
 <summary>poly</summary>
 <p>
 
 **(o) poly**: Get the object for a polynomial function
 
+- **\*__f** - *tuple[Decimal,Decimal]|list[Decimal]*
+- **ret** - *str*
+
 ```python
 >>> from deciml_maths.functions import poly
-
+fun = poly((Decimal('2.0'), Decimal('3.0')), (Decimal('2.0'), Decimal('5.5')))
+'''
+    (Decimal('2.0'), Decimal('3.0')), (Decimal('2.0'), Decimal('5.5')) - Coefficients and exponent
+'''
 ```
 i. **(f) f(__a)**
 
@@ -2016,13 +2034,27 @@ iv. **(g) getdf**
 ((Decimal('6.0'), Decimal('2.0')), (Decimal('11.0'), Decimal('4.5')))
 ```
 </p>
+</details>
+
+<details>
 <summary>apolyn</summary>
 <p>
 
 **(o) apolyn**: Get the object for a exponentiated polynomial function
 
-```python
+- **__a** - *Decimal*
+- **__n** - *Decimal*
+- **\*__f** - *tuple[Decimal,Decimal]|list[Decimal]*
+- **ret** - str
 
+```python
+from deciml_maths.functions import apolyn
+f = apolyn('5.5', '2.5', (2.3, 4), (5, 3))
+'''
+    '5.5' - Coefficient
+    '2.5' - Exponent
+    (2.3, 4), (5, 3) - Coefficients and exponent
+'''
 ```
 
 i. **(f) f(__a, __pr=getpr())**
@@ -2031,7 +2063,7 @@ i. **(f) f(__a, __pr=getpr())**
 - **__pr**: The precision
 
 ```python
-
+Decimal('284292.721')
 ```
 
 ii. **(f) df(__a, __pr=getpr())**
@@ -2040,19 +2072,19 @@ ii. **(f) df(__a, __pr=getpr())**
 - **__pr**: The precision
 
 ```python
-
+Decimal('1236377.205')
 ```
 
-iii. **(f) getf()**
+iii. **(g) getf**
 
 ```python
-
+((Decimal('5.5'), Decimal('2.5')), ((Decimal('2.3'), Decimal('4.0')), (Decimal('5.0'), Decimal('3.0'))))
 ```
 
-iv. **(f) getdf()**
+iv. **(g) getdf**
 
 ```python
-
+((Decimal('13.75'), Decimal('1.5')), ((Decimal('2.3'), Decimal('4.0')), (Decimal('5.0'), Decimal('3.0'))), ((Decimal('9.20'), Decimal('3.0')), (Decimal('15.0'), Decimal('2.0'))))
 ```
 
 </p>

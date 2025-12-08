@@ -11,10 +11,9 @@ class axn:
 
     def __init__(self,__f1:Decimal,__f2:Decimal,ret:str='a')->None:
         try:
-            __pr=getpr()+1
-            self.__f=tuple(map(deciml,(__f1,__f2)));self.__df=(alg.mul(*self.__f,pr=__pr),alg.sub(self.__f[1],'1',pr=__pr));del __f1,__f2,__pr;
-            self.f=lambda __a:alg.mul(self.__f[0],alg.pwr(__a,self.__f[1],getpr()+2),pr=getpr())
-            self.df=lambda __a:alg.mul(self.__df[0],alg.pwr(__a,self.__df[1],getpr()+2),pr=getpr())
+            self.__f=tuple(map(deciml,(__f1,__f2)));self.__df=(alg.mul(*self.__f,pr=getpr()+1),alg.sub(self.__f[1],'1',pr=getpr()+2));del __f1,__f2;
+            self.f=lambda __a:alg.mul(self.__f[0],alg.pwr(__a,self.__f[1],getpr()+1))
+            self.df=lambda __a:alg.mul(self.__df[0],alg.pwr(__a,self.__df[1],getpr()+1))
         except Exception as e:print("Invalid command: axn()");retrn(ret,e);
 
     @property
@@ -43,9 +42,9 @@ class poly:
             self.__f=tuple(map(lambda x:axn(*x),__f));del __f;
         except Exception as e:print("Invalid command: poly()");retrn(ret,e);
 
-    def f(self,__a:Decimal):setpr(getpr()+1);r=map(lambda i:i.f(__a),self.__f);setpr(getpr()-1);return alg.add(*r,pr=getpr());
+    def f(self,__a:Decimal)->Decimal:setpr(getpr()+1);r=list(map(lambda i:i.f(__a),self.__f));setpr(getpr()-1);return alg.add(*r);
 
-    def df(self,__a:Decimal):setpr(getpr()+1);r=map(lambda i:i.df(__a),self.__f);setpr(getpr()-1);return alg.add(*r,pr=getpr());
+    def df(self,__a:Decimal)->Decimal:setpr(getpr()+1);r=list(map(lambda i:i.df(__a),self.__f));setpr(getpr()-1);return alg.add(*r);
 
     @property
     def getf(self)->tuple[tuple[Decimal,Decimal],...]:
@@ -71,26 +70,26 @@ class apolyn:
     '''
 
     def __init__(self,__a:Decimal,__n:Decimal,*__f:tuple[Decimal,Decimal]|list[Decimal],ret:str='a')->None:
-        try:
-            pr=getpr()
-            self.__an=axn(__a,__n,pr);self.__f=poly(*__f,pr=pr+1);del __a,__n,__f,pr;
-            self.f=lambda __a,__pr=getpr():self.__an.f(self.__f.f(__a,__pr+1),__pr)
-            self.df=lambda __a,__pr=getpr():alg.mul(self.__an.df(self.__f.f(__a,__pr+2),__pr+1),self.__f.df(__a,__pr+1),pr=__pr)
+        try:self.__an=axn(__a,__n);self.__f=poly(*__f);del __a,__n,__f;
         except Exception as e:print("Invalid command: apolyn()");retrn(ret,e);
+
+    def f(self,__a:Decimal)->Decimal:setpr(getpr()+1);f=self.__f.f(__a);setpr(getpr()-1);return self.__an.f(f)
+
+    def df(self,__a:Decimal)->Decimal:setpr(getpr()+1);df=self.__f.df(__a);setpr(getpr()+1);f=self.__f.f(__a);setpr(getpr()-1);axndf=self.__an.df(f);setpr(getpr()-1);return alg.mul(axndf,df)
 
     @property
     def getf(self)->tuple[tuple[Decimal,Decimal],tuple[tuple[Decimal,Decimal],...]]:
         '''
 #### Get all coefficients and powers of function.
         '''
-        return self.__an.getf(),self.__f.getf();
+        return self.__an.getf,self.__f.getf;
 
     @property
     def getdf(self)->tuple[tuple[Decimal,Decimal],tuple[tuple[Decimal,Decimal],...],tuple[tuple[Decimal,Decimal],...]]:
         '''
 #### Get all coefficients and powers of function's derivative.
         '''
-        return self.__an.getdf(),self.__f.getf(),self.__f.getdf();
+        return self.__an.getdf,self.__f.getf,self.__f.getdf;
 
 class funcutils:
     
@@ -102,9 +101,9 @@ class funcutils:
 - **__pos**: The position at which to rearrange
         '''
         try:
-            ta=__a.__class__.__name__;a=__a.getf();__pr=getpr();
+            ta=__a.__class__.__name__;a=__a.getf();
             match ta:
-                case 'poly':p=(a:=list(a)).pop(__pos);return apolyn(alg.pwr(alg.div('1',p[0],__pr+2),(pw:=alg.div('1',p[1],__pr+2)),__pr+1),pw,*a,pr=__pr);
+                case 'poly':p=(a:=list(a)).pop(__pos);return apolyn(alg.pwr(alg.div('1',p[0],getpr()+1),alg.div('1',p[1],getpr()+1)),alg.div('1',p[1]),*a);
                 case _:return None;
         except Exception as e:print("Invalid command: funcutils.rearr()");retrn(ret,e);
 
