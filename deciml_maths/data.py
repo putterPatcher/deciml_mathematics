@@ -2,6 +2,7 @@ from matrix import matx, matutils, melutils
 from compare.cmpr import tmatx, eqval, tdata, tint, tdeciml, tstr
 from terminate import retrn
 from deciml_maths import *
+from .__helpers import invalid_command
 
 try:
     from IPython.display import display, HTML
@@ -21,7 +22,7 @@ except:
 
 class data:
         
-    def __init__(self,x:tuple[tuple[int|float|Decimal,...],...]|list[list[int|float|Decimal]]|matx|tuple[matx,...]|list[matx],y:list[int|float|Decimal]|tuple[int|float|Decimal]|tuple[matx,...]|list[matx]|matx,chk:bool=True,ret:str='a')->None:
+    def __init__(self,x:tuple[tuple[int|float|Decimal,...],...]|list[list[int|float|Decimal]]|matx|tuple[matx,...]|list[matx],y:list[int|float|Decimal]|tuple[int|float|Decimal]|tuple[matx,...]|list[matx]|matx,chk:bool=True,ret:str='c')->None:
         '''
 #### Create a data object.
 - **x**: X values of data
@@ -58,7 +59,7 @@ class data:
                 return (x,y),x.collen,x.rowlen
             if (ndata:=__dataxy(x,y,chk)) is not None:self.__data,self.__datalen,self.__xvars=ndata;del ndata;self.__xlabels=None;self.__ylabel=None;
             else:raise Exception;
-        except Exception as e:print("Invalid command: data()");retrn(ret,e);
+        except Exception as e:invalid_command("data");retrn(ret,e);
 
     @property
     def data(self)->tuple[matx,tuple[Decimal,...]]:
@@ -119,7 +120,7 @@ class data:
         else:retrn('a',"Invalid argument: s => str")
         return self.__ylabel
 
-    def get_label_index(self,labels:list[str]|tuple[str,...],ret:str='a')->tuple[int,...]:
+    def get_label_index(self,labels:list[str]|tuple[str,...],ret:str='c')->tuple[int,...]:
         '''
 #### Get the index of x labels.
 - **labels**: List of x labels
@@ -276,7 +277,7 @@ class data:
         return self.__data[1];
 
     # returns x values from data
-    def getx(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='a') -> matx:
+    def getx(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='c') -> matx:
         '''
 #### Get the x values at row indexes as a matx object.
 - **li**: List of row indexes
@@ -284,10 +285,10 @@ class data:
 - **ret**: Exit type
         '''
         try:return matutils.gele(self.__data[0],li,True,chk,'c');
-        except Exception as e:print("Invalid command: data.getx()");retrn(ret,e);
+        except Exception as e:invalid_command("data.getx");retrn(ret,e);
 
     # returns y values from data
-    def gety(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='a')->tuple[Decimal,...]:
+    def gety(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='c')->tuple[Decimal,...]:
         '''
 #### Get the y values at row indexes as a tuple.
 - **li**: List of row indexes.
@@ -301,10 +302,10 @@ class data:
                     if (li:=tint.ele(li,self.__datalen,True)) is None:raise Exception;
                     return tuple([self.__data[1][i] for i in li])
                 case _:raise Exception("Invalid argument: chk => bool")
-        except Exception as e:print("Invalid command: data.gety()");retrn(ret,e);
+        except Exception as e:invalid_command("data.gety");retrn(ret,e);
 
     # returns data values from data
-    def getd(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='a')->tuple[matx,tuple[Decimal,...]]:
+    def getd(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='c')->tuple[matx,tuple[Decimal,...]]:
         '''
 #### Get the data points at row indexes as a tuple.
 - **li**: List of row indexes
@@ -318,10 +319,10 @@ class data:
                     if (li:=tint.ele(li,self.__datalen,True)) is None:raise Exception;
                     return tuple([matutils.gele(self.__data[0],li,True,False,'c'),tuple([self.__data[1][i] for i in li])]);
                 case _:raise Exception("Invalid argument: chk => bool")
-        except Exception as e:print("Invalid command: data.getd()");retrn(ret,e);
+        except Exception as e:invalid_command("data.getd");retrn(ret,e);
 
     # return listed x
-    def getlx(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='a')->matx:
+    def getlx(self,li:list[int]|tuple[int,...],chk:bool=True,ret:str='c')->matx:
         '''
 #### Get the x columns.
 - **li**: List column indexes
@@ -329,13 +330,13 @@ class data:
 - **ret**: Exit type
         '''
         try:return matutils.tpose(matutils.gele(self.__data[0],li,False,chk,'c'),False,'c');
-        except Exception as e:print("Invalid command: data.getlx()");retrn(ret,e);
+        except Exception as e:invalid_command("data.getlx");retrn(ret,e);
 
 
 class datautils:
     
     @staticmethod
-    def dataval(d:data,x:Decimal,chk:bool=True,ret:str='a')->data:
+    def dataval(d:data,x:Decimal,chk:bool=True,ret:str='c')->data:
         '''
 #### Add a column with the same value and get the data object.
 - **d**: Data object
@@ -350,11 +351,11 @@ class datautils:
                     if str(x:=deciml(x))=='NaN':raise Exception;
                     return data(matutils.maddval(d.getax(),x,False,'c'),d.getay(),False,'c');
                 case _:raise Exception("Invalid argument: chk => bool");
-        except Exception as e:print("Invalid command: datautils.dataval()");retrn(ret,e);
+        except Exception as e:invalid_command("datautils.dataval");retrn(ret,e);
 
     # add the listed x to data
     @staticmethod
-    def addata(d:data,*a:matx,chk:bool=True,ret:str='a')->data:
+    def addata(d:data,*a:matx,chk:bool=True,ret:str='c')->data:
         '''
 #### Add multiple matx objects as x columns to the data object.
 - **d**: Data object
@@ -371,11 +372,11 @@ class datautils:
                         if eqval(d.datalen,i.collen) is None:raise Exception;
                     return data(matutils.addmatx(d.getax(),*a,r=False,chk=False,ret='c'),d.getay(),False,'c')
                 case _:raise Exception("Invalid argument: chk => bool");
-        except Exception as e:print("Invalid command: datautils.addata()");retrn(ret,e);
+        except Exception as e:invalid_command("datautils.addata");retrn(ret,e);
 
     # retuns a new data object with x of listed positions
     @staticmethod
-    def datalx(d:data,li:list[int]|tuple[int,...],chk:bool=True,ret:str='a')->data:
+    def datalx(d:data,li:list[int]|tuple[int,...],chk:bool=True,ret:str='c')->data:
         '''
 #### Get a data object with listed x columns.
 - **d**: Data object
@@ -390,11 +391,11 @@ class datautils:
                     if tdata(d) is None:raise Exception;
                     return data(d.getlx(li,True,'c'),d.getay(),False,'c')
                 case _:raise Exception("Invalid argument: chk => bool");
-        except Exception as e:print("Invalid command: datautils.datalx()");retrn(ret,e);
+        except Exception as e:invalid_command("datautils.datalx");retrn(ret,e);
 
     # add multiplication of x at listed positions to data
     @staticmethod
-    def multlx(d:data,li:list[list[int]]|tuple[tuple[int,...]]|str,chk:bool=True,ret:str='a')->data:
+    def multlx(d:data,li:list[list[int]]|tuple[tuple[int,...]]|str,chk:bool=True,ret:str='c')->data:
         '''
 #### Get the data object after multiplication of x columns as added x columns.
 - **d**: Data object
@@ -409,11 +410,11 @@ class datautils:
                     if tdata(d) is None:raise Exception;
                     return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.mult(d.getax(),li,False,True,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c')
                 case _:raise Exception("Invalid argument: chk => bool");
-        except Exception as e:print("Invalid command: datautils.multlx()");retrn(ret,e);
+        except Exception as e:invalid_command("datautils.multlx");retrn(ret,e);
 
     # add addition of x at listed positions to data
     @staticmethod
-    def addlx(d:data,li:list[list[int]]|tuple[tuple[int,...]]|str,chk:bool=True,ret:str='a')->data:
+    def addlx(d:data,li:list[list[int]]|tuple[tuple[int,...]]|str,chk:bool=True,ret:str='c')->data:
         '''
 #### Get the data object after addition of x columns as added x columns.
 - **d**: Data object
@@ -428,11 +429,11 @@ class datautils:
                     if tdata(d) is None:raise Exception;
                     return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.add(d.getax(),li,False,True,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c')
                 case _:raise Exception("Invalid argument: chk => bool");
-        except Exception as e:print("Invalid command: datautils.addlx()");retrn(ret,e);
+        except Exception as e:invalid_command("datautils.addlx");retrn(ret,e);
 
     # add powers of x at listed positions to data
     @staticmethod
-    def powlx(d:data,an:tuple[Decimal, Decimal],li:list[int]|tuple[int,...]|str,chk:bool=True,ret:str='a')->data:
+    def powlx(d:data,an:tuple[Decimal, Decimal],li:list[int]|tuple[int,...]|str,chk:bool=True,ret:str='c')->data:
         '''
 #### Get the data object after exponentiation of x columns as added x columns.
 - **d**: Data object
@@ -449,11 +450,11 @@ class datautils:
                     if tdata(d) is None:raise Exception;
                     return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.pow(an,d.getax(),li,False,True,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c')
                 case _:raise Exception("Invalid argument: chk => bool");
-        except Exception as e:print("Invalid command: datautils.powlx()");retrn(ret,e);
+        except Exception as e:invalid_command("datautils.powlx");retrn(ret,e);
 
     # append log of x at listed positions to data
     @staticmethod
-    def loglx(d:data,an:tuple[Decimal,Decimal],li:list[int]|tuple[int,...]|str,chk:bool=True,ret:str='a')->data:
+    def loglx(d:data,an:tuple[Decimal,Decimal],li:list[int]|tuple[int,...]|str,chk:bool=True,ret:str='c')->data:
         '''
 #### Get the data object after logarithm of x columns as added x columns.
 - **d**: Data object
@@ -470,11 +471,11 @@ class datautils:
                     if tdata(d) is None:raise Exception;
                     return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.log(an,d.getax(),li,False,True,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c')
                 case _:raise Exception("Invalid argument: chk => bool");
-        except Exception as e:print("Invalid command: datautils.loglx()");retrn(ret,e);
+        except Exception as e:invalid_command("datautils.loglx");retrn(ret,e);
 
     # append x at listed positions as a power to data
     @staticmethod
-    def expolx(d:data,an:tuple[Decimal,Decimal],li:list[int]|tuple[int,...]|str,chk:bool=True,ret:str='a')->data:
+    def expolx(d:data,an:tuple[Decimal,Decimal],li:list[int]|tuple[int,...]|str,chk:bool=True,ret:str='c')->data:
         '''
 #### Get the data object after exponentiated to x columns as added x columns.
 - **d**: Data object
@@ -491,10 +492,10 @@ class datautils:
                     if tdata(d) is None:raise Exception;
                     return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.expo(an,d.getax(),li,False,True,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c')
                 case _:raise Exception("Invalid argument: chk => bool");
-        except Exception as e:print("Invalid command: datautils.expolx()");retrn(ret,e);
+        except Exception as e:invalid_command("datautils.expolx");retrn(ret,e);
     
     @staticmethod
-    def triglx(d:data,n:Decimal,li:list[int]|tuple[int,...]|str,f:str='cos',chk:bool=True,ret:str='a')->data:
+    def triglx(d:data,n:Decimal,li:list[int]|tuple[int,...]|str,f:str='cos',chk:bool=True,ret:str='c')->data:
         '''
 #### Get the data object after trignometric operation of x columns as added x columns.
 - **d**: Data object
@@ -511,7 +512,7 @@ class datautils:
                     if tdata(d) is None:raise Exception;
                     return data(matutils.addmatx(d.getax(),matutils.tpose(melutils.trig(n,d.getax(),li,False,f,True,'c')),r=False,chk=False,ret='c'),d.getay(),False,'c')
                 case _:raise Exception("Invalid argument: chk => bool");
-        except Exception as e:print("Invalid command: datautils.triglx()");retrn(ret,e);
+        except Exception as e:invalid_command("datautils.triglx");retrn(ret,e);
  
 
 # a = [[1,2,2],[2,3,4],[7.9999999,3,2]]

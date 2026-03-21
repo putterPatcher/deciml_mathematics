@@ -1,5 +1,7 @@
 from deciml_maths import *
 from terminate import retrn
+from .__helpers import invalid_command
+from deciml.deciml import SolveEq
 
 class axn:
     '''
@@ -9,12 +11,12 @@ class axn:
 - **ret**: Exit type
     '''
 
-    def __init__(self,__f1:Decimal,__f2:Decimal,ret:str='a')->None:
+    def __init__(self,__f1:Decimal,__f2:Decimal,ret:str='c')->None:
         try:
             self.__f=tuple(map(deciml,(__f1,__f2)));self.__df=(alg.mul(*self.__f,pr=getpr()+1),alg.sub(self.__f[1],'1',pr=getpr()+2));del __f1,__f2;
             self.f=lambda __a:alg.mul(self.__f[0],alg.pwr(__a,self.__f[1],getpr()+1))
             self.df=lambda __a:alg.mul(self.__df[0],alg.pwr(__a,self.__df[1],getpr()+1))
-        except Exception as e:print("Invalid command: axn()");retrn(ret,e);
+        except Exception as e:invalid_command('axn');retrn(ret,e);
 
     @property
     def getf(self)->tuple[Decimal,Decimal]:
@@ -37,10 +39,10 @@ class poly:
 - **ret**: Exit type
     '''
     
-    def __init__(self,*__f:tuple[Decimal,Decimal]|list[Decimal],ret:str='a')->None:
+    def __init__(self,*__f:tuple[Decimal,Decimal]|list[Decimal],ret:str='c')->None:
         try:
             self.__f=tuple(map(lambda x:axn(*x),__f));del __f;
-        except Exception as e:print("Invalid command: poly()");retrn(ret,e);
+        except Exception as e:invalid_command("poly");retrn(ret,e);
 
     def f(self,__a:Decimal)->Decimal:setpr(getpr()+1);r=list(map(lambda i:i.f(__a),self.__f));setpr(getpr()-1);return alg.add(*r);
 
@@ -71,7 +73,7 @@ class apolyn:
 
     def __init__(self,__a:Decimal,__n:Decimal,*__f:tuple[Decimal,Decimal]|list[Decimal],ret:str='a')->None:
         try:self.__an=axn(__a,__n);self.__f=poly(*__f);del __a,__n,__f;
-        except Exception as e:print("Invalid command: apolyn()");retrn(ret,e);
+        except Exception as e:invalid_command("apolyn");retrn(ret,e);
 
     def f(self,__a:Decimal)->Decimal:setpr(getpr()+1);f=self.__f.f(__a);setpr(getpr()-1);return self.__an.f(f)
 
@@ -94,7 +96,7 @@ class apolyn:
 class funcutils:
     
     @staticmethod
-    def rearr(__a,__pos:int,ret:str='a')->apolyn:
+    def rearr(__a,__pos:int,ret:str='c')->apolyn:
         '''
 #### Get the rearranged function (x as a function of x).
 - **__a**: The function
@@ -105,10 +107,10 @@ class funcutils:
             match ta:
                 case 'poly':p=(a:=list(a)).pop(__pos);return apolyn(alg.pwr(alg.div('1',p[0],getpr()+1),alg.div('1',p[1],getpr()+1)),alg.div('1',p[1]),*a);
                 case _:return None;
-        except Exception as e:print("Invalid command: funcutils.rearr()");retrn(ret,e);
+        except Exception as e:invalid_command("funcutils.rearr");retrn(ret,e);
 
     @staticmethod
-    def ndpoly(p:poly,n:int)->poly|None:
+    def ndpoly(p:poly,n:int,ret='c')->poly|None:
         '''
 #### Differentiate a polynomial n number of times.
 - **p**: poly object
@@ -119,8 +121,29 @@ class funcutils:
                 p = poly(*p.getdf())
                 if p is None:return None;
             return p
-        except Exception as e:print("Invalid command: funcutils.ndpoly()");retrn('c',e);
+        except Exception as e:invalid_command("funcutils.ndpoly");retrn('c',e);
 
+class SolveFn:
+    def __init__(self,fn:SolveEq|poly|apolyn,ret:str='c'):
+        try:
+            if (tf:=fn.__class__.__name__=='SolveEq') or tf=='poly' or tf=='apolyn':
+                self.__fn=fn
+        except Exception as e:invalid_command('SolveFn');retrn(ret,e);
+
+    @property
+    def fn:
+        '''
+#### Get the SolveFn object
+        '''
+        return self.__fn
+    
+    def rootrearr(self):pass
+
+    def bchop(self):pass
+
+    def lininter(self):pass
+
+    def nrinter(self):pass
 
 # a=poly((2,3),(1,-2))
 # print(a.f(1),a.df(1),a.getdf())
